@@ -1,0 +1,147 @@
+<HEAD>
+<SCRIPT>
+
+//ctx.fillStyle="#FF0000";
+//ctx.fillRect(20,20,150,100); 
+
+
+function draw() {
+
+var canvasC = document.getElementById("myCanvas");
+var ctx = canvasC.getContext("2d");
+
+
+	var size = 0.01; //How much is the numerical interval between pixels. I. E., size = 1 would mean that each pixel would roughly correspond to an integer. (Invervals of 1)
+	var location = [-0.7655952267530487,0.09558800177845529]; //Location of the CENTER of the view
+	var cWidth = 500;
+	var cHeight = 500;
+
+
+	for (var xI = 0; xI < cWidth; xI++) {
+
+		for (var yI = 0; yI < cHeight; yI++) {
+			var viewWidth = cWidth*size; //The numerical width of the view.
+			var viewHeight = cHeight*size;
+			var currentPixelColor = "" //Create a hex RGB for the current pixel color. 
+
+			currentPixelColor = renderPixel((((xI-cWidth/2)*size)+location[0]),(((yI-cHeight/2)*size)+location[1])) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+			ctx.fillStyle = "#" + currentPixelColor;
+			ctx.fillRect(xI,yI,1,1); //Draw the pixel
+
+
+		}
+
+
+	}
+
+
+}
+
+
+function renderPixel(real,imaginary) {
+var outColor = "000000";
+
+
+
+if (inSet(real,imaginary) != 0) {
+
+outColor = "FFFFFF"; //Render white if it isn't in the set.
+}
+
+return outColor;
+
+
+}
+
+function inSet(real,imaginary) {
+var z = [0,0]
+var c = [real,imaginary]
+var out = 0
+
+var iterations = 10;
+
+var i = 0;
+for (i=0;i < iterations; i++) {
+z = i_a((i_t(z,z)),c);
+
+if (dist(z) > 1) { //If it is outside the unit circle...
+i = iterations+1 //stop it from running longer
+out = 1; //Make it out of the set.
+ 
+}
+
+
+
+}
+
+return out*i; //If it out = 0, then it wont matter. If out = 1, then it will return the number of interations it took to escape.
+}
+
+function dist(num) {
+var outDist = 0;
+
+outDist = Math.sqrt((num[0]*num[0])+(num[1]*num[1])); //Pythagorean theorem, distance from orgin.
+
+return outDist;
+
+
+}
+
+
+
+
+function i_a(add1,add2) { //Add two complex numbers
+var out = [0,0];
+
+out[0] = add1[0]+add2[0]
+out[1] = add1[1]+add2[1]
+
+return out;
+
+}
+
+
+
+function i_t(fact1,fact2) { //Multiply two complex numbers
+var out = [0,0];
+
+out[0] = fact1[0]*fact2[0]+(-1*(fact1[1]*fact2[1])) //Multiply the first part, and add in the second part times -1 (times negative one becuase of i^2)
+out[1] = fact1[0]*fact2[1]+fact1[1]*fact2[0]
+
+return out;
+
+}
+
+
+function i_abs(num) { //Take the absolute value of a complex number
+var out = [0,0];
+
+var outDist = 0;
+
+outDist = Math.sqrt((num[0]*num[0])+(num[1]*num[1])); //Pythagorean theorem, distance from orgin.
+
+out[0] = outDist;
+
+return out;
+
+
+return out;
+
+}
+
+
+</SCRIPT>
+</HEAD>
+<BODY>
+<H1> Fractal Renderer </H1>
+
+
+
+<BR><button onclick="draw()">Draw</button>
+
+
+
+<canvas id="myCanvas" width="500" height="500" style="border:0px">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+</BODY>
