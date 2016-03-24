@@ -44,9 +44,9 @@ var yI = cHeight/2-work.yI;
 			//ctx.fillRect(xI,yI,1,1); //Draw the pixel
 			var p = xI*4;
 			for (var i =0;i < interval;i++) {
-				d[p++] = currentPixelColor&0xFF;
-				d[p++] = currentPixelColor&0xFF;
-				d[p++] = currentPixelColor&0xFF;
+				d[p++] = (currentPixelColor<<10)&0xFF;
+				d[p++] = (currentPixelColor<<5)&0xFF;
+				d[p++] = (currentPixelColor<<1)&0xFF;
 				d[p++] = 0xFF; //Set the alpha
 			}
 		}
@@ -64,9 +64,9 @@ yI = cHeight/2+work.yI;
 			//ctx.fillRect(xI,yI,1,1); //Draw the pixel
 			var p = xI*4;
 			for (var i =0;i < interval;i++) {
-				d[p++] = currentPixelColor&0xFF;
-				d[p++] = currentPixelColor&0xFF;
-				d[p++] = currentPixelColor&0xFF;
+				d[p++] = (currentPixelColor<<10)&0xFF;
+				d[p++] = (currentPixelColor<<5)&0xFF;
+				d[p++] = (currentPixelColor<<1)&0xFF;
 				d[p++] = 0xFF; //Set the alpha
 			}
 
