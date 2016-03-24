@@ -4,14 +4,15 @@
 //ctx.fillStyle="#FF0000";
 //ctx.fillRect(20,20,150,100); 
 
-var size = 1*.002; //How much is the numerical interval between pixels. I. E., size = 1 would mean that each pixel would roughly correspond to an integer. (Invervals of 1)
+var size = 1*.02; //How much is the numerical interval between pixels. I. E., size = 1 would mean that each pixel would roughly correspond to an integer. (Invervals of 1)
 var work = {};
+work.location = [0,0]; //Location of the CENTER of the view
 
 function draw() {
 work.ctx = myCanvas.getContext("2d");
 
 
-	work.location = [-1.6284786364672807,-0.0008688132719087513]; //Location of the CENTER of the view
+	
 work.xI = 0;
 
 
@@ -28,10 +29,10 @@ var viewHeight = work.cHeight*size;
 var locationX = work.location[0];
 var locationY = work.location[1];
 var ctx = work.ctx;
-
-	var xI = work.xI;
+var xI = cWidth/2-work.xI;
+	
 		for (var yI = 0; yI < cHeight; yI++) {
-
+			
 			var currentPixelColor = "" //Create a hex RGB for the current pixel color. 
 
 			currentPixelColor = renderPixel((((xI-cWidth/2)*size)+locationX),(((yI-cHeight/2)*size)+locationY)) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
@@ -40,10 +41,22 @@ var ctx = work.ctx;
 
 
 		}
+xI = cWidth/2+work.xI;
+	
+		for (var yI = 0; yI < cHeight; yI++) {
+			
+			var currentPixelColor = "" //Create a hex RGB for the current pixel color. 
+
+			currentPixelColor = renderPixel((((xI-cWidth/2)*size)+locationX),(((yI-cHeight/2)*size)+locationY)) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+			ctx.fillStyle = "#" + currentPixelColor;
+			ctx.fillRect(xI,yI,1,1); //Draw the pixel
+
+
+		}		
 		//ctx.stroke();
 
 work.xI += 1;
-	if (work.xI < cWidth) {
+	if (work.xI < cWidth/2) {
 	setTimeout(doWork,0);
 	
 	}
@@ -143,8 +156,14 @@ function getCursorPosition(canvas, event) {
     var rect = canvas.getBoundingClientRect();
     var x = event.clientX - rect.left;
     var y = event.clientY - rect.top;
-    //alert("x: " + x + " y: " + y);
+	if (x/myCanvas.width < 0.1 || x/myCanvas.width > 0.9 || y/myCanvas.height < 0.1 || y/myCanvas.height > 0.9) {
+	size = size*2 //Zoom out.
+	}
+	else {
+    work.location[0] = ((x-myCanvas.width/2)*size+work.location[0]); 
+	work.location[1] = ((y-myCanvas.height/2)*size+work.location[1]);
 	size = size/2;
+	}
 	draw();
 }
 
