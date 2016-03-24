@@ -10,11 +10,13 @@ work.location = [0,0]; //Location of the CENTER of the view
 
 function draw() {
 work.ctx = myCanvas.getContext("2d");
+work.imageData = work.ctx.createImageData(myCanvas.width,1) //Create an image for the row.
 
 
 	
-work.xI = 0;
-
+work.yI = 0;
+work.interval = 16;
+document.getElementById('locationDisplay').innerHTML = work.location.toString()+","+size.toString();
 
 
 setTimeout(doWork,0);
@@ -22,6 +24,8 @@ setTimeout(doWork,0);
 
 
 function doWork () {
+var interval = work.interval;
+
 var cWidth = myCanvas.width;
 var cHeight = myCanvas.height;
 var viewWidth = work.cWidth*size; //The numerical width of the view.
@@ -29,38 +33,59 @@ var viewHeight = work.cHeight*size;
 var locationX = work.location[0];
 var locationY = work.location[1];
 var ctx = work.ctx;
-var xI = cWidth/2-work.xI;
-	
-		for (var yI = 0; yI < cHeight; yI++) {
+var yI = cHeight/2-work.yI;
+	var d = work.imageData.data;
+		for (var xI = 0; xI < cWidth; xI+=interval) {
 			
 			var currentPixelColor = "" //Create a hex RGB for the current pixel color. 
 
 			currentPixelColor = renderPixel((((xI-cWidth/2)*size)+locationX),(((yI-cHeight/2)*size)+locationY)) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
-			ctx.fillStyle = "#" + currentPixelColor;
-			ctx.fillRect(xI,yI,1,1); //Draw the pixel
-
-
+			//ctx.fillStyle = "#" + currentPixelColor;
+			//ctx.fillRect(xI,yI,1,1); //Draw the pixel
+			var p = xI*4;
+			for (var i =0;i < interval;i++) {
+				d[p++] = currentPixelColor&0xFF;
+				d[p++] = currentPixelColor&0xFF;
+				d[p++] = currentPixelColor&0xFF;
+				d[p++] = 0xFF; //Set the alpha
+			}
 		}
-xI = cWidth/2+work.xI;
+		for (var i =0;i < interval;i++) {
+			ctx.putImageData(work.imageData,0,yI+i);
+		}
+yI = cHeight/2+work.yI;
 	
-		for (var yI = 0; yI < cHeight; yI++) {
+		for (var xI = 0; xI < cWidth; xI+=interval) {
 			
-			var currentPixelColor = "" //Create a hex RGB for the current pixel color. 
+			//var currentPixelColor = "" //Create a hex RGB for the current pixel color. 
 
-			currentPixelColor = renderPixel((((xI-cWidth/2)*size)+locationX),(((yI-cHeight/2)*size)+locationY)) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
-			ctx.fillStyle = "#" + currentPixelColor;
-			ctx.fillRect(xI,yI,1,1); //Draw the pixel
-
+			var currentPixelColor = renderPixel((((xI-cWidth/2)*size)+locationX),(((yI-cHeight/2)*size)+locationY)) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+			//ctx.fillStyle = "#" + currentPixelColor;
+			//ctx.fillRect(xI,yI,1,1); //Draw the pixel
+			var p = xI*4;
+			for (var i =0;i < interval;i++) {
+				d[p++] = currentPixelColor&0xFF;
+				d[p++] = currentPixelColor&0xFF;
+				d[p++] = currentPixelColor&0xFF;
+				d[p++] = 0xFF; //Set the alpha
+			}
 
 		}		
-		//ctx.stroke();
+		for (var i =0;i < interval;i++) {
+			ctx.putImageData(work.imageData,0,yI+i);
+		}
 
-work.xI += 1;
-	if (work.xI < cWidth/2) {
+work.yI += interval;
+	if (work.yI < cHeight/2) {
 	setTimeout(doWork,0);
 	
 	}
+	else if (work.interval > 1) {
+	work.yI = 0
+	work.interval/=2;
+	setTimeout(doWork,0)
 	
+	}
 
 
 }
@@ -68,34 +93,38 @@ work.xI += 1;
 
 function renderPixel(real,imaginary) {
 
-var outColor = ((inSet(real,imaginary)&0xff)+0x1000).toString(16).substr(1);
-
-return outColor;
+//var outColor = ((inSet(real,imaginary)&0xff)+0x1000).toString(16).substr(1);
+var outColor = inSet(real,imaginary);
+return outColor*30;
 
 
 }
 
+
 function inSet(real,imaginary) {
-var z = [0,0]
-var c = [real,imaginary]
+var zRe = 0;
+var zIm = 0;
+
+
 var out = 0
 
-var iterations = 1000;
+var iterations = 30000;
 
 var i = 0;
 for (i=0; i < iterations; i++) {
 //z = i_a((i_t(z,z)),c);
-z = [ z[0]*z[0]+(-1*(z[1]*z[1]))
-			,z[0]*z[1]+z[1]*z[0]
-		];
-z[0] += c[0];
-z[1] += c[1];
+var nzRe = (zRe*zRe+(-1*(zIm*zIm))) //Make a new variable to aviod reusing it in the next line.
+zIm = (zRe*zIm+zIm*zRe)
+zRe = nzRe
+
+zRe += real;
+zIm += imaginary;
 
 //if (z2[0] != z[0] || z2[1] != z[1]) {
 //	alert("I-72");
 //}
 
-if ((z[0]*z[0])+(z[1]*z[1]) > 4) { //If it is outside the 4 unit circle...
+if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 4 unit circle...
 
 out = 1; //Make it out of the set.
 break; //stop it from running longer
@@ -175,16 +204,24 @@ function getCursorPosition(canvas, event) {
 
 
 
-<BR><button onclick="draw()">Draw</button>
+<P>Location:<BR>
+<PRE>
+<DIV id=locationDisplay WIDTH=40>
+</DIV>
+</PRE>
 
 
-
-<canvas id="myCanvas" width="1000" height="1000" style="border:0px">
+<DIV>
+<canvas id="myCanvas" width="1920" height="1000" style="border:0px">
 Your browser does not support the HTML5 canvas tag.</canvas>
+</DIV>
 <SCRIPT>
+
 var myCanvas = document.getElementById("myCanvas");
 myCanvas.addEventListener("click",function(event) {getCursorPosition(myCanvas,event);});
 
+
+draw() //Make it render when it starts.
 </SCRIPT>
 
 </BODY>
