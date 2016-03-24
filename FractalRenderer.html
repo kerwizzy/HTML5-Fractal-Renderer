@@ -4,36 +4,50 @@
 //ctx.fillStyle="#FF0000";
 //ctx.fillRect(20,20,150,100); 
 
+var size = 1*.002; //How much is the numerical interval between pixels. I. E., size = 1 would mean that each pixel would roughly correspond to an integer. (Invervals of 1)
+var work = {};
 
 function draw() {
-
-var canvasC = document.getElementById("myCanvas");
-var ctx = canvasC.getContext("2d");
+work.ctx = myCanvas.getContext("2d");
 
 
-	var size = 5.684341886080802e-15*.002; //How much is the numerical interval between pixels. I. E., size = 1 would mean that each pixel would roughly correspond to an integer. (Invervals of 1)
-	var location = [-1.6284786364672807,-0.0008688132719087513]; //Location of the CENTER of the view
-
-	var cWidth = 1000;
-	var cHeight = 1000;
+	work.location = [-1.6284786364672807,-0.0008688132719087513]; //Location of the CENTER of the view
+work.xI = 0;
 
 
-	for (var xI = 0; xI < cWidth; xI++) {
 
+setTimeout(doWork,0);
+}
+
+
+function doWork () {
+var cWidth = myCanvas.width;
+var cHeight = myCanvas.height;
+var viewWidth = work.cWidth*size; //The numerical width of the view.
+var viewHeight = work.cHeight*size;
+var locationX = work.location[0];
+var locationY = work.location[1];
+var ctx = work.ctx;
+
+	var xI = work.xI;
 		for (var yI = 0; yI < cHeight; yI++) {
-			var viewWidth = cWidth*size; //The numerical width of the view.
-			var viewHeight = cHeight*size;
+
 			var currentPixelColor = "" //Create a hex RGB for the current pixel color. 
 
-			currentPixelColor = renderPixel((((xI-cWidth/2)*size)+location[0]),(((yI-cHeight/2)*size)+location[1])) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+			currentPixelColor = renderPixel((((xI-cWidth/2)*size)+locationX),(((yI-cHeight/2)*size)+locationY)) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
 			ctx.fillStyle = "#" + currentPixelColor;
 			ctx.fillRect(xI,yI,1,1); //Draw the pixel
 
 
 		}
+		//ctx.stroke();
 
-
+work.xI += 1;
+	if (work.xI < cWidth) {
+	setTimeout(doWork,0);
+	
 	}
+	
 
 
 }
@@ -125,6 +139,15 @@ return out;
 
 }
 
+function getCursorPosition(canvas, event) {
+    var rect = canvas.getBoundingClientRect();
+    var x = event.clientX - rect.left;
+    var y = event.clientY - rect.top;
+    //alert("x: " + x + " y: " + y);
+	size = size/2;
+	draw();
+}
+
 
 </SCRIPT>
 </HEAD>
@@ -139,5 +162,10 @@ return out;
 
 <canvas id="myCanvas" width="1000" height="1000" style="border:0px">
 Your browser does not support the HTML5 canvas tag.</canvas>
+<SCRIPT>
+var myCanvas = document.getElementById("myCanvas");
+myCanvas.addEventListener("click",function(event) {getCursorPosition(myCanvas,event);});
+
+</SCRIPT>
 
 </BODY>
