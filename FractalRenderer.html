@@ -9,8 +9,7 @@ var work = {};
 work.location = [0,0]; //Location of the CENTER of the view
 
 function draw() {
-work.ctx = myCanvas.getContext("2d");
-work.imageData = work.ctx.createImageData(myCanvas.width,1) //Create an image for the row.
+
 
 
 	
@@ -34,7 +33,7 @@ var locationX = work.location[0];
 var locationY = work.location[1];
 var ctx = work.ctx;
 var yI = cHeight/2-work.yI;
-	var d = work.imageData.data;
+	
 		for (var xI = 0; xI < cWidth; xI+=interval) {
 			
 			var currentPixelColor = "" //Create a hex RGB for the current pixel color. 
@@ -44,9 +43,9 @@ var yI = cHeight/2-work.yI;
 			//ctx.fillRect(xI,yI,1,1); //Draw the pixel
 			var p = xI*4;
 			for (var i =0;i < interval;i++) {
-				d[p++] = (currentPixelColor<<10)&0xFF;
-				d[p++] = (currentPixelColor<<5)&0xFF;
-				d[p++] = (currentPixelColor<<1)&0xFF;
+				d[p++] = (currentPixelColor)&0xFF;
+				d[p++] = (currentPixelColor)&0xFF;
+				d[p++] = (currentPixelColor)&0xFF;
 				d[p++] = 0xFF; //Set the alpha
 			}
 		}
@@ -64,9 +63,9 @@ yI = cHeight/2+work.yI;
 			//ctx.fillRect(xI,yI,1,1); //Draw the pixel
 			var p = xI*4;
 			for (var i =0;i < interval;i++) {
-				d[p++] = (currentPixelColor<<10)&0xFF;
-				d[p++] = (currentPixelColor<<5)&0xFF;
-				d[p++] = (currentPixelColor<<1)&0xFF;
+				d[p++] = (currentPixelColor)&0xFF;
+				d[p++] = (currentPixelColor)&0xFF;
+				d[p++] = (currentPixelColor)&0xFF;
 				d[p++] = 0xFF; //Set the alpha
 			}
 
@@ -218,8 +217,11 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 <SCRIPT>
 
 var myCanvas = document.getElementById("myCanvas");
-myCanvas.addEventListener("click",function(event) {getCursorPosition(myCanvas,event);});
+myCanvas.addEventListener("mouseup",function(event) {getCursorPosition(myCanvas,event);});
+work.ctx = myCanvas.getContext("2d");
+work.imageData = work.ctx.createImageData(myCanvas.width,1) //Create an image for the row.
 
+var d = work.imageData.data;
 
 draw() //Make it render when it starts.
 </SCRIPT>
