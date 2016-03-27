@@ -1,12 +1,34 @@
 <HEAD>
 <SCRIPT>
+//See below for title and fractals
+
+
+
 
 //ctx.fillStyle="#FF0000";
 //ctx.fillRect(20,20,150,100); 
 
-var size = 1*.02; //How much is the numerical interval between pixels. I. E., size = 1 would mean that each pixel would roughly correspond to an integer. (Invervals of 1)
+var size = 1*.005; //How much is the numerical interval between pixels. I. E., size = 1 would mean that each pixel would roughly correspond to an integer. (Invervals of 1)
 var work = {};
 work.location = [0,0]; //Location of the CENTER of the view
+work.running = false;
+
+
+function getLocation() {
+locData = [];
+locData = document.getElementById('locationDisplay').value.split(";");
+
+
+
+work.location[0] = parseFloat(locData[0]);
+work.location[1] = parseFloat(locData[1]);
+size = parseFloat(locData[2]);
+draw();
+
+}
+
+
+
 
 function draw() {
 
@@ -15,10 +37,13 @@ function draw() {
 	
 work.yI = 0;
 work.interval = 16;
-document.getElementById('locationDisplay').innerHTML = work.location.toString()+","+size.toString();
+document.getElementById('locationDisplay').value = (work.location[0].toString()) + ";" + (work.location[1].toString()) + ";" + (size.toString());
 
+if (work.running == false) { //Stop it from having two timers.
+work.running = true;
 
 setTimeout(doWork,0);
+}
 }
 
 
@@ -85,6 +110,9 @@ work.yI += interval;
 	setTimeout(doWork,0)
 	
 	}
+	else {
+	work.running = false;
+	}
 
 
 }
@@ -123,7 +151,7 @@ zIm += imaginary;
 //	alert("I-72");
 //}
 
-if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 4 unit circle...
+if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
 
 out = 1; //Make it out of the set.
 break; //stop it from running longer
@@ -195,6 +223,187 @@ function getCursorPosition(canvas, event) {
 	draw();
 }
 
+/*
+
+------------------
+JS FractalRenderer
+------------------
+
+Made by kerwizzy his father
+
+
+SOME INTERSETING FRACTALS (as defined by inSet code)
+
+MANDELBROT
+function inSet(real,imaginary) {
+var zRe = 0;
+var zIm = 0;
+
+
+var out = 0
+
+var iterations = 30000;
+
+var i = 0;
+for (i=0; i < iterations; i++) {
+//z = i_a((i_t(z,z)),c);
+var nzRe = (zRe*zRe+(-1*(zIm*zIm))) //Make a new variable to aviod reusing it in the next line.
+zIm = (zRe*zIm+zIm*zRe)
+zRe = nzRe
+
+zRe += real;
+zIm += imaginary;
+
+//if (z2[0] != z[0] || z2[1] != z[1]) {
+//	alert("I-72");
+//}
+
+if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
+
+out = 1; //Make it out of the set.
+break; //stop it from running longer
+}
+
+
+
+}
+
+return out*(256*i/iterations); //If it out = 0, then it wont matter. If out = 1, then it will return the number of interations it took to escape.
+}
+
+
+BURNING SHIP
+function inSet(real,imaginary) {
+var zRe = 0;
+var zIm = 0;
+
+
+var out = 0
+
+var iterations = 30000;
+
+var i = 0;
+for (i=0; i < iterations; i++) {
+//z = i_a((i_t(z,z)),c);
+zRe = Math.abs(zRe);
+zIm = Math.abs(zIm);
+ 
+
+var nzRe = (zRe*zRe+(-1*(zIm*zIm))) //Make a new variable to aviod reusing it in the next line.
+zIm = (zRe*zIm+zIm*zRe)
+zRe = nzRe
+
+zRe += real;
+zIm += imaginary;
+
+//if (z2[0] != z[0] || z2[1] != z[1]) {
+//	alert("I-72");
+//}
+
+if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
+
+out = 1; //Make it out of the set.
+break; //stop it from running longer
+}
+}
+
+return out*(256*i/iterations); //If it out = 0, then it wont matter. If out = 1, then it will return the number of interations it took to escape.
+}
+
+
+TRICORN-MANDELBROT
+function inSet(real,imaginary) {
+var zRe = 0;
+var zIm = 0;
+
+
+var out = 0
+
+var iterations = 30000;
+
+var i = 0;
+for (i=0; i < iterations; i++) {
+//z = i_a((i_t(z,z)),c);
+znRe = zIm*-1;
+zIm = zRe*-1;
+zRe = znRe; //Swap the real and complex parts each time. 
+
+var nzRe = (zRe*zRe+(-1*(zIm*zIm))) //Make a new variable to aviod reusing it in the next line.
+zIm = (zRe*zIm+zIm*zRe)
+zRe = nzRe
+
+zRe += real;
+zIm += imaginary;
+
+//if (z2[0] != z[0] || z2[1] != z[1]) {
+//	alert("I-72");
+//}
+
+if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
+
+out = 1; //Make it out of the set.
+break; //stop it from running longer
+}
+
+
+
+}
+
+return out*(256*i/iterations); //If it out = 0, then it wont matter. If out = 1, then it will return the number of interations it took to escape.
+}
+
+MUNCHED MANDELBROT
+function inSet(real,imaginary) {
+var zRe = 0;
+var zIm = 0;
+
+
+var out = 0
+
+var iterations = 30000;
+
+var i = 0;
+for (i=0; i < iterations; i++) {
+//z = i_a((i_t(z,z)),c);
+znRe = zRe + 0.5;
+zIm = zIm + 0.5;
+zRe = znRe;
+ 
+
+var nzRe = (zRe*zRe+(-1*(zIm*zIm))) //Make a new variable to aviod reusing it in the next line.
+zIm = (zRe*zIm+zIm*zRe)
+zRe = nzRe
+
+zRe += real;
+zIm += imaginary;
+
+//if (z2[0] != z[0] || z2[1] != z[1]) {
+//	alert("I-72");
+//}
+
+if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
+
+out = 1; //Make it out of the set.
+break; //stop it from running longer
+}
+
+
+
+}
+
+return out*(256*i/iterations); //If it out = 0, then it wont matter. If out = 1, then it will return the number of interations it took to escape.
+}
+
+
+
+
+
+
+*/
+
+
+
+
 
 </SCRIPT>
 </HEAD>
@@ -205,9 +414,10 @@ function getCursorPosition(canvas, event) {
 
 <P>Location:<BR>
 <PRE>
-<DIV id=locationDisplay WIDTH=40>
-</DIV>
+<TEXTAREA id=locationDisplay WIDTH=40> </TEXTAREA>
 </PRE>
+<button onclick="getLocation()">Update</button>
+
 
 
 <DIV>
