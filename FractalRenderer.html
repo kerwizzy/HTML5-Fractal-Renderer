@@ -1128,15 +1128,16 @@ work.yI += interval;
 function renderPixel(real,imaginary) {
 
 //var outColor = ((inSet(real,imaginary)&0xff)+0x1000).toString(16).substr(1);
-var outColor = inSet(real,imaginary)|0;
-if (outColor>1000) {
-	outColor = (outColor%999)+1;
+var outColor = inSet(real,imaginary);
+if (outColor == -1) {
+return 999;
+}
+return 998 - (outColor%999);
+
+
+
 }
 
-return 999-outColor;
-
-
-}
 
 
 function inSet(real,imaginary) {
@@ -1168,7 +1169,7 @@ return (i) //stop it from running longer
 
 
 }
-return 0;
+return -1;
 }
 
 
