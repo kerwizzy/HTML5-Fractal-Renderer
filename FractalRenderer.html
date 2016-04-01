@@ -1,6 +1,82 @@
 <HEAD>
+<style>
+.show{
+position:fixed;
+	top:0;
+	left:0;
+	background-color:#ffffff;
+	max-width:10%;
+	height:100%;
+	z-index:120;
+	padding:8px;
+	-ms-transform: translate(5px); /* IE 9 */
+    -webkit-transform: translate(5px); /* Safari */
+    transform: translate(5px); /* Standard syntax */
+	-webkit-transform 1s; /* Safari */
+	transition: transform 1s;
+	
+}
+
+.hide{
+	position:fixed;
+	top:0;
+	left:0;
+	background-color:#ffffff;
+	max-width:10%;
+	height:100%;
+	z-index:120;
+	padding:8px;
+	-ms-transform: translate(-100%); /* IE 9 */
+    -webkit-transform: translate(-100%); /* Safari */
+    transform: translate(-100%); /* Standard syntax */
+	-webkit-transform 1s; /* Safari */
+	transition: transform 1s;
+	
+}
+
+h2 {
+
+font-family: arial;
+text-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+h3 {
+
+font-family: arial;
+text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.optionsshadow{
+box-shadow: 3px 0px 4px rgba(0, 0, 0, 0.5);
+
+}
+
+
+.descriptionBox {
+max-height:35%;
+overflow:scroll;
+
+}
+
+.link {
+color:blue;
+
+text-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+text-decoration: none;
+transition: text-shadow, color 0.5s;
+}
+
+.link:hover {
+	color:#33ccff;
+	/*text-shadow: 0 4px 4px rgba(0, 0, 0, 0.5)*/
+} 
+</style>
+
+
 <SCRIPT>
 //See below for title and fractals
+var gIterations = 30000;
+
 var colors = []
 
 var defaultColors = [
@@ -18,8 +94,46 @@ var frostColors = [
 var fireColors = [
 255,9,0,255,9,0,255,9,0,255,9,0,255,9,0,255,9,0,254,10,1,254,10,1,254,10,1,254,10,1,254,10,1,253,10,2,253,11,2,253,11,2,253,11,3,252,11,3,252,12,3,252,12,4,251,12,4,251,13,4,250,13,5,250,13,5,250,14,6,249,14,6,249,14,7,248,15,7,248,15,8,247,15,8,247,16,9,246,16,10,245,17,10,245,17,11,244,17,11,244,18,12,243,18,13,242,19,13,242,19,14,241,19,14,240,20,15,239,20,15,239,21,16,238,21,16,237,21,17,236,22,18,235,22,18,235,23,19,234,23,19,233,23,20,232,24,20,231,24,21,230,24,21,229,25,22,228,25,22,227,26,23,227,26,23,226,26,24,225,27,24,224,27,25,223,28,25,221,28,26,220,28,26,219,29,26,218,29,27,217,29,27,216,30,28,215,30,28,214,31,29,213,31,29,212,31,30,210,32,30,209,32,30,208,32,31,207,33,31,206,33,32,204,33,32,203,34,33,202,34,33,200,34,33,199,35,34,198,35,34,196,35,34,195,36,35,194,36,35,192,36,36,191,37,36,190,37,36,188,37,37,187,38,37,185,38,37,184,38,38,182,39,38,181,39,38,180,39,39,178,39,39,176,40,39,175,40,40,173,40,40,172,41,40,170,41,41,169,41,41,167,41,41,166,42,42,164,42,42,162,42,42,161,42,43,159,43,43,157,43,43,156,43,43,154,43,44,152,44,44,151,44,44,149,44,45,147,44,45,145,45,45,144,45,45,142,45,46,140,45,46,138,46,46,136,46,46,135,46,47,133,46,47,131,46,47,129,47,47,127,47,47,125,47,48,123,47,48,122,47,48,120,48,48,118,48,49,116,48,49,114,48,49,112,48,49,110,48,49,108,49,49,106,49,50,104,49,50,102,49,50,100,49,50,98,49,50,96,49,50,94,50,51,92,50,51,91,50,51,89,50,51,87,50,51,85,50,51,83,50,51,81,50,52,79,51,52,77,51,52,75,51,52,73,51,52,72,51,52,70,51,52,68,51,52,67,51,52,65,51,52,63,51,53,62,51,53,60,51,53,59,51,53,58,52,53,57,52,53,56,52,53,55,52,53,54,52,53,53,52,53,53,52,53,52,52,53,52,52,53,52,52,53,52,52,53,52,52,53,52,52,53,52,52,53,52,52,53,52,52,53,52,52,53,52,52,53,52,52,53,52,52,53,52,52,53,52,52,52,52,51,52,52,51,52,52,51,52,52,51,52,52,51,52,52,51,52,52,51,52,52,51,52,52,51,52,52,51,51,52,51,51,52,51,51,52,51,51,52,51,51,53,51,51,53,51,50,53,51,50,53,51,50,53,50,50,53,50,50,53,50,50,53,50,49,53,50,49,53,50,49,53,50,49,53,50,49,53,50,48,53,50,48,53,50,48,53,50,48,53,49,47,53,49,47,53,49,47,53,49,47,53,49,47,53,49,46,53,49,46,53,49,46,53,49,46,53,49,45,53,48,45,53,48,45,54,48,44,54,48,44,54,48,44,54,48,44,54,48,43,54,48,43,54,48,43,54,48,43,54,47,42,54,47,42,54,47,42,54,47,41,54,47,41,54,47,41,54,47,41,54,47,40,54,47,40,54,47,40,54,46,39,54,46,39,54,46,39,54,46,39,54,46,38,54,46,38,54,46,38,54,46,37,55,46,37,55,46,37,55,45,37,55,45,36,55,45,36,55,45,36,55,45,35,55,45,35,55,45,35,55,45,35,55,45,34,55,45,34,55,45,34,55,45,34,55,44,33,55,44,33,55,44,33,55,44,33,55,44,32,55,44,32,55,44,32,55,44,32,55,44,32,55,44,31,55,44,31,55,44,31,55,44,31,55,44,31,55,44,31,55,44,31,55,44,30,55,44,30,55,43,30,55,43,30,55,43,30,55,43,30,55,43,30,55,43,30,55,43,30,55,43,30,55,43,30,55,43,30,55,43,30,55,44,30,56,44,30,56,44,31,56,44,31,56,45,32,56,45,32,57,45,33,57,46,33,57,46,34,58,47,35,58,47,36,59,48,36,59,48,37,60,49,38,60,50,39,61,50,40,61,51,41,62,52,42,62,53,43,63,53,44,63,54,45,64,55,46,65,56,47,65,57,48,66,57,49,67,58,50,67,59,51,68,60,52,69,61,53,69,62,54,70,63,55,71,63,56,72,64,57,72,65,59,73,66,60,74,67,61,75,68,62,75,69,63,76,70,64,77,71,65,78,71,66,78,72,67,79,73,68,80,74,69,81,75,70,81,76,71,82,77,72,83,78,73,84,79,74,84,80,75,85,80,76,86,81,77,87,82,78,88,83,79,88,84,80,89,85,81,90,86,82,91,87,83,91,87,84,92,88,85,93,89,86,94,90,87,94,91,88,95,92,88,96,92,89,96,93,90,97,94,91,98,95,92,99,96,93,99,96,94,100,97,95,101,98,95,101,99,96,102,99,97,103,100,98,103,101,99,104,102,100,105,102,100,105,103,101,106,104,102,107,105,103,107,105,103,108,106,104,109,107,105,109,107,106,110,108,106,111,109,107,111,109,108,112,110,109,112,111,109,113,111,110,113,112,111,114,113,111,115,113,112,115,114,113,116,114,113,116,115,114,117,116,114,117,116,115,118,117,116,118,117,116,119,118,117,119,118,117,120,119,118,120,119,119,121,120,119,121,120,120,122,121,120,122,121,121,123,122,121,123,122,122,123,123,122,124,123,123,124,124,123,125,124,124,125,125,124,126,125,124,126,125,125,126,126,125,127,126,126,127,127,126,127,127,127,128,127,127,128,128,127,128,128,128,129,128,128,129,129,128,129,129,129,129,129,129,130,129,129,130,130,130,130,130,130,130,130,130,131,130,130,131,131,131,131,131,131,131,131,131,131,131,131,132,132,131,132,132,132,132,132,132,132,132,132,132,132,132,132,132,132,132,132,132,133,132,132,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,133,134,134,134,134,134,134,134,134,134,135,135,135,136,136,136,137,137,137,137,137,137,138,138,138,139,139,139,141,141,141,142,142,142,143,143,143,144,144,144,146,146,146,147,147,147,148,148,148,150,150,150,151,151,151,153,153,153,155,155,155,156,156,156,158,158,158,159,159,159,161,161,161,163,163,163,165,165,165,166,166,166,168,168,168,170,170,170,172,172,172,173,173,173,175,175,175,177,177,177,179,179,179,181,181,181,182,182,182,184,184,184,186,186,186,188,188,188,189,189,189,191,191,191,193,193,193,195,195,195,196,196,196,198,198,198,200,200,200,201,201,201,203,203,203,205,205,205,206,206,206,208,208,208,210,210,210,211,211,211,213,213,213,214,214,214,216,216,216,217,217,217,219,219,219,220,220,220,222,222,222,223,223,223,225,225,225,226,226,226,227,227,227,229,229,229,230,230,230,231,231,231,232,232,232,234,234,234,235,235,235,236,236,236,237,237,237,238,238,238,239,239,239,240,240,240,241,241,241,242,242,242,243,243,243,244,244,244,245,245,245,246,246,246,247,247,247,247,247,247,248,248,248,249,249,249,249,249,249,250,250,250,251,251,251,251,251,251,252,252,252,252,252,252,253,253,253,253,253,253,254,254,254,254,254,254,254,254,254,254,254,254,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,254,255,255,254,255,255,254,255,255,254,255,255,253,255,255,253,255,255,253,255,255,252,255,255,252,255,255,252,255,255,251,255,255,251,254,255,250,254,255,250,254,255,249,254,255,249,254,255,248,254,255,248,254,255,247,254,255,246,254,255,246,254,255,245,254,255,244,254,255,243,254,255,243,254,255,242,254,255,241,253,255,240,253,255,240,253,255,239,253,255,238,253,255,237,253,255,236,253,255,235,253,255,234,253,255,233,253,255,232,253,255,231,252,255,230,252,255,229,252,255,228,252,255,227,252,255,226,252,255,225,252,255,224,252,255,223,252,255,222,251,255,221,251,255,220,251,255,219,251,255,218,251,255,216,251,255,215,251,255,214,251,255,213,251,255,212,251,255,211,250,255,210,250,255,208,250,255,207,250,255,206,250,255,205,250,255,204,250,255,202,250,255,201,250,255,200,250,255,199,249,255,198,249,255,197,249,255,195,249,255,194,249,255,193,249,255,192,249,255,191,249,255,190,249,255,188,249,255,187,249,255,186,248,255,185,248,255,184,248,255,183,248,255,182,248,255,181,248,255,180,248,255,179,248,255,178,248,255,177,248,255,176,248,255,175,248,255,174,248,255,173,248,255,173,247,255,172,247,255,171,247,255,170,247,255,170,247,255,169,247,255,169,247,255,168,247,255,168,247,255,167,247,255,167,247,255,166,247,255,166,247,255,166,247,255,166,247,255,165,247,255,165,247,255,165,247,255,165,247,255,165,247,255,165,247,255,165,247,255,165,247,255,165,247,255,165,247,255,164,247,255,164,247,255,164,247,255,164,247,255,163,247,255,163,247,255,163,247,254,162,247,254,162,247,254,162,247,254,161,248,254,161,248,254,160,248,254,160,248,254,159,248,254,159,248,254,158,248,254,157,248,253,157,248,253,156,248,253,156,248,253,155,248,253,154,248,253,153,248,253,153,248,253,152,248,252,151,249,252,150,249,252,150,249,252,149,249,252,148,249,252,147,249,252,146,249,251,145,249,251,144,249,251,143,249,251,142,249,251,141,250,251,140,250,251,139,250,250,138,250,250,137,250,250,136,250,250,135,250,250,134,250,250,133,250,249,132,250,249,130,250,249,129,251,249,128,251,249,127,251,249,126,251,248,124,251,248,123,251,248,122,251,248,120,251,248,119,251,247,118,251,247,116,251,247,115,252,247,113,252,247,112,252,247,111,252,246,109,252,246,108,252,246,106,252,246,105,252,246,103,252,246,102,252,245,100,253,245,98,253,245,97,253,245,95,253,245,94,253,245,92,253,244,90,253,244,88,253,244,87,253,244,85,253,244,83,253,244,82,253,244,80,254,243,78,254,243,76,254,243,74,254,243,72,254,243,71,254,243,69,254,243,67,254,242,65,254,242,63,254,242,61,254,242,59,254,242,57,254,242,55,254,242,53,254,242,51,254,242,49,255,241,47,255,241,45,255,241,43,255,241,41,255,241,39,255,241,37,255,241,35,255,241,33,255,241,31,255,241,29,255,241,27,255,241,25,255,241,23,255,241,22,255,241,21,255,241,19,255,241,19,255,241,18,255,241,18,255,241,18,255,241,18,255,241,18,255,240,18,255,240,18,255,240,17,255,240,17,255,240,17,255,240,17,255,240,17,255,240,17,255,240,17,255,239,17,255,239,17,255,239,17,255,239,17,255,238,17,255,238,17,255,238,17,255,238,17,255,237,17,255,237,16,255,237,16,255,236,16,255,236,16,255,236,16,255,235,16,255,235,16,255,235,16,255,234,16,255,234,15,255,233,15,255,233,15,255,233,15,255,232,15,255,232,15,255,231,15,255,231,14,255,230,14,255,230,14,255,229,14,255,229,14,255,228,14,255,228,13,255,227,13,255,227,13,255,226,13,255,226,13,255,225,12,255,225,12,255,224,12,255,224,12,255,223,12,255,222,11,255,222,11,255,221,11,255,221,11,255,220,10,255,219,10,255,219,10,255,218,10,255,218,9,255,217,9,255,217,9,255,216,9,255,215,9,255,215,8,255,214,8,255,214,8,255,213,8,255,212,7,255,212,7,255,211,7,255,211,7,255,210,6,255,209,6,255,209,6,255,208,6,255,208,6,255,207,5,255,206,5,255,206,5,255,205,5,255,205,4,255,204,4,255,204,4,255,203,4,255,203,4,255,202,4,255,202,3,255,201,3,255,201,3,255,200,3,255,200,3,255,199,2,255,199,2,255,198,2,255,198,2,255,197,2,255,197,2,255,197,2,255,196,1,255,196,1,255,195,1,255,195,1,255,195,1,255,194,1,255,194,1,255,194,1,255,194,1,255,193,0,255,193,0,255,193,0,255,193,0,255,193,0,255,193,0,255,192,0,255,192,0,255,192,0,255,192,0,255,192,0,255,192,0,255,192,0,255,192,0,255,192,0,255,191,0,255,191,0,255,190,0,255,190,0,255,189,0,255,188,0,255,187,0,255,186,0,255,185,0,255,184,0,255,183,0,255,182,0,255,180,0,255,179,0,255,177,0,255,176,0,255,174,0,255,172,0,255,171,0,255,169,0,255,167,0,255,165,0,255,163,0,255,161,0,255,159,0,255,157,0,255,155,0,255,153,0,255,151,0,255,149,0,255,147,0,255,145,0,255,143,0,255,141,0,255,139,0,255,136,0,255,134,0,255,132,0,255,130,0,255,129,0,255,127,0,255,125,0,255,123,0,255,122,0,255,120,0,255,119,0,255,118,0,255,117,0,255,116,0,255,115,0,255,115,0,255,114,0,255,114,0,255,114,0,255,114,0,255,113,0,255,112,0,255,111,0,255,109,0,255,107,0,255,105,0,255,103,0,255,101,0,255,98,0,255,95,0,255,92,0,255,89,0,255,86,0,255,82,0,255,78,0,255,74,0,255,70,0,255,66,0,255,61,0,255,56,0,255,51,0,255,46,0,255,41,0,255,35,0,255,29,0,255,24,0,255,18,0,255,13,0,255,10,0,0,0,0
 ]
+
+var blackWhiteColors = [];
+
+var classicColors = [];
+
 colors=defaultColors;
 
+initializeBlackWhiteColors();
+
+initializeClassicColors();
+
+
+function initializeClassicColors() {
+for (var i = 0; i < defaultColors.length; i+=3) {
+var currentValue = 255-((i/defaultColors.length)*255)
+
+
+classicColors[i] = currentValue;
+classicColors[i+1] = currentValue;
+classicColors[i+2] = currentValue;
+
+}
+
+}
+
+function initializeBlackWhiteColors() {
+for (var i = 0; i < defaultColors.length; i+=3) {
+var currentValue = 0;
+if (i < defaultColors.length-3) {
+currentValue=255;
+} 
+
+blackWhiteColors[i] = currentValue;
+blackWhiteColors[i+1] = currentValue;
+blackWhiteColors[i+2] = currentValue;
+
+}
+
+
+}
 
 //ctx.fillStyle="#FF0000";
 //ctx.fillRect(20,20,150,100); 
@@ -51,9 +165,16 @@ case 1:
 case 2:
 	colors = frostColors;
 	break;
-	case 3:
+case 3:
 	colors = fireColors;
 	break;
+case 4:
+	colors = classicColors;
+	break;
+case 5:
+	colors = blackWhiteColors;
+	break;
+
 default:
 	colors = defaultColors;
 	break;
@@ -67,6 +188,7 @@ fractal=document.getElementById("fractalPicker").value;
 switch(parseInt(fractal)) {
 case 0:
 	inSet=inSet_mandelbrot;
+	
 	break;
 case 1:
 	inSet=inSet_burningShip;
@@ -82,14 +204,14 @@ draw();
 }
 
 function openOptions() {
-document.getElementById('Options').className='show'
+document.getElementById('Options').className='show optionsshadow';
 
 
 }
 
 
 function closeOptions() {
-document.getElementById('Options').className='hide'//Hide the options.
+document.getElementById('Options').className='hide optionsshadow';//Hide the options.
 }
 
 
@@ -222,9 +344,9 @@ function inSet(real,imaginary) {
 var zRe = 0;
 var zIm = 0;
 
-var iterations = 30000;
 
 
+var iterations=gIterations;
 
 
 
@@ -258,9 +380,9 @@ function inSet_mandelbrot(real,imaginary) {
 var zRe = 0;
 var zIm = 0;
 
-var iterations = 30000;
 
 
+var iterations=gIterations;
 
 
 
@@ -299,7 +421,7 @@ imaginary = -imaginary //Flip this because it looks "upside down" otherwise.
 
 var out = 0
 
-var iterations = 30000;
+var iterations=gIterations;
 
 var i = 0;
 for (i=0; i < iterations; i++) {
@@ -338,7 +460,7 @@ var zIm = 0;
 
 var out = 0
 
-var iterations = 30000;
+var iterations=gIterations;
 
 var i = 0;
 for (i=0; i < iterations; i++) {
@@ -611,40 +733,15 @@ return out*(256*i/iterations); //If it out = 0, then it wont matter. If out = 1,
 
 </SCRIPT>
 </HEAD>
-<BODY>
-<style>
-.show{
 
-	-ms-transform: translate(150px); /* IE 9 */
-    -webkit-transform: translate(150px); /* Safari */
-    transform: translate(150px); /* Standard syntax */
-	-webkit-transform 2s; /* Safari */
-	transform 2s;
-}
-
-.hide{
-	display:none;
-	position:fixed;
-	top:0;
-	left:0;
-	background-color:#ffffff;
-	max-width:10%;
-	height:100%;
-	z-index:120;
-	padding:8px;
-	-ms-transform: translate(-150px); /* IE 9 */
-    -webkit-transform: translate(-150px); /* Safari */
-    transform: translate(-150px); /* Standard syntax */
-	-webkit-transform 2s; /* Safari */
-	transform 2s;
-}
-</style>
+<BODY style="font-family:arial;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);">
 
 
 
 
-<DIV style="position:fixed;top:0;width:100%;z-index:100;background-color:#ffffff">
-<strong style="font-size:30px">Fractal Renderer</strong>
+
+<DIV style="position:fixed;top:0;width:100%;z-index:100;background-color:#ffffff" class="optionsshadow">
+<strong style="font-size:30px;font-family:arial;text-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);">Fractal Renderer</strong>
 
 <span style="margin-left:10px;margin-right:10px">
 By kerwizzy
@@ -653,7 +750,7 @@ Location:
 <input id=locationDisplay size=100>
 <button onclick="getLocation()">Update</button>
 <button onclick="reset()">Reset</button>
-<button style="margin-left:20px" onclick="openOptions()">Other Options</button>
+<button style="margin-left:20px" onclick="openOptions()">More Information</button>
  <select id=fractalPicker style="float:right;margin-right:10px" onchange="changeFractal()">
   <option value="0">Mandelbrot Set</option>
   <option value="1">Burning Ship</option>
@@ -663,12 +760,15 @@ Location:
 
 </DIV>
 
-<DIV id="Options" class="hide">
+<DIV id="Options" class="hide optionsshadow" style="min-width:30%">
 
-<h2> Help and Info </h2>
+<h2> How to Use </h2>
 Click anywhere to zoom in, click near the edges to zoom out.
-
+<br><br>
 Try changing the fractal using the picker in the top-right corner!
+<br><br>
+Put real and imaginary coordinates and the interval between pixels in the location box to go to an exact location.
+
 
 <h2> Colors </h2>
  <select id=colPicker style="margin-right:10px" onchange="changeColors()">
@@ -676,11 +776,75 @@ Try changing the fractal using the picker in the top-right corner!
   <option value="1">Forest</option>
   <option value="2">Frost</option>
   <option value="3">Fire</option>
+  <option value="4">Classic</option>
+  <option value="5">Set Only</option>
 </select> 
-
+<br>
+<br>
+<h2>Iterations</h2> <input id=iterationsInput type=number value=30000 onchange="gIterations = document.getElementById('iterationsInput').value"> </input>
 
 <br>
 <br>
+<h2>About</h2>
+<div class="descriptionBox">
+<h3>Fractals</h3>
+Fractals are shapes that include smaller features which resemble the fractal as a whole. These smaller shapes, in turn, include yet smaller "copies" of the larger figure. 
+<p> The Mandelbrot set is a fractal because it includes smaller shapes that look like the larger shape. Interestingly, though, the smaller features in the Mandelbrot set are always slightly different than the larger fractal.
+<p> The Mandelbrot set (and the other fractals displayed here) are made by "iterating" functions on the location. 
+<p> The simple explanation is like this. Each position in the picture represents a number in the <a class="link" href=https://en.wikipedia.org/wiki/Complex_plane>complex plane</a>. The number is placed in a function, and then the function is repeated over and over again. If the number grows larger and larger and larger, then the starting number is not in the "set". If, however, the number does <b>not</b> get increasing larger, then it is in the set and is colored black. 
+<p> The other colors (for things not in the set) are created by showing how long it took for the number to go a certain distance.
+
+
+
+<div id=fractalExplain>
+<h3>About the Mandelbrot Set</h3>
+<p>The Mandelbrot Set is made by "iterating" the equation z<sub>n+1</sub> = z<sub>n</sub><sup>2</sup> + c
+<p>Where
+<ul>
+<li><b>c</b> is the complex number</li>
+
+<li><b>z<sub>n</sub></b> is the n<sup>th</sup> number in the sequence. (the current number)</li>
+
+<li><b>z<sub>n+1</sub></b> is the next number in the sequence.</li>
+
+</ul>
+<p>So, starting from z<sub>0</sub> as 0, one can keep running this function indefinetly. Some number get larger and larger. For instance, the putting 1 in for c give the sequence:
+<p><i> 0, 1, 2, 5, 26</i></p>
+<p>That means the 1 is <b>not</b> in the Mandelbrot "set". However, putting in -1 for c give the sequence:
+<p><i>0, -1, 0, -1, 0</i></p>
+<p>since this sequence repeats (and thus does not get larger and larger) -1 <b>is</b> in the Mandelbrot set!
+
+To learn more about the Mandelbrot Set, take a look at the <a class="link" href=https://en.wikipedia.org/wiki/Mandelbrot_set>Wikipedia Article</a>!
+
+<h3>About the Burning Ship Fractal</h3>
+<p>The burning ship fractal is closely related to the Mandelbrot set. The only difference is that the real and imaginary parts of the number are changed to thier absolute values (that is, if they are negative, they are changed to positive) before each iteration.
+To learn more about the Burning Ship Fractal, take a look at the <a class="link" href=https://en.wikipedia.org/wiki/Burning_Ship_fractal>Wikipedia Article</a>!
+
+
+<h3>About the "Tricorn-Mandelbrot" fractal</h3>
+<p>The author discovered this fractal when experimenting with the iteration function inside the program. It is identical to the Mandelbrot Set calculation, execpt the real and imaginary terms are reversed before each iteration.
+<p>It is called the "Tricorn-Mandelbrot" fractal because it has three corners, like a tricorn-hat, and it has features that are very similar to the Mandelbrot Set.
+
+<h3>About Fractal Renderer</h3>
+<p>Fractal Renderer was written by kerwizzy, with help from his father.
+<p>He made it because he wanted to be able to explore other fractals that he had heard about, such as the Burning Ship fractal, and try seeing if he could find other fractals.
+<p>In the process, he learned a lot, and made a nice fractal viewer!
+
+
+</div>
+
+
+
+</div>
+
+
+
+<br>
+
+<br>
+
+
+
 <button onclick="closeOptions()">Close Options</button>
 
 </DIV>
@@ -706,6 +870,8 @@ document.getElementById("fractalPicker").value=0; //Make it actually SAY it's th
 document.getElementById("colPicker").value=0; //Make it actually SAY it's the default color when it starts up.
 
 draw() //Make it render when it starts.
+
+
 
 //alert(inSet(-0.44249999999999995,0.6975));
 </SCRIPT>
