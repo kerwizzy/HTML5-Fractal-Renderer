@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <HEAD>
 <style>
 .show{
@@ -9,10 +10,10 @@ left:0;
 height:100%;
 	z-index:120;
 padding:8px;
-	-ms-transform: translate(5px); /* IE 9 */
-	-webkit-transform: translate(5px); /* Safari */
+-ms-transform: translate(5px); /* IE 9 */
+-webkit-transform: translate(5px); /* Safari */
 transform: translate(5px); /* Standard syntax */
-	-webkit-transform 1s; /* Safari */
+/*-webkit-transform 1s; Safari */
 transition: transform 1s;
 	
 }
@@ -29,7 +30,7 @@ padding:8px;
 	-ms-transform: translate(-100%); /* IE 9 */
 	-webkit-transform: translate(-100%); /* Safari */
 transform: translate(-100%); /* Standard syntax */
-	-webkit-transform 1s; /* Safari */
+/*	-webkit-transform 1s;  Safari */
 transition: transform 1s;
 	
 }
@@ -70,6 +71,55 @@ transition: text-shadow, color 0.5s;
 color:#33ccff;
 	/*text-shadow: 0 4px 4px rgba(0, 0, 0, 0.5)*/
 } 
+
+
+.tab_active {
+background-color:green;
+border-radius:5px;
+margin-bottom:5px;
+
+transition:background-color 0.5s;
+}
+
+
+
+.tab {
+background-color:blue;
+border-radius:5px;
+margin-bottom:5px;
+
+padding:0px 0px 0px 0px;
+transition:padding 0.5s;
+}
+
+
+.tab:hover {
+
+
+border-radius:5px;
+margin-bottom:5px;
+padding:0px 0px 0px 5px;
+transition:padding 0.5s;
+
+}
+
+
+.text_hide {
+position: absolute;
+
+opacity: 0.0;
+/*display:none;*/
+transition:opacity 1s;
+
+}
+
+.text_show {
+position: absolute;
+opacity:1.0;
+transition:opacity 1s
+
+}
+
 </style>
 
 
@@ -149,6 +199,22 @@ renderPixel=renderPixel_default;
 }
 
 draw();
+}
+
+var currentTab = 1;
+function changeText (clickedTab) {
+var tab = "tab" + clickedTab.toString();
+var pickTab = "pickTab" + clickedTab.toString();
+
+
+document.getElementById(tab).className='text_show descriptionBox';
+document.getElementById(("tab" + currentTab.toString())).className='text_hide descriptionBox';
+
+document.getElementById(pickTab).className='tab_active';
+document.getElementById(("pickTab" + currentTab.toString())).className='tab';
+
+currentTab = clickedTab;
+
 }
 
 
@@ -692,17 +758,25 @@ Location:
 <br>
 <br>
 <h2>About</h2>
-<div class="descriptionBox">
+<div>
+<div id=pickTab1 class="tab_active" onclick="changeText(1);">Fractals</div>
+<div id=pickTab2 class="tab" onclick="changeText(2);">The Mandelbrot Set</div>
+<div id=pickTab3 class="tab" onclick="changeText(3);">Burning Ship</div>
+<div id=pickTab4 class="tab" onclick="changeText(4);">Mandelbar</div>
+</div>
+
+<div>
+<div id=tab1 class="text_show descriptionBox">
 <h3>Fractals</h3>
 Fractals are shapes that include smaller features which resemble the fractal as a whole. These smaller shapes, in turn, include yet smaller "copies" of the larger figure. 
 <p> The Mandelbrot set is a fractal because it includes smaller shapes that look like the larger shape. Interestingly, though, the smaller features in the Mandelbrot set are always slightly different than the larger fractal.
 <p> The Mandelbrot set (and the other fractals displayed here) are made by "iterating" functions on the location. 
 <p> The simple explanation is like this. Each position in the picture represents a number in the <a class="link" href=https://en.wikipedia.org/wiki/Complex_plane>complex plane</a>. The number is placed in a function, and then the function is repeated over and over again. If the number grows larger and larger and larger, then the starting number is not in the "set". If, however, the number does <b>not</b> get increasing larger, then it is in the set and is colored black. 
-<p> The other colors (for things not in the set) are created by showing how long it took for the number to go a certain distance.
+<p> The other colors (for things not in the set) are created by showing how long it took for the number to go a certain distance. </p>
+</div>
 
 
-
-<div id=fractalExplain>
+<div id=tab2 class="text_hide descriptionBox">
 <h3>About the Mandelbrot Set</h3>
 <p>The Mandelbrot Set is made by "iterating" the equation z<sub>n+1</sub> = z<sub>n</sub><sup>2</sup> + c
 <p>Where
@@ -721,35 +795,28 @@ Fractals are shapes that include smaller features which resemble the fractal as 
 <p>since this sequence repeats (and thus does not get larger and larger) -1 <b>is</b> in the Mandelbrot set!
 
 To learn more about the Mandelbrot Set, take a look at the <a class="link" href=https://en.wikipedia.org/wiki/Mandelbrot_set>Wikipedia Article</a>!
+</div>
 
+<div id=tab3 class="text_hide descriptionBox">
 <h3>About the Burning Ship Fractal</h3>
 <p>The burning ship fractal is closely related to the Mandelbrot set. The only difference is that the real and imaginary parts of the number are changed to thier absolute values (that is, if they are negative, they are changed to positive) before each iteration.
 To learn more about the Burning Ship Fractal, take a look at the <a class="link" href=https://en.wikipedia.org/wiki/Burning_Ship_fractal>Wikipedia Article</a>!
+</div>
 
-
+<div id=tab4 class="text_hide descriptionBox">
 <h3>About the "Tricorn-Mandelbrot" fractal</h3>
 <p>The author discovered this fractal when experimenting with the iteration function inside the program. It is identical to the Mandelbrot Set calculation, execpt the real and imaginary terms are reversed before each iteration.
 <p>It is called the "Tricorn-Mandelbrot" fractal because it has three corners, like a tricorn-hat, and it has features that are very similar to the Mandelbrot Set.
+</div>
 
+<div id=tab5 class="text_hide descriptionBox">
 <h3>About Fractal Renderer</h3>
 <p>Fractal Renderer was written by kerwizzy (13), with help from his father.
-<p>He made it because he wanted to be able to explore other fractals that he had heard about, such as the Burning Ship fractal, and try seeing if he could find other fractals.
-<p>He wrote the program and designed the page himself (with some techical help from his father). He made all the color palettes himself, too, using tools in <a class="link" href=https://www.blender.org/>Blender 3D</a>. (With some ideas for names from other renderers.)
-<p>He is happy with the Fractal Renderer, but he thinks there are more improvements to be made!
-
-
+<p>He made it because he wanted to be able to explore other fractals that he had heard about, such as the Burning Ship fractal, and try seeing if he could find other fractals. </p>
+<p>He wrote the program and designed the page himself (with some techical help from his father). He made all the color palettes himself, too, using tools in <a class="link" href=https://www.blender.org/>Blender 3D</a>. (With some ideas for names from other renderers.)</p>
+<p>He is happy with the Fractal Renderer, but he thinks there are more improvements to be made!></p>
 </div>
-
-
-
 </div>
-
-
-
-<br>
-
-<br>
-
 
 
 <button onclick="closeOptions()">Close Options</button>
@@ -758,12 +825,11 @@ To learn more about the Burning Ship Fractal, take a look at the <a class="link"
 <button onclick="getJuliaC();">Update</button>
 <br>
 <br>
-</DIV>
+</div>
 
 
 
-
-<DIV style="width:100%;height:100%;left:0;z-index:10">
+<DIV style="width:100%;height:100%;left:0;z-index:10" id=canvasDiv>
 <canvas id="myCanvas" style="border:0px">
 Your browser does not support the HTML5 canvas tag.</canvas>
 </DIV>
@@ -773,6 +839,7 @@ var myCanvas = document.getElementById("myCanvas");
 
 myCanvas.width = document.body.clientWidth; //Make it a full screen
 myCanvas.height = document.body.clientHeight;
+alert(document.getElementById("canvasDiv").clientHeight);
 
 myCanvas.addEventListener("mouseup",function(event) { if(event.button==0) getCursorPosition(myCanvas,event);});
 work.ctx = myCanvas.getContext("2d");
