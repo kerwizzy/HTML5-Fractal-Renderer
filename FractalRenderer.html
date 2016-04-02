@@ -127,6 +127,29 @@ initializeBlackWhiteColors();
 
 initializeClassicColors();
 
+renderPixel=renderPixel_default;
+
+
+function changeLogColor() {
+checked = document.getElementById("logToggle").checked;
+
+if (checked == true) {
+renderPixel=renderPixel_log;
+
+
+}
+else if (checked == false) {
+renderPixel=renderPixel_default;
+
+}
+else {
+renderPixel=renderPixel_default;
+
+}
+
+draw();
+}
+
 
 function initializeClassicColors() {
 	for (var i = 0; i < defaultColors.length; i+=3) {
@@ -356,6 +379,9 @@ function doWork () {
 
 
 function renderPixel(real,imaginary) {
+}
+
+function renderPixel_default(real,imaginary) {
 
 
 	var outColor = inSet(real,imaginary);
@@ -367,6 +393,20 @@ function renderPixel(real,imaginary) {
 
 
 }
+
+function renderPixel_log(real,imaginary) {
+
+
+	var outColor = inSet(real,imaginary);
+	if (outColor == -1) {
+		return 999;
+	}
+	return 998 - ((Math.log(outColor)*2000)%999);
+
+
+
+}
+
 
 
 
@@ -565,12 +605,12 @@ Location:
 <DIV id="Options" class="hide optionsshadow" style="min-width:30%;overflow:scroll">
 
 <h2> How to Use </h2>
-Click anywhere to zoom in, click near the edges to zoom out.
-<br><br>
-Try changing the fractal using the picker in the top-right corner!
-<br><br>
-Put real and imaginary coordinates and the interval between pixels in the location box to go to an exact location.
+<p>Click anywhere to zoom in, click near the edges to zoom out.
 
+<p>Try changing the fractal using the picker in the top-right corner!
+
+<p>Put real and imaginary coordinates and the interval between pixels in the location box to go to an exact location.
+<p>Have fun!
 
 <h2> Colors </h2>
 <select id=colPicker style="margin-right:10px" onchange="changeColors()">
@@ -584,9 +624,11 @@ Put real and imaginary coordinates and the interval between pixels in the locati
 <option value="5">Classic</option>
 <option value="6">Set Only</option>
 </select> 
+<!-- Enable Logarithmic Colors:<input type=checkbox id=logToggle onchange="changeLogColor()"></input>  !-->
+
 <br>
 <br>
-<h2>Iterations</h2> <input id=iterationsInput type=number value=30000 onchange="gIterations = document.getElementById('iterationsInput').value"> </input>
+<h2>Iterations</h2> <input id=iterationsInput type=number value=30000 onchange="gIterations = parseInt(document.getElementById('iterationsInput').value);"> </input>   
 
 <br>
 <br>
@@ -614,9 +656,9 @@ Fractals are shapes that include smaller features which resemble the fractal as 
 
 </ul>
 <p>So, starting from z<sub>0</sub> as 0, one can keep running this function indefinetly. Some number get larger and larger. For instance, the putting 1 in for c gives the sequence:
-<p><i> 0, 1, 2, 5, 26</i></p>
+<p><i> 0, 1, 2, 5, 26...</i></p>
 <p>That means 1 is <b>not</b> in the Mandelbrot "set". However, putting in -1 for c gives the sequence:
-<p><i>0, -1, 0, -1, 0</i></p>
+<p><i>0, -1, 0, -1, 0...</i></p>
 <p>since this sequence repeats (and thus does not get larger and larger) -1 <b>is</b> in the Mandelbrot set!
 
 To learn more about the Mandelbrot Set, take a look at the <a class="link" href=https://en.wikipedia.org/wiki/Mandelbrot_set>Wikipedia Article</a>!
