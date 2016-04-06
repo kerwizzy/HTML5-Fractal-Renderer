@@ -3,7 +3,9 @@
 JS FractalRenderer
 ------------------
 
-Made by kerwizzy his father
+Made by Kerwizzy and his Father
+
+
 
 
 */
