@@ -5,7 +5,8 @@
 <link rel="stylesheet" type="text/css" href="styles.css" media="screen">
 
 <SCRIPT type="text/javascript" src="renderer.js"></SCRIPT>
-
+<SCRIPT type="text/javascript" src="uiCode.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="colors.js"></SCRIPT>
 </HEAD>
 
 <BODY style="font-family:arial;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);">
@@ -47,15 +48,7 @@ Location:
 
 <h2> Colors </h2>
 <select id=colPicker style="margin-right:10px" onchange="changeColors()">
-<option value="0">Royal</option>
-<option value="1">Deep Frost</option>
-<option value="2">Frost</option>
-<option value="3">Fire</option>
-<option value="4">Midnight</option>
-<option value="7">Grassland</option>
-<option value="8">Spring</option>
-<option value="5">Classic</option>
-<option value="6">Set Only</option>
+<!-- There isn't anything here on startup, because it gets initialized automatically by generateColPicker() in colors.js !-->
 </select> 
 <!-- Enable Logarithmic Colors:<input type=checkbox id=logToggle onchange="changeLogColor()"></input>  !-->
 
