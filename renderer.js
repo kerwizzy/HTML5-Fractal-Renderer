@@ -419,6 +419,8 @@ function getCursorPosition(canvas, event) {
 
 
 function initialize() {
+	generateColPicker(); //Add the interior data for the color selector box, based on current color palettes. The function is in colors.js
+	
 	myCanvas = document.getElementById("myCanvas");
 
 	myCanvas.width = window.innerWidth; //Make it a full screen
