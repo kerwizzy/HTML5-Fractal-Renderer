@@ -366,9 +366,7 @@ function inSet_julia(real,imaginary) {
 	var muIm = juliaC_b;
 	
 	
-	//-0.6497189675271511;0.478863335251808;
-	
-	//0.285+0.01i
+
 
 
 	var out = 0
@@ -425,7 +423,7 @@ function initialize() {
 
 	myCanvas.width = window.innerWidth; //Make it a full screen
 	myCanvas.height = window.innerHeight;
-	//alert(document.body.clientHeight);
+
 
 	myCanvas.addEventListener("mouseup",function(event) { if(event.button==0) getCursorPosition(myCanvas,event);});
 	work.ctx = myCanvas.getContext("2d");
@@ -440,7 +438,7 @@ function initialize() {
 
 
 
-	//alert(inSet(-0.44249999999999995,0.6975));
+
 }
 
 window.addEventListener("load",initialize);
