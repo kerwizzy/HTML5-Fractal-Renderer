@@ -13,6 +13,14 @@ Made by Kerwizzy and his Father
 var juliaC_a = 0; //Julia set variables
 var juliaC_b = 0;
 
+var zRe_end = 0;
+var zIm_end = 0;
+
+var r = 0;
+var g = 0;
+var b = 0;
+
+
 var gIterations = 30000; //Global Iterations variable
 
 var inSet; // @jshint suggests declaring function which is reassigned
@@ -106,8 +114,13 @@ function draw() {
 	}
 }
 
+function doWork() {
+	
+}
 
-function doWork () {
+doWork = doWork_default;
+
+function doWork_smooth () {
 	var interval = work.interval;
 
 	var cWidth = myCanvas.width;
@@ -124,12 +137,15 @@ function doWork () {
 	var currentPixelColor;
 	var ci;
 	var p;
+	
+
 	for (var xI = 0; xI < cWidth; xI+=interval) {
 		
 		
 
-		currentPixelColor = renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)); //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
-		ci = currentPixelColor*3;
+		renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)); //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+
+		
 		
 
 		p = xI*4;
@@ -137,9 +153,9 @@ function doWork () {
 		for (i =0;i < interval;i++) {
 			
 			
-			d[p++] = colors[ci+0];
-			d[p++] = colors[ci+1];
-			d[p++] = colors[ci+2];
+			d[p++] = r;
+			d[p++] = g;
+			d[p++] = b;
 			d[p++] = 0xFF; //Set the alpha
 		}
 	}
@@ -152,14 +168,14 @@ function doWork () {
 		
 		
 
-		currentPixelColor = renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)); //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
-		ci = currentPixelColor*3;
+		renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)); //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+
 
 		p = xI*4;
 		for (i =0;i < interval;i++) {
-			d[p++] = colors[ci+0];
-			d[p++] = colors[ci+1];
-			d[p++] = colors[ci+2];
+			d[p++] = r;
+			d[p++] = g;
+			d[p++] = b;
 			d[p++] = 0xFF; //Set the alpha
 		}
 
@@ -177,6 +193,83 @@ function doWork () {
 		work.yI = 0;
 		work.interval/=2;
 		setTimeout(doWork,0);
+		
+	}
+	else {
+		work.running = false;
+	}
+
+
+}
+
+
+function doWork_default () {
+	var interval = work.interval;
+
+	var cWidth = myCanvas.width;
+	var cHeight = myCanvas.height;
+	var viewWidth = work.cWidth*size; //The numerical width of the view.
+	var viewHeight = work.cHeight*size;
+	var locationX = work.location[0];
+	var locationY = work.location[1];
+	var ctx = work.ctx;
+	var yI = cHeight/2-work.yI;
+	var halfcWidth = cWidth/2
+	var halfcHeight = cHeight/2
+	
+	for (var xI = 0; xI < cWidth; xI+=interval) {
+		
+		
+
+		var currentPixelColor = renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+		var ci = currentPixelColor*3;
+		
+
+		var p = xI*4;
+		
+		for (var i =0;i < interval;i++) {
+			
+			
+			d[p++] = colors[ci+0];
+			d[p++] = colors[ci+1];
+			d[p++] = colors[ci+2];
+			d[p++] = 0xFF; //Set the alpha
+		}
+	}
+	for (var i =0;i < interval;i++) {
+		ctx.putImageData(work.imageData,0,yI+i);
+	}
+	yI = halfcHeight+work.yI;
+	
+	for (var xI = 0; xI < cWidth; xI+=interval) {
+		
+		
+
+		var currentPixelColor = renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+		var ci = currentPixelColor*3;
+
+		var p = xI*4;
+		for (var i =0;i < interval;i++) {
+			d[p++] = colors[ci+0];
+			d[p++] = colors[ci+1];
+			d[p++] = colors[ci+2];
+			d[p++] = 0xFF; //Set the alpha
+		}
+
+	}		
+	for (var i =0;i < interval;i++) {
+		ctx.putImageData(work.imageData,0,yI+i);
+	}
+
+	work.yI += interval;
+	if (work.yI < halfcHeight) {
+		setTimeout(doWork,0);
+		
+	}
+	else if (work.interval > 1) {
+		work.yI = 0
+		work.interval/=2;
+		setTimeout(doWork,0)
 		
 	}
 	else {
@@ -209,6 +302,42 @@ function renderPixel_log(real,imaginary) {
 		return 999;
 	}
 	return 998 - ((Math.log(outColor)*2000)%999);
+
+
+
+}
+
+function renderPixel_smooth(real,imaginary) {
+
+
+	var outColor = inSet_mandelbrot_smooth(real,imaginary);
+	var mapperDiff_r = 0;
+	var mapperDiff_g = 0;
+	var mapperDiff_b = 0;
+
+	
+	var ratio = (1-(Math.log(Math.log(Math.sqrt(zRe_end*zRe_end + zIm_end * zIm_end)))) / Math.log(2));
+	
+	
+	if (outColor == -1) {
+		r = colors[999*3]
+		g = colors[999*3+1]
+		b = colors[999*3+2]
+		return;
+	}
+	outColor = 998 - (outColor%999);
+	
+	var mapperLoc = outColor*3
+	
+	mapperDiff_r = colors[mapperLoc+0] - colors[mapperLoc+0+3]
+	mapperDiff_g = colors[mapperLoc+1] - colors[mapperLoc+1+3]
+	mapperDiff_b = colors[mapperLoc+2] - colors[mapperLoc+2+3]
+	
+	r = mapperDiff_r * ratio + colors[mapperLoc+0]
+	g = mapperDiff_g * ratio + colors[mapperLoc+1]
+	b = mapperDiff_b * ratio + colors[mapperLoc+2]
+	
+
 
 
 
@@ -366,6 +495,43 @@ function inSet_julia(real,imaginary) {
 	}
 	return -1;
 }
+
+function inSet_mandelbrot_smooth(real,imaginary) {
+	var zRe = 0;
+	var zIm = 0;
+
+
+
+	var iterations=gIterations;
+
+
+
+	var i = 0;
+	for (i=0; i < iterations; i++) {
+
+		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
+		zIm = 2*(zRe*zIm);
+		zRe = nzRe;
+
+		zRe += real;
+		zIm += imaginary;
+
+
+
+		if ((zRe*zRe)+(zIm*zIm) > 64) { //If it is outside the 2 unit circle...
+
+			zRe_end = zRe;
+			zIm_end = zIm;
+			return (i); //stop it from running longer
+			
+		}
+
+
+
+	}
+	return -1;
+}
+
 
 
 

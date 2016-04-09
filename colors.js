@@ -64,6 +64,27 @@ function changeLogColor() { //Experimental function to use logarithmic color map
 	draw();
 }
 
+function changeSmoothColor() { 
+	checked = document.getElementById("smoothColorToggle").checked;
+
+	if (checked === true) {
+		renderPixel=renderPixel_smooth;
+		doWork = doWork_smooth;
+
+	}
+	else if (checked === false) {
+		renderPixel=renderPixel_default;
+		doWork = doWork_default;
+
+	}
+	else {
+		renderPixel=renderPixel_default;
+		doWork = doWork_default;
+	}
+
+	draw();
+}
+
 
 
 
