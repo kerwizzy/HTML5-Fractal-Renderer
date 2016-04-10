@@ -50,10 +50,15 @@ Location:
 <select id=colPicker style="margin-right:10px" onchange="changeColors()">
 <!-- There isn't anything here on startup, because it gets initialized automatically by generateColPicker() in colors.js !-->
 </select> 
-<!-- Enable Logarithmic Colors:<input type=checkbox id=logToggle onchange="changeLogColor()"></input>  !-->
 <BR>
 <BR>
-Enable Smooth Colors:<input type=checkbox id=smoothColorToggle onchange="changeSmoothColor()"></input>
+Enable Less Noisy Colors: <input type="checkbox" id=logToggle onchange="changeColorScales()"></input> <i>(Looks nicer in highly detailed areas.)</i>
+
+<!-- <input type="checkbox" name="logToggle" onchange="changeLogColor()" checked> !-->
+<BR>
+<BR>
+Enable Smooth Colors:<input type="checkbox" id=smoothColorToggle onchange="changeColorScales()"></input>
+
 
 
 <br>

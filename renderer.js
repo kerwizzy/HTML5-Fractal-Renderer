@@ -288,9 +288,9 @@ function renderPixel_default(real,imaginary) {
 	if (outColor == -1) {
 		return 999;
 	}
+	
 	return 998 - (outColor%999);
-
-
+	
 
 }
 
@@ -301,8 +301,14 @@ function renderPixel_log(real,imaginary) {
 	if (outColor == -1) {
 		return 999;
 	}
-	return 998 - ((Math.log(outColor)*2000)%999);
 
+	
+
+	outColor = 35.1*(Math.pow(outColor,0.7));
+	outColor = Math.floor(outColor);
+	
+	
+	return 998 - (outColor%999);
 
 
 }
@@ -325,6 +331,45 @@ function renderPixel_smooth(real,imaginary) {
 		b = colors[999*3+2]
 		return;
 	}
+	outColor = 998 - (outColor%999);
+	
+	var mapperLoc = outColor*3
+	
+	mapperDiff_r = colors[mapperLoc+0] - colors[mapperLoc+0+3]
+	mapperDiff_g = colors[mapperLoc+1] - colors[mapperLoc+1+3]
+	mapperDiff_b = colors[mapperLoc+2] - colors[mapperLoc+2+3]
+	
+	r = mapperDiff_r * ratio + colors[mapperLoc+0]
+	g = mapperDiff_g * ratio + colors[mapperLoc+1]
+	b = mapperDiff_b * ratio + colors[mapperLoc+2]
+	
+
+
+
+
+}
+
+function renderPixel_log_smooth(real,imaginary) {
+
+
+	var outColor = inSet_mandelbrot_smooth(real,imaginary);
+	var mapperDiff_r = 0;
+	var mapperDiff_g = 0;
+	var mapperDiff_b = 0;
+
+	
+	var ratio = (1-(Math.log(Math.log(Math.sqrt(zRe_end*zRe_end + zIm_end * zIm_end)))) / Math.log(2));
+	
+	
+	if (outColor == -1) {
+		r = colors[999*3]
+		g = colors[999*3+1]
+		b = colors[999*3+2]
+		return;
+	}
+	outColor = 35.1*(Math.pow(outColor,0.7));
+	outColor = Math.floor(outColor);
+	
 	outColor = 998 - (outColor%999);
 	
 	var mapperLoc = outColor*3
@@ -571,6 +616,10 @@ function initialize() {
 
 	document.getElementById("fractalPicker").value=0; //Make it actually SAY it's the mandelbrot set when it starts up. 
 	document.getElementById("colPicker").value=0; //Make it actually SAY it's the default color when it starts up.
+	
+	
+	 document.getElementById("logToggle").checked = false; //Make it actually LOOK unchecked when it starts up. (Might be different because someone had reloaded the page, and had checked on before they reloaded.)
+	 document.getElementById("smoothColorToggle").checked = false;
 
 	draw(); //Make it render when it starts.
 

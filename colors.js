@@ -42,6 +42,43 @@ initializeSetOnlyColors();
 initializeClassicColors();
 
 
+function changeColorScales() {
+	var logChecked = document.getElementById("logToggle").checked;
+	var smoothChecked = document.getElementById("smoothColorToggle").checked;
+	var logChecked = Number(logChecked)
+	var smoothChecked = Number(smoothChecked)
+	
+	var switcher = logChecked*2 + smoothChecked
+	
+	switch(switcher) {
+	case 0: 	
+		renderPixel=renderPixel_default;
+		doWork = doWork_default;
+		break;
+	case 1:
+		renderPixel=renderPixel_smooth;
+		doWork = doWork_smooth;
+		break;
+	case 2:
+		renderPixel=renderPixel_log;
+		doWork = doWork_default; //If Smooth Colors was checked, it won't work right unless we fix this.
+		break;
+	case 3:
+		renderPixel=renderPixel_log_smooth;
+		doWork = doWork_smooth;
+		break;
+		
+		
+		
+	}
+	
+	draw();
+	
+	
+	
+}
+
+
 
 
 function changeLogColor() { //Experimental function to use logarithmic color mapping. Doesn't work. User interface checkbox currently commented out.
@@ -49,12 +86,13 @@ function changeLogColor() { //Experimental function to use logarithmic color map
 
 	if (checked === true) {
 		renderPixel=renderPixel_log;
-
-
+		doWork = doWork_default; //If Smooth Colors was checked, it won't work right unless we fix this.
+		document.getElementById("smoothColorToggle").checked = false;
+	
 	}
 	else if (checked === false) {
 		renderPixel=renderPixel_default;
-
+		
 	}
 	else {
 		renderPixel=renderPixel_default;
@@ -65,14 +103,17 @@ function changeLogColor() { //Experimental function to use logarithmic color map
 }
 
 function changeSmoothColor() { 
-	checked = document.getElementById("smoothColorToggle").checked;
-
-	if (checked === true) {
+	smooth_checked = document.getElementById("smoothColorToggle").checked;
+	log
+	
+	if (smooth_checked === true) {
 		renderPixel=renderPixel_smooth;
 		doWork = doWork_smooth;
+		
+		document.getElementById("logToggle").checked = false;
 
 	}
-	else if (checked === false) {
+	else if (smooth_checked === false) {
 		renderPixel=renderPixel_default;
 		doWork = doWork_default;
 
