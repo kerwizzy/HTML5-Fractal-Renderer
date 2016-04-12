@@ -322,7 +322,23 @@ function renderPixel_smooth(real,imaginary) {
 	var mapperDiff_b = 0;
 
 	
-	var ratio = (1-(Math.log(Math.log(Math.sqrt(zRe_end*zRe_end + zIm_end * zIm_end)))) / Math.log(2));
+	
+	var mapperLoc = 0;
+
+	
+	var dist =  Math.sqrt(zRe_end*zRe_end + zIm_end*zIm_end);
+	
+
+	
+	var ratio = (1-(Math.log(Math.log(dist))) / Math.log(2));
+
+	if (Math.sqrt(real*real + imaginary*imaginary) > 8) { //Make the colors after 8 be flat.
+	
+		ratio = -1.0821509904820257
+		outColor = 1;
+		
+		
+	}
 	
 	
 	if (outColor == -1) {
@@ -333,7 +349,7 @@ function renderPixel_smooth(real,imaginary) {
 	}
 	outColor = 998 - (outColor%999);
 	
-	var mapperLoc = outColor*3
+	mapperLoc = outColor*3
 	
 	mapperDiff_r = colors[mapperLoc+0] - colors[mapperLoc+0+3]
 	mapperDiff_g = colors[mapperLoc+1] - colors[mapperLoc+1+3]
@@ -356,9 +372,26 @@ function renderPixel_log_smooth(real,imaginary) {
 	var mapperDiff_r = 0;
 	var mapperDiff_g = 0;
 	var mapperDiff_b = 0;
+	
+	var mapperLoc = 0;
+	var mapperLoc2 = 0;
+	
+	var dist =  Math.sqrt(zRe_end*zRe_end + zIm_end * zIm_end);
+	
 
 	
-	var ratio = (1-(Math.log(Math.log(Math.sqrt(zRe_end*zRe_end + zIm_end * zIm_end)))) / Math.log(2));
+	
+	
+	
+	var ratio = (1-(Math.log(Math.log(dist))) / Math.log(2));
+	
+		if (Math.sqrt(real*real + imaginary*imaginary) > 8) { //Make the colors after 8 be flat.
+	
+		ratio = -1.0821509904820257
+		outColor = 1;
+		
+		
+	}
 	
 	
 	if (outColor == -1) {
@@ -367,20 +400,26 @@ function renderPixel_log_smooth(real,imaginary) {
 		b = colors[999*3+2]
 		return;
 	}
-	outColor = 35.1*(Math.pow(outColor,0.7));
+	
+	var outColor2 = (Math.pow(((outColor+1)*12),0.7))
+	outColor = (Math.pow((outColor*12),0.7)); 
+	
 	outColor = Math.floor(outColor);
+	outColor2 = Math.floor(outColor2);
 	
 	outColor = 998 - (outColor%999);
+	outColor2 = 998 - (outColor2%999);
 	
-	var mapperLoc = outColor*3
+	mapperLoc = outColor*3
+	mapperLoc2 = outColor2*3
 	
-	mapperDiff_r = colors[mapperLoc+0] - colors[mapperLoc+0+3]
-	mapperDiff_g = colors[mapperLoc+1] - colors[mapperLoc+1+3]
-	mapperDiff_b = colors[mapperLoc+2] - colors[mapperLoc+2+3]
+	mapperDiff_r = colors[mapperLoc+0] - colors[mapperLoc2+0]
+	mapperDiff_g = colors[mapperLoc+1] - colors[mapperLoc2+1]
+	mapperDiff_b = colors[mapperLoc+2] - colors[mapperLoc2+2]
 	
-	r = mapperDiff_r * ratio + colors[mapperLoc+0]
-	g = mapperDiff_g * ratio + colors[mapperLoc+1]
-	b = mapperDiff_b * ratio + colors[mapperLoc+2]
+	r = mapperDiff_r * -ratio + colors[mapperLoc+0]
+	g = mapperDiff_g * -ratio + colors[mapperLoc+1]
+	b = mapperDiff_b * -ratio + colors[mapperLoc+2]
 	
 
 
