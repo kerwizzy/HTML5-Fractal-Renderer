@@ -32,6 +32,7 @@ work.location = [0,0]; //Location of the CENTER of the view
 work.running = false;
 
 renderPixel=renderPixel_default;
+inSet_smooth=inSet_mandelbrot_smooth;
 
 function reset() {
 	size = 1*0.005; //How much is the numerical interval between pixels. I. E., size = 1 would mean that each pixel would roughly correspond to an integer. (Invervals of 1)
@@ -50,13 +51,16 @@ function changeFractal() {
 	switch(parseInt(fractal)) {
 	case 0:
 		inSet=inSet_mandelbrot;
+		inSet_smooth=inSet_mandelbrot_smooth;
 		
 		break;
 	case 1:
 		inSet=inSet_burningShip;
+		inSet_smooth=inSet_burningShip_smooth;
 		break;
 	case 2:
 		inSet=inSet_tricornMandelbrot;
+		inSet_smooth=inSet_tricornMandelbrot_smooth;
 		break;
 	case 3:
 		inSet=inSet_julia;
@@ -316,7 +320,7 @@ function renderPixel_log(real,imaginary) {
 function renderPixel_smooth(real,imaginary) {
 
 
-	var outColor = inSet_mandelbrot_smooth(real,imaginary);
+	var outColor = inSet_smooth(real,imaginary);
 	var mapperDiff_r = 0;
 	var mapperDiff_g = 0;
 	var mapperDiff_b = 0;
@@ -368,7 +372,7 @@ function renderPixel_smooth(real,imaginary) {
 function renderPixel_log_smooth(real,imaginary) {
 
 
-	var outColor = inSet_mandelbrot_smooth(real,imaginary);
+	var outColor = inSet_smooth(real,imaginary);
 	var mapperDiff_r = 0;
 	var mapperDiff_g = 0;
 	var mapperDiff_b = 0;
@@ -507,6 +511,8 @@ function inSet_burningShip(real,imaginary) {
 function inSet_tricornMandelbrot(real,imaginary) {
 	var zRe = 0;
 	var zIm = 0;
+	var znRe = 0;
+
 	real = -real; //Flip it, because with this algorithm it is backwards.
 
 	var out = 0;
@@ -515,7 +521,7 @@ function inSet_tricornMandelbrot(real,imaginary) {
 
 	var i = 0;
 	for (i=0; i < iterations; i++) {
-
+		
 		znRe = zIm*-1;
 		zIm = zRe*-1;
 		zRe = znRe; //Swap the real and complex parts each time. 
@@ -616,6 +622,91 @@ function inSet_mandelbrot_smooth(real,imaginary) {
 	return -1;
 }
 
+function inSet_burningShip_smooth(real,imaginary) {
+	var zRe = 0;
+	var zIm = 0;
+
+	imaginary = -imaginary; //Flip this because it looks "upside down" otherwise.
+
+	var iterations=gIterations;
+
+
+
+	var i = 0;
+	for (i=0; i < iterations; i++) {
+
+		zRe = Math.abs(zRe);
+		zIm = Math.abs(zIm);
+
+
+		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
+		zIm = 2*(zRe*zIm);
+		zRe = nzRe;
+
+		zRe += real;
+		zIm += imaginary;
+
+
+
+
+
+
+		if ((zRe*zRe)+(zIm*zIm) > 64) { //If it is outside the 2 unit circle...
+
+			zRe_end = zRe;
+			zIm_end = zIm;
+			return (i); //stop it from running longer
+			
+		}
+
+
+
+	}
+	return -1;
+}
+
+function inSet_tricornMandelbrot_smooth(real,imaginary) {
+	var zRe = 0;
+	var zIm = 0;
+	
+	var znRe = 0;
+
+	real = -real; //Flip it, because with this algorithm it is backwards.
+
+
+	var iterations=gIterations;
+
+
+
+	var i = 0;
+	for (i=0; i < iterations; i++) {
+		
+		znRe = zIm*-1;
+		zIm = zRe*-1;
+		zRe = znRe; //Swap the real and complex parts each time. 
+
+		nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
+		zIm = 2*(zRe*zIm);
+		zRe = nzRe;
+
+		zRe += real;
+		zIm += imaginary;
+
+
+
+		if ((zRe*zRe)+(zIm*zIm) > 64) { //If it is outside the 2 unit circle...
+
+			zRe_end = zRe;
+			zIm_end = zIm;
+			return (i); //stop it from running longer
+			
+		}
+
+
+
+	}
+	return -1;
+}
 
 
 
