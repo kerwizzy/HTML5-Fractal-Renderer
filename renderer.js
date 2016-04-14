@@ -632,13 +632,13 @@ function inSet_mandelbrot_orbitTrap(real,imaginary) {
 		if (distance > 4) {
 			
 			//return i;
-			return Math.floor(closest*500);
+			return Math.floor(4/closest);
 		}
 		
 
 
 	}
-	return Math.floor(closest*500);
+	return Math.floor(4/closest);
 	//return -1;
 }
 
