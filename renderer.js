@@ -67,8 +67,17 @@ function changeFractal() {
 		getJuliaC();
 		alert("In order to display Julia Sets, enter two values (seperated by ';') in the lower box in the other options.");
 		break;
+	case 4:
+		inSet=inSet_mandelbrot_orbitTrap;
+		inSet_smooth=inSet_mandelbrot_smooth;
+		break;
+	case 5:
+		inSet=inSet_multibrot_3;
+		inSet_smooth=inSet_mandelbrot_smooth;
+		break;		
 	default:
 		inSet=inSet_mandelbrot;
+		inSet_smooth=inSet_mandelbrot_smooth;
 		break;
 	}
 	draw();
@@ -585,6 +594,104 @@ function inSet_julia(real,imaginary) {
 	}
 	return -1;
 }
+
+function inSet_mandelbrot_orbitTrap(real,imaginary) {
+	var zRe = 0;
+	var zIm = 0;
+	
+	var closest = 10000000;
+	var distance = 0;
+//var gotToIf = 0;
+
+	var iterations=gIterations;
+
+
+
+	var i = 0;
+	for (i=0; i < iterations; i++) {
+
+		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
+		zIm = 2*(zRe*zIm);
+		zRe = nzRe;
+
+		zRe += real;
+		zIm += imaginary;
+
+		distance = Math.sqrt((zRe*zRe)+(zIm*zIm));
+		
+		
+		if (distance < closest) { //If it is closer than ever before...
+			
+			//gotToIf = 1;
+			
+			closest = distance;
+		}
+		
+		
+		
+		if (distance > 4) {
+			
+			//return i;
+			return Math.floor(closest*500);
+		}
+		
+
+
+	}
+	return Math.floor(closest*500);
+	//return -1;
+}
+
+
+function inSet_multibrot_3(real,imaginary) {
+	var zRe = 0;
+	var zIm = 0;
+
+
+	//real = -real; //Flip it, because with this algorithm it is backwards.
+
+	var out = 0;
+
+	var iterations=gIterations;
+
+	var i = 0;
+	for (i=0; i < iterations; i++) {
+		
+
+	
+	
+		var nzRe = (zRe*zRe*zRe - 3*zRe*(zIm*zIm)); //Make a new variable to aviod reusing it in the next line.
+		zIm = 3*((zRe*zRe)*zIm) - (zIm*zIm*zIm);
+	
+		
+		/*
+		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
+		zIm = 2*(zRe*zIm);
+		*/
+		zRe = nzRe;
+		
+	
+		
+		
+
+		zRe += real;
+		zIm += imaginary;
+
+
+
+		if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
+
+
+			return (i); //stop it from running longer
+		}
+
+
+
+	}
+	return -1;
+}
+
+
 
 function inSet_mandelbrot_smooth(real,imaginary) {
 	var zRe = 0;
