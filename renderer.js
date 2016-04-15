@@ -601,6 +601,7 @@ function inSet_mandelbrot_orbitTrap(real,imaginary) {
 	
 	var closest = 10000000;
 	var distance = 0;
+	var lineDist = 0;
 //var gotToIf = 0;
 
 	var iterations=gIterations;
@@ -618,13 +619,14 @@ function inSet_mandelbrot_orbitTrap(real,imaginary) {
 		zIm += imaginary;
 
 		distance = Math.sqrt((zRe*zRe)+(zIm*zIm));
+		lineDist = Math.abs((zRe)+(zIm));
 		
 		
-		if (distance < closest) { //If it is closer than ever before...
+		if (lineDist < closest) { //If it is closer than ever before...
 			
 			//gotToIf = 1;
 			
-			closest = distance;
+			closest = lineDist;
 		}
 		
 		
@@ -632,15 +634,16 @@ function inSet_mandelbrot_orbitTrap(real,imaginary) {
 		if (distance > 4) {
 			
 			//return i;
-			return Math.floor(4/closest);
+			return Math.floor(4*Math.log(4/closest));
 		}
 		
 
 
 	}
-	return Math.floor(4/closest);
+	return Math.floor(4*Math.log(4/closest));
 	//return -1;
 }
+
 
 
 function inSet_multibrot_3(real,imaginary) {
