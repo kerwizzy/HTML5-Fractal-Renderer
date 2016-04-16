@@ -21,6 +21,7 @@ var g = 0;
 var b = 0;
 
 
+
 var gIterations = 30000; //Global Iterations variable
 
 var inSet; // @jshint suggests declaring function which is reassigned
@@ -30,6 +31,9 @@ var size = 1*0.005; //How much is the numerical interval between pixels. I. E., 
 var work = {};
 work.location = [0,0]; //Location of the CENTER of the view
 work.running = false;
+
+var doZoom = true;
+var doClicks = true;
 
 renderPixel=renderPixel_default;
 inSet_smooth=inSet_mandelbrot_smooth;
@@ -823,18 +827,23 @@ function inSet_tricornMandelbrot_smooth(real,imaginary) {
 
 
 function getCursorPosition(canvas, event) {
-	var rect = canvas.getBoundingClientRect();
-	var x = event.clientX - rect.left;
-	var y = event.clientY - rect.top;
-	if (x/myCanvas.width < 0.1 || x/myCanvas.width > 0.9 || y/myCanvas.height < 0.1 || y/myCanvas.height > 0.9) {
-		size = size*2; //Zoom out.
+	if (doClicks === true) {
+		var rect = canvas.getBoundingClientRect();
+		var x = event.clientX - rect.left;
+		var y = event.clientY - rect.top;
+	
+		if (x/myCanvas.width < 0.1 || x/myCanvas.width > 0.9 || y/myCanvas.height < 0.1 || y/myCanvas.height > 0.9) {
+			size = size*2; //Zoom out.
+		}
+		else {
+			work.location[0] = ((x-myCanvas.width/2)*size+work.location[0]); 
+			work.location[1] = ((y-myCanvas.height/2)*-size+work.location[1]);
+			if (doZoom === true) {
+				size = size/2;
+			}
+		}
+		draw();
 	}
-	else {
-		work.location[0] = ((x-myCanvas.width/2)*size+work.location[0]); 
-		work.location[1] = ((y-myCanvas.height/2)*-size+work.location[1]);
-		size = size/2;
-	}
-	draw();
 }
 
 
@@ -856,6 +865,8 @@ function initialize() {
 
 	document.getElementById("fractalPicker").value=0; //Make it actually SAY it's the mandelbrot set when it starts up. 
 	document.getElementById("colPicker").value=0; //Make it actually SAY it's the default color when it starts up.
+	
+	
 	
 	
 	 document.getElementById("logToggle").checked = false; //Make it actually LOOK unchecked when it starts up. (Might be different because someone had reloaded the page, and had checked on before they reloaded.)
