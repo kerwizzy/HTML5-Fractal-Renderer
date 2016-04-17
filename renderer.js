@@ -32,6 +32,8 @@ var work = {};
 work.location = [0,0]; //Location of the CENTER of the view
 work.running = false;
 
+startInterval = 16;
+
 var doZoom = true;
 var doClicks = true;
 
@@ -88,6 +90,25 @@ function changeFractal() {
 }
 
 
+function updateInterval() {
+	checked = document.getElementById("intervalToggle").checked;
+	
+	if (checked === true) {
+		startInterval = 1;
+	}
+	else {
+		startInterval = 16;
+		
+		
+	}
+	
+	
+	
+	
+	
+}
+
+
 function getLocation() {
 	locData = [];
 	locData = document.getElementById('locationDisplay').value.split(";");
@@ -121,7 +142,7 @@ function draw() {
 
 	
 	work.yI = 0;
-	work.interval = 16;
+	work.interval = startInterval;
 	document.getElementById('locationDisplay').value = (work.location[0].toString()) + ";" + (work.location[1].toString()) + ";" + (size.toString());
 
 	if (work.running === false) { //Stop it from having two timers.
@@ -827,6 +848,11 @@ function updateSize() {
 	
 	myCanvas.width = document.getElementById("customWidth").value;
 	myCanvas.height = document.getElementById("customHeight").value;
+	
+
+	//work.ctx = myCanvas.getContext("2d");
+	//work.imageData = work.ctx.createImageData(myCanvas.width,1); //Create an image for the row.
+	
 	draw();
 	
 }
