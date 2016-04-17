@@ -823,6 +823,13 @@ function inSet_tricornMandelbrot_smooth(real,imaginary) {
 }
 
 
+function updateSize() {
+	
+	myCanvas.width = document.getElementById("customWidth").value;
+	myCanvas.height = document.getElementById("customHeight").value;
+	draw();
+	
+}
 
 
 
@@ -866,7 +873,9 @@ function initialize() {
 	document.getElementById("fractalPicker").value=0; //Make it actually SAY it's the mandelbrot set when it starts up. 
 	document.getElementById("colPicker").value=0; //Make it actually SAY it's the default color when it starts up.
 	
-	
+	document.getElementById('clickToggle').checked = true;
+	document.getElementById('zoomToggle').checked = true;
+	document.getElementById('advancedOptionsToggle').checked = false;
 	
 	
 	 document.getElementById("logToggle").checked = false; //Make it actually LOOK unchecked when it starts up. (Might be different because someone had reloaded the page, and had checked on before they reloaded.)

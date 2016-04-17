@@ -114,10 +114,18 @@ transition:opacity 1s;
 
 }
 
+.hidden {
+visibility:hidden;
+opacity: 0.0;
+transition:opacity 1s;
+
+}
+
+
 .text_show {
 
 	/*position:absolute;*/
-	z-index:120;
+z-index:120;
 opacity:1.0;
 transition:opacity 1s
 

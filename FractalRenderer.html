@@ -25,6 +25,8 @@ Location:
 <input id=locationDisplay size=100>
 <button onclick="getLocation()">Update</button>
 <button onclick="reset()">Reset</button>
+   Show advanced options: <input type="checkbox" id=advancedOptionsToggle onchange="changeAdvancedOptions()"></input>
+
 <button style="margin-left:20px" onclick="openOptions()">More Information</button>
 <select id=fractalPicker style="float:right;margin-right:10px" onchange="changeFractal()">
 <option value="0">Mandelbrot Set</option>
@@ -174,13 +176,18 @@ To learn more about the Burning Ship Fractal, take a look at the <a class="link"
 <canvas id="myCanvas" style="border:0px">
 Your browser does not support the HTML5 canvas tag.</canvas>
 </DIV>
-<DIV id=advancedOptions>
+<DIV id=advancedOptions style="display:none">
 
 <h2>UI Options</h2>
 
 Do view changes: <input type="checkbox" id=clickToggle onchange="doClicks = document.getElementById('clickToggle').checked"></input>
 <BR>
 Clicking zooms: <input type="checkbox" id=zoomToggle onchange="doZoom = document.getElementById('zoomToggle').checked"></input>
+
+<h2>Size</h2>
+
+Width: <input type=number id=customWidth onchange="updateSize()"></input>
+Height: <input type=number id=customHeight onchange="updateSize()"></input>
 
 
 </DIV>
