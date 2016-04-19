@@ -850,8 +850,9 @@ function updateSize() {
 	myCanvas.height = document.getElementById("customHeight").value;
 	
 
-	//work.ctx = myCanvas.getContext("2d");
-	//work.imageData = work.ctx.createImageData(myCanvas.width,1); //Create an image for the row.
+	work.ctx = myCanvas.getContext("2d");
+	work.imageData = work.ctx.createImageData(myCanvas.width,1); //Create an image for the row.
+	d = work.imageData.data;
 	
 	draw();
 	
