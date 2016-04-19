@@ -24,6 +24,8 @@ var b = 0;
 
 var gIterations = 30000; //Global Iterations variable
 
+var gPower = 2 //Global power variable (used in fractional fractal)
+
 var inSet; // @jshint suggests declaring function which is reassigned
 var renderPixel; // @jshint suggests declaring function which is reassigned 
 
@@ -70,6 +72,7 @@ function changeFractal() {
 		break;
 	case 3:
 		inSet=inSet_julia;
+		inSet_smooth=inSet_mandelbrot_smooth;
 		getJuliaC();
 		alert("In order to display Julia Sets, enter two values (seperated by ';') in the lower box in the other options.");
 		break;
@@ -80,7 +83,11 @@ function changeFractal() {
 	case 5:
 		inSet=inSet_multibrot_3;
 		inSet_smooth=inSet_mandelbrot_smooth;
-		break;		
+		break;
+	case 6:
+		inSet=inSet_fractional;
+		inSet_smooth=inSet_mandelbrot_smooth;
+		break;			
 	default:
 		inSet=inSet_mandelbrot;
 		inSet_smooth=inSet_mandelbrot_smooth;
@@ -102,8 +109,26 @@ function updateInterval() {
 		
 	}
 	
+		
+	
+}
+
+function updateExponent(inputNum) {
+	
+	switch (inputNum) {
+	case 0:
+		gPower = document.getElementById('powerRange').value; 
+		document.getElementById('powDisplay').value = gPower;
+		break;
+	case 1:
+		gPower = document.getElementById('powDisplay').value; 
+		document.getElementById('powerRange').value = gPower;
+		break;		
+	}
 	
 	
+	
+	draw(); 
 	
 	
 }
@@ -130,6 +155,7 @@ function getJuliaC() {
 
 	juliaC_a = parseFloat(juliaData[0]);
 	juliaC_b = parseFloat(juliaData[1]);
+	draw();
 
 }
 
@@ -720,6 +746,63 @@ function inSet_multibrot_3(real,imaginary) {
 }
 
 
+function inSet_fractional(real,imaginary) {
+	var zRe = 0;
+	var zIm = 0;
+
+	var r = 0;
+	var t = 0;
+	
+
+	power = gPower;
+
+	//real = -real; //Flip it, because with this algorithm it is backwards.
+
+	var out = 0;
+
+	var iterations=gIterations;
+
+	var i = 0;
+	for (i=0; i < iterations; i++) {
+		
+		
+		r = Math.sqrt(zRe*zRe+zIm*zIm);
+		r = Math.pow(r,power);
+		t = Math.atan2(zIm,zRe)*power;
+		
+
+
+		var nzRe = r*Math.cos(t);
+		zIm = r*Math.sin(t);
+		
+		zRe = nzRe;
+		
+	
+		/*
+		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
+		zIm = 2*(zRe*zIm);
+		zRe = nzRe;
+		*/
+		
+
+		zRe += real;
+		zIm += imaginary;
+
+
+
+		if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
+
+
+			return (i); //stop it from running longer
+		}
+
+
+
+	}
+	return -1;
+}
+
+
 
 function inSet_mandelbrot_smooth(real,imaginary) {
 	var zRe = 0;
@@ -843,6 +926,17 @@ function inSet_tricornMandelbrot_smooth(real,imaginary) {
 	return -1;
 }
 
+function complexFractionalPower(zRe,zIm,power) {
+	var r = Math.sqrt(zRe*zRe+zIm*zIm);
+	var t = Math.atan2(x,y);
+
+	zRe = Math.pow(r,power)*Math.cos(t*power);
+	zIm = Math.pow(r,power)*Math.sin(t*power);
+	
+		
+	
+}
+
 
 function updateSize() {
 	
@@ -904,6 +998,9 @@ function initialize() {
 	document.getElementById('zoomToggle').checked = true;
 	document.getElementById('advancedOptionsToggle').checked = false;
 	
+	
+	document.getElementById('customWidth').value = myCanvas.width;
+	document.getElementById('customHeight').value = myCanvas.height;
 	
 	 document.getElementById("logToggle").checked = false; //Make it actually LOOK unchecked when it starts up. (Might be different because someone had reloaded the page, and had checked on before they reloaded.)
 	 document.getElementById("smoothColorToggle").checked = false;

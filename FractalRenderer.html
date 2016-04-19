@@ -32,9 +32,10 @@ Location:
 <option value="0">Mandelbrot Set</option>
 <option value="1">Burning Ship</option>
 <option value="2">Mandelbar</option>
-<!-- <option value="3">Julia</option> !-->
+<option value="3">Julia</option>
 <option value="4">Mandelbrot Orbit Trap</option>
 <option value="5">Multibrot (3)</option>
+<option value="6">Variable Exponent</option>
 </select> 
 
 
@@ -161,12 +162,7 @@ To learn more about the Burning Ship Fractal, take a look at the <a class="link"
 
 
 <button onclick="closeOptions()">Close Options</button>
-<br>
-<!--
-<input id=juliaC size=50>
-<button onclick="getJuliaC();">Update</button>
-!-->
-<br>
+
 <br>
 </div>
 
@@ -192,6 +188,15 @@ Height: <input type=number id=customHeight onchange="updateSize()"></input>
 <h2>Rendering</h2>
 
 Do final pass first: <input type="checkbox" id=intervalToggle onchange="updateInterval();"></input>
+
+<h2>Fractal Details</h2>
+Fractional Exponent: <input type="range" id=powerRange oninput="updateExponent(0);" value="2" min="0" max="10" step="0.0001"></input>
+<input type="number" id=powDisplay oninput="updateExponent(1);" value="2" min="0" max="10" step="0.1"></input>
+<BR>
+<BR>
+Julia Set Values
+<input id=juliaC size=50 value="0;1" onchange="getJuliaC()">
+
 
 
 </DIV>
