@@ -26,6 +26,8 @@ var gIterations = 30000; //Global Iterations variable
 
 var gPower = 2 //Global power variable (used in fractional fractal)
 
+gEscapeHorizon = 4; //The global escape horizon variable. Changes to 64 when smooth colors are enabled.
+
 var inSet; // @jshint suggests declaring function which is reassigned
 var renderPixel; // @jshint suggests declaring function which is reassigned 
 
@@ -380,7 +382,7 @@ function renderPixel_log(real,imaginary) {
 function renderPixel_smooth(real,imaginary) {
 
 
-	var outColor = inSet_smooth(real,imaginary);
+	var outColor = inSet(real,imaginary);
 	var mapperDiff_r = 0;
 	var mapperDiff_g = 0;
 	var mapperDiff_b = 0;
@@ -432,7 +434,7 @@ function renderPixel_smooth(real,imaginary) {
 function renderPixel_log_smooth(real,imaginary) {
 
 
-	var outColor = inSet_smooth(real,imaginary);
+	var outColor = inSet(real,imaginary);
 	var mapperDiff_r = 0;
 	var mapperDiff_g = 0;
 	var mapperDiff_b = 0;
@@ -502,6 +504,7 @@ function inSet_mandelbrot(real,imaginary) {
 
 
 	var iterations=gIterations;
+	var escapeHorizon = gEscapeHorizon;
 
 
 
@@ -517,7 +520,9 @@ function inSet_mandelbrot(real,imaginary) {
 
 
 
-		if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
+		if ((zRe*zRe)+(zIm*zIm) > escapeHorizon) { //If it is outside the 2 unit circle...
+			zRe_end = zRe;
+			zIm_end = zIm;
 
 
 			return (i); //stop it from running longer
@@ -539,6 +544,7 @@ function inSet_burningShip(real,imaginary) {
 	var out = 0;
 
 	var iterations=gIterations;
+	var escapeHorizon = gEscapeHorizon;
 
 	var i = 0;
 	for (i=0; i < iterations; i++) {
@@ -556,7 +562,9 @@ function inSet_burningShip(real,imaginary) {
 
 
 
-		if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
+		if ((zRe*zRe)+(zIm*zIm) > escapeHorizon) { //If it is outside the 2 unit circle...
+			zRe_end = zRe;
+			zIm_end = zIm;
 
 
 			return (i); //stop it from running longer
@@ -578,6 +586,7 @@ function inSet_tricornMandelbrot(real,imaginary) {
 	var out = 0;
 
 	var iterations=gIterations;
+	var escapeHorizon = gEscapeHorizon;
 
 	var i = 0;
 	for (i=0; i < iterations; i++) {
@@ -595,7 +604,9 @@ function inSet_tricornMandelbrot(real,imaginary) {
 
 
 
-		if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
+		if ((zRe*zRe)+(zIm*zIm) > escapeHorizon) { //If it is outside the 2 unit circle...
+			zRe_end = zRe;
+			zIm_end = zIm;
 
 
 			return (i); //stop it from running longer
@@ -621,6 +632,7 @@ function inSet_julia(real,imaginary) {
 	var out = 0;
 
 	var iterations=gIterations;
+	var escapeHorizon = gEscapeHorizon;
 
 	var i = 0;
 	for (i=0; i < iterations; i++) {
@@ -634,7 +646,9 @@ function inSet_julia(real,imaginary) {
 		zRe += muRe;
 		zIm += muIm;
 
-		if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
+		if ((zRe*zRe)+(zIm*zIm) > escapeHorizon) { //If it is outside the 2 unit circle...
+			zRe_end = zRe;
+			zIm_end = zIm;
 
 
 			return (i); //stop it from running longer
@@ -655,7 +669,9 @@ function inSet_mandelbrot_orbitTrap(real,imaginary) {
 	var lineDist = 0;
 //var gotToIf = 0;
 
+
 	var iterations=gIterations;
+	var escapeHorizon = gEscapeHorizon;
 
 
 
@@ -682,9 +698,11 @@ function inSet_mandelbrot_orbitTrap(real,imaginary) {
 		
 		
 		
-		if (distance > 4) {
+		if (distance > escapeHorizon) {
 			
 			//return i;
+			zRe_end = Math.floor(4*Math.log(4/closest));
+			zIm_end = Math.floor(4*Math.log(4/closest));
 			return Math.floor(4*Math.log(4/closest));
 		}
 		
@@ -701,7 +719,7 @@ function inSet_multibrot_3(real,imaginary) {
 	var zRe = 0;
 	var zIm = 0;
 
-
+	var escapeHorizon = gEscapeHorizon;
 	//real = -real; //Flip it, because with this algorithm it is backwards.
 
 	var out = 0;
@@ -733,8 +751,9 @@ function inSet_multibrot_3(real,imaginary) {
 
 
 
-		if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
-
+		if ((zRe*zRe)+(zIm*zIm) > escapeHorizon) { //If it is outside the 2 unit circle...
+			zRe_end = zRe;
+			zIm_end = zIm;
 
 			return (i); //stop it from running longer
 		}
@@ -747,14 +766,15 @@ function inSet_multibrot_3(real,imaginary) {
 
 
 function inSet_fractional(real,imaginary) {
-	var zRe = 0;
-	var zIm = 0;
+	var zRe = real;
+	var zIm = imaginary;
 
 	var r = 0;
 	var t = 0;
 	
+	var escapeHorizon = gEscapeHorizon;
 
-	power = gPower;
+	power = parseFloat(gPower);
 
 	//real = -real; //Flip it, because with this algorithm it is backwards.
 
@@ -790,8 +810,9 @@ function inSet_fractional(real,imaginary) {
 
 
 
-		if ((zRe*zRe)+(zIm*zIm) > 4) { //If it is outside the 2 unit circle...
-
+		if ((zRe*zRe)+(zIm*zIm) > escapeHorizon) { //If it is outside the 2 unit circle...
+			zRe_end = zRe;
+			zIm_end = zIm;
 
 			return (i); //stop it from running longer
 		}
