@@ -61,38 +61,38 @@ function changeFractal() {
 	switch(parseInt(fractal)) {
 	case 0:
 		inSet=inSet_mandelbrot;
-		inSet_smooth=inSet_mandelbrot_smooth;
+		
 		
 		break;
 	case 1:
 		inSet=inSet_burningShip;
-		inSet_smooth=inSet_burningShip_smooth;
+		
 		break;
 	case 2:
 		inSet=inSet_tricornMandelbrot;
-		inSet_smooth=inSet_tricornMandelbrot_smooth;
+		
 		break;
 	case 3:
 		inSet=inSet_julia;
-		inSet_smooth=inSet_mandelbrot_smooth;
+		
 		getJuliaC();
 		alert("In order to display Julia Sets, enter two values (seperated by ';') in the lower box in the other options.");
 		break;
 	case 4:
 		inSet=inSet_mandelbrot_orbitTrap;
-		inSet_smooth=inSet_mandelbrot_smooth;
+		
 		break;
 	case 5:
 		inSet=inSet_multibrot_3;
-		inSet_smooth=inSet_mandelbrot_smooth;
+		
 		break;
 	case 6:
 		inSet=inSet_fractional;
-		inSet_smooth=inSet_mandelbrot_smooth;
+		
 		break;			
 	default:
 		inSet=inSet_mandelbrot;
-		inSet_smooth=inSet_mandelbrot_smooth;
+	
 		break;
 	}
 	draw();
@@ -667,7 +667,6 @@ function inSet_mandelbrot_orbitTrap(real,imaginary) {
 	var closest = 10000000;
 	var distance = 0;
 	var lineDist = 0;
-//var gotToIf = 0;
 
 
 	var iterations=gIterations;
@@ -691,7 +690,7 @@ function inSet_mandelbrot_orbitTrap(real,imaginary) {
 		
 		if (lineDist < closest) { //If it is closer than ever before...
 			
-			//gotToIf = 1;
+			
 			
 			closest = lineDist;
 		}
@@ -700,7 +699,7 @@ function inSet_mandelbrot_orbitTrap(real,imaginary) {
 		
 		if (distance > escapeHorizon) {
 			
-			//return i;
+			
 			zRe_end = Math.floor(4*Math.log(4/closest));
 			zIm_end = Math.floor(4*Math.log(4/closest));
 			return Math.floor(4*Math.log(4/closest));
@@ -710,7 +709,7 @@ function inSet_mandelbrot_orbitTrap(real,imaginary) {
 
 	}
 	return Math.floor(4*Math.log(4/closest));
-	//return -1;
+
 }
 
 
@@ -720,7 +719,7 @@ function inSet_multibrot_3(real,imaginary) {
 	var zIm = 0;
 
 	var escapeHorizon = gEscapeHorizon;
-	//real = -real; //Flip it, because with this algorithm it is backwards.
+	
 
 	var out = 0;
 
@@ -736,10 +735,7 @@ function inSet_multibrot_3(real,imaginary) {
 		zIm = 3*((zRe*zRe)*zIm) - (zIm*zIm*zIm);
 	
 		
-		/*
-		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
-		zIm = 2*(zRe*zIm);
-		*/
+
 		zRe = nzRe;
 		
 	
@@ -798,12 +794,7 @@ function inSet_fractional(real,imaginary) {
 		zRe = nzRe;
 		
 	
-		/*
-		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
-		zIm = 2*(zRe*zIm);
-		zRe = nzRe;
-		*/
-		
+
 
 		zRe += real;
 		zIm += imaginary;
@@ -821,141 +812,6 @@ function inSet_fractional(real,imaginary) {
 
 	}
 	return -1;
-}
-
-
-
-function inSet_mandelbrot_smooth(real,imaginary) {
-	var zRe = 0;
-	var zIm = 0;
-
-
-
-	var iterations=gIterations;
-
-
-
-	var i = 0;
-	for (i=0; i < iterations; i++) {
-
-		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
-		zIm = 2*(zRe*zIm);
-		zRe = nzRe;
-
-		zRe += real;
-		zIm += imaginary;
-
-
-
-		if ((zRe*zRe)+(zIm*zIm) > 64) { //If it is outside the 2 unit circle...
-
-			zRe_end = zRe;
-			zIm_end = zIm;
-			return (i); //stop it from running longer
-			
-		}
-
-
-
-	}
-	return -1;
-}
-
-function inSet_burningShip_smooth(real,imaginary) {
-	var zRe = 0;
-	var zIm = 0;
-
-	imaginary = -imaginary; //Flip this because it looks "upside down" otherwise.
-
-	var iterations=gIterations;
-
-
-
-	var i = 0;
-	for (i=0; i < iterations; i++) {
-
-		zRe = Math.abs(zRe);
-		zIm = Math.abs(zIm);
-
-
-		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
-		zIm = 2*(zRe*zIm);
-		zRe = nzRe;
-
-		zRe += real;
-		zIm += imaginary;
-
-
-
-
-
-
-		if ((zRe*zRe)+(zIm*zIm) > 64) { //If it is outside the 2 unit circle...
-
-			zRe_end = zRe;
-			zIm_end = zIm;
-			return (i); //stop it from running longer
-			
-		}
-
-
-
-	}
-	return -1;
-}
-
-function inSet_tricornMandelbrot_smooth(real,imaginary) {
-	var zRe = 0;
-	var zIm = 0;
-	
-	var znRe = 0;
-
-	real = -real; //Flip it, because with this algorithm it is backwards.
-
-
-	var iterations=gIterations;
-
-
-
-	var i = 0;
-	for (i=0; i < iterations; i++) {
-		
-		znRe = zIm*-1;
-		zIm = zRe*-1;
-		zRe = znRe; //Swap the real and complex parts each time. 
-
-		nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
-		zIm = 2*(zRe*zIm);
-		zRe = nzRe;
-
-		zRe += real;
-		zIm += imaginary;
-
-
-
-		if ((zRe*zRe)+(zIm*zIm) > 64) { //If it is outside the 2 unit circle...
-
-			zRe_end = zRe;
-			zIm_end = zIm;
-			return (i); //stop it from running longer
-			
-		}
-
-
-
-	}
-	return -1;
-}
-
-function complexFractionalPower(zRe,zIm,power) {
-	var r = Math.sqrt(zRe*zRe+zIm*zIm);
-	var t = Math.atan2(x,y);
-
-	zRe = Math.pow(r,power)*Math.cos(t*power);
-	zIm = Math.pow(r,power)*Math.sin(t*power);
-	
-		
-	
 }
 
 
