@@ -38,6 +38,8 @@ work.running = false;
 
 startInterval = 16;
 
+var alertWhenDone = false;
+
 var doZoom = true;
 var doClicks = true;
 
@@ -115,6 +117,18 @@ function updateInterval() {
 	
 }
 
+function updateAlertToggle() {
+	checked = document.getElementById("doneAlertToggle").checked;
+	
+	
+	alertWhenDone = checked;
+	
+	
+	
+		
+	
+}
+
 function updateExponent(inputNum) {
 	
 	switch (inputNum) {
@@ -134,6 +148,8 @@ function updateExponent(inputNum) {
 	
 	
 }
+
+
 
 
 function getLocation() {
@@ -263,6 +279,11 @@ function doWork_smooth () {
 	}
 	else {
 		work.running = false;
+		if (alertWhenDone === true) {
+			alert("Done Rendering");
+			
+			
+		}
 	}
 
 
@@ -340,6 +361,11 @@ function doWork_default () {
 	}
 	else {
 		work.running = false;
+		if (alertWhenDone === true) {
+			alert("Done Rendering");
+			
+			
+		}
 	}
 
 
@@ -874,6 +900,9 @@ function initialize() {
 	document.getElementById('clickToggle').checked = true;
 	document.getElementById('zoomToggle').checked = true;
 	document.getElementById('advancedOptionsToggle').checked = false;
+	
+	document.getElementById('doneAlertToggle').checked = false;
+	document.getElementById('intervalToggle').checked = false;
 	
 	
 	document.getElementById('customWidth').value = myCanvas.width;
