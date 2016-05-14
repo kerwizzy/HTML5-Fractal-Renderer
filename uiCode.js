@@ -14,7 +14,7 @@ function changeAdvancedOptions() {
 	var showAdvanced = document.getElementById('advancedOptionsToggle').checked;//Hide the options.
 	
 	if (showAdvanced === true) {
-		document.getElementById('advancedOptions').className = 'text_show'
+		//document.getElementById('advancedOptions').className = 'text_show'
 		document.getElementById('advancedOptions').style.display = "";
 	}
 	else {
