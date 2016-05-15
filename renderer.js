@@ -536,8 +536,11 @@ function inSet_mandelbrot(real,imaginary) {
 
 	var i = 0;
 	for (i=0; i < iterations; i++) {
+//OPTIMIZATION: COMPUTE zIm^2 and zRe^2 variables.
+var zResq = zRe*zRe;
+var zImsq = zIm*zIm;
+		var nzRe = (zResq+(-1*(zImsq))); //Make a new variable to aviod reusing it in the next line.
 
-		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
 		zIm = 2*(zRe*zIm);
 		zRe = nzRe;
 
@@ -546,7 +549,7 @@ function inSet_mandelbrot(real,imaginary) {
 
 
 
-		if ((zRe*zRe)+(zIm*zIm) > escapeHorizon) { //If it is outside the 2 unit circle...
+		if ((zRezq)+(zImsq) > escapeHorizon) { //If it is outside the 2 unit circle...
 			zRe_end = zRe;
 			zIm_end = zIm;
 
@@ -578,8 +581,10 @@ function inSet_burningShip(real,imaginary) {
 		zRe = Math.abs(zRe);
 		zIm = Math.abs(zIm);
 
+		var zResq = zRe*zRe;
+		var zImsq = zIm*zIm;
 
-		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
+		var nzRe = (zResq+(-1*(zImsq))); //Make a new variable to aviod reusing it in the next line.
 		zIm = 2*(zRe*zIm);
 		zRe = nzRe;
 
@@ -588,7 +593,7 @@ function inSet_burningShip(real,imaginary) {
 
 
 
-		if ((zRe*zRe)+(zIm*zIm) > escapeHorizon) { //If it is outside the 2 unit circle...
+		if ((zResq)+(zImsq) > escapeHorizon) { //If it is outside the 2 unit circle...
 			zRe_end = zRe;
 			zIm_end = zIm;
 
@@ -619,9 +624,12 @@ function inSet_tricornMandelbrot(real,imaginary) {
 		
 		znRe = zIm*-1;
 		zIm = zRe*-1;
-		zRe = znRe; //Swap the real and complex parts each time. 
+		zRe = znRe; //Swap the real and complex parts each time.
 
-		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
+		var zResq = zRe*zRe;
+		var zImsq = zIm*zIm;		
+
+		var nzRe = (zResq+(-1*(zImsq))); //Make a new variable to aviod reusing it in the next line.
 		zIm = 2*(zRe*zIm);
 		zRe = nzRe;
 
@@ -630,7 +638,7 @@ function inSet_tricornMandelbrot(real,imaginary) {
 
 
 
-		if ((zRe*zRe)+(zIm*zIm) > escapeHorizon) { //If it is outside the 2 unit circle...
+		if ((zResq)+(zImsq) > escapeHorizon) { //If it is outside the 2 unit circle...
 			zRe_end = zRe;
 			zIm_end = zIm;
 
@@ -663,16 +671,17 @@ function inSet_julia(real,imaginary) {
 	var i = 0;
 	for (i=0; i < iterations; i++) {
 		
+		var zResq = zRe*zRe;
+		var zImsq = zIm*zIm;
 		
-		
-		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
+		var nzRe = (zResq+(-1*(zImsq))); //Make a new variable to aviod reusing it in the next line.
 		zIm = 2*(zRe*zIm);
 		zRe = nzRe;
 
 		zRe += muRe;
 		zIm += muIm;
 
-		if ((zRe*zRe)+(zIm*zIm) > escapeHorizon) { //If it is outside the 2 unit circle...
+		if ((zResq)+(zImsq) > escapeHorizon) { //If it is outside the 2 unit circle...
 			zRe_end = zRe;
 			zIm_end = zIm;
 
@@ -702,15 +711,18 @@ function inSet_mandelbrot_orbitTrap(real,imaginary) {
 
 	var i = 0;
 	for (i=0; i < iterations; i++) {
-
-		var nzRe = (zRe*zRe+(-1*(zIm*zIm))); //Make a new variable to aviod reusing it in the next line.
+		var zResq = zRe*zRe;
+		var zImsq = zIm*zIm;
+	
+	
+		var nzRe = (zResq+(-1*(zImsq))); //Make a new variable to aviod reusing it in the next line.
 		zIm = 2*(zRe*zIm);
 		zRe = nzRe;
 
 		zRe += real;
 		zIm += imaginary;
 
-		distance = Math.sqrt((zRe*zRe)+(zIm*zIm));
+		distance = Math.sqrt((zResq)+(zImsq));
 		lineDist = Math.abs((zRe)+(zIm));
 		
 		
@@ -754,11 +766,12 @@ function inSet_multibrot_3(real,imaginary) {
 	var i = 0;
 	for (i=0; i < iterations; i++) {
 		
-
+var zResq = zRe*zRe;
+var zImsq = zIm*zIm;
 	
 	
-		var nzRe = (zRe*zRe*zRe - 3*zRe*(zIm*zIm)); //Make a new variable to aviod reusing it in the next line.
-		zIm = 3*((zRe*zRe)*zIm) - (zIm*zIm*zIm);
+		var nzRe = (zResq*zRe - 3*zRe*(zImsq)); //Make a new variable to aviod reusing it in the next line.
+		zIm = 3*((zResq)*zIm) - (zImsq*zIm);
 	
 		
 
@@ -773,7 +786,7 @@ function inSet_multibrot_3(real,imaginary) {
 
 
 
-		if ((zRe*zRe)+(zIm*zIm) > escapeHorizon) { //If it is outside the 2 unit circle...
+		if ((zResq)+(zImsq) > escapeHorizon) { //If it is outside the 2 unit circle...
 			zRe_end = zRe;
 			zIm_end = zIm;
 
