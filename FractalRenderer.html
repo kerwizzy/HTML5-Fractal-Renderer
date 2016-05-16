@@ -1,244 +1,188 @@
 <!DOCTYPE html>
-<meta charset="UTF-8"> 
+<meta charset="UTF-8">
 <HEAD>
-
-<link rel="stylesheet" type="text/css" href="styles.css" media="screen">
-
-<SCRIPT type="text/javascript" src="renderer.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="uiCode.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="colors.js"></SCRIPT>
+   <link rel="stylesheet" type="text/css" href="styles.css" media="screen">
+   <SCRIPT type="text/javascript" src="renderer.js"></SCRIPT>
+   <SCRIPT type="text/javascript" src="uiCode.js"></SCRIPT>
+   <SCRIPT type="text/javascript" src="colors.js"></SCRIPT>
 </HEAD>
-
 <BODY style="font-family:arial;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);">
-
-
-
-
-
-<DIV style="position:fixed;top:0;width:100%;z-index:100;background-color:#ffffff" class="optionsshadow">
-<strong style="font-size:30px;font-family:arial;text-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);">Fractal Renderer</strong>
-
-<span style="margin-left:10px;margin-right:10px">
-By Kerwizzy
-</span>
-Location:
-<input id=locationDisplay size=100>
-<button onclick="getLocation()">Update</button>
-<button onclick="reset()">Reset</button>
-   Show advanced options: <input type="checkbox" id=advancedOptionsToggle onchange="changeAdvancedOptions()"></input>
-
-<button style="margin-left:20px" onclick="openOptions()">More Information</button>
-<select id=fractalPicker style="float:right;margin-right:10px" onchange="changeFractal()">
-<option value="0">Mandelbrot Set</option>
-<option value="1">Burning Ship</option>
-<option value="2">Mandelbar</option>
-<option value="3">Julia</option>
-<option value="4">Mandelbrot Orbit Trap</option>
-<option value="5">Multibrot (3)</option>
-<option value="6">Variable Exponent</option>
-</select> 
-
-
-</DIV>
-
-<div id="Options" class="hide optionsshadow" style="min-width:30%;overflow:scroll">
-
-<h2> How to Use </h2>
-<p>Click anywhere to zoom in, click near the edges to zoom out.</p>
-
-<p>Try changing the fractal using the picker in the top-right corner!</p>
-
-<p>Put real and imaginary coordinates and the interval between pixels in the location box to go to an exact location.</p>
-<p>Have fun!</p>
-
-<h2> Colors </h2>
-<select id=colPicker style="margin-right:10px" onchange="changeColors()">
-<!-- There isn't anything here on startup, because it gets initialized automatically by generateColPicker() in colors.js !-->
-</select> 
-<BR>
-<BR>
-Enable Less Noisy Colors: <input type="checkbox" id=logToggle onchange="changeColorScales()"></input> <i>(Looks nicer in highly detailed areas.)</i>
-
-<!-- <input type="checkbox" name="logToggle" onchange="changeLogColor()" checked> !-->
-<BR>
-<BR>
-Enable Smooth Colors:<input type="checkbox" id=smoothColorToggle onchange="changeColorScales()"></input>
-
-
-
-<br>
-<br>
-<h2>Iterations</h2> <input id=iterationsInput type=number value=30000 onchange="gIterations = parseInt(document.getElementById('iterationsInput').value)">   
-
-<br>
-<br>
-<h2>About</h2>
-<div>
-<div id=pickTab1 class="tab_active" onclick="changeText(1)">Fractals</div>
-<div id=pickTab2 class="tab" onclick="changeText(2)">The Mandelbrot Set</div>
-<div id=pickTab3 class="tab" onclick="changeText(3)">Burning Ship</div>
-<div id=pickTab4 class="tab" onclick="changeText(4)">Mandelbar</div>
-<div id=pickTab5 class="tab" onclick="changeText(5)">Julia Sets</div>
-<div id=pickTab6 class="tab" onclick="changeText(6)">Orbit Traps</div>
-<div id=pickTab7 class="tab" onclick="changeText(7)">Variable Exponents</div>
-<div id=pickTab8 class="tab" onclick="changeText(8)">Fractal Renderer</div>
-</div>
-
-<div class="descriptionBox">
-<div id=tab1 class="text_show ">
-<h3>Fractals</h3>
-<p>Fractals are shapes that include smaller features which resemble the fractal as a whole. These smaller shapes, in turn, include yet smaller "copies" of the larger figure.</p> 
-<p> The Mandelbrot set is a fractal because it includes smaller shapes that look like the larger shape. Interestingly, though, the smaller features in the Mandelbrot set are always slightly different than the larger fractal.</p>
-</div>
-
-
-<div id=tab2 class="text_hide">
-<h3>About the Mandelbrot Set</h3>
-<p>The Mandelbrot set (and the other fractals displayed here) are made by repeating a function over and over again.</p>
-<p>For example, in order to find the color for a location in the Mandelbrot Set, first we take the location and make it a number in the <a class="link" href=https://en.wikipedia.org/wiki/Complex_plane>complex plane</a>. We call this number “c”.</p>
-<p>Then, we use the equation for the Mandelbrot Set that tells us, given a number in an interation sequence, and c, we can calculate the next value in the sequence.</p>
-<p>So, basically, we calculate “sequences” of numbers for each location, using this equation:</p>
-
-<p>z<sub>n+1</sub> = z<sub>n</sub><sup>2</sup> + c</p>
-<p>Where</p>
-<ul>
-<li><b>c</b> is the complex number</li>
-<li><b>n</b> is what location in the sequence we are at.</li>
-
-<li><b>z<sub>n</sub></b> is the n<sup>th</sup> number in the sequence. (That is, the current number)</li>
-
-<li><b>z</b><sub>n+1</sub>is the n+1<sup>th</sup> number in the sequence. (That is, the next number.) </li>
-
-</ul>
-
-<p>So simply written, the equation is:</p>
-<p><i>Next number = previous number squared + location</i></p>
-<p>We set the starting number to 0, and then we can calculate sequences. These sequences allow us to figure out how to color things.</p>
-<p>Here's how that works. Suppose we wanted to find the color at 1,0 (x =1, y=0). We would turn that into a complex number. (1+0i, or just 1.) and make that c.</p>
-<p>Then we would place that into the equation, setting z0 = 0 and get:</p>
-<p>z<sub>1</sub> = 0<sup>2</sup> + 1 = 1.</p>
-<p>So z<sub>1</sub> = 1</p>
-<p>Then we would place that in the equation again and get:</p>
-<p>z<sub>2</sub> = 1<sup>2</sup> + 1 = 2</p>
-<p>And find that for c = 1, z<sub>2</sub> = 2.</p>
-<p>Continuing this process would produce the sequence:</p>
-<p><i>0, 1, 2, 5, 26…</i></p>
-<p>Which would get larger and larger indefinitely. </p>
-<p>Now here's how we find the colors. The Mandelbrot “set” is defined to be all the locations (values of c) that produce a sequence that does <b>not</b> get larger and larger. Usally, all number in the set are colored black. But how do we find the color of something that is not in the set?</p>
-<p>Let's go back to our example of c = 1. We set that if the number gets larger than a limit value (usually 2) then we will stop “iterating”, (that is, calculating more values in the sequence) the number. Then, we find the count how many iterations it took for the number to “escape”, or get larger than the limit.</p>
-<p>So since setting c = 1 took 2 iterations to go beyond the limit, we would color that location what ever color corresponds to “2” in the color palette we're using.</p>
-Now what about numbers that <b>don't</b> go beyond the limit, and are in the set? How do we even know they won't go beyond the limit, if we only keep iterating them? This is actually a hard problem. Some numbers would be very easy to tell. For example, setting c = -1 gives the sequence:</p>
-<p><i>0, -1, 0, -1, 0...</i></p></p>
-<p>Since this obviously repeats, and does not ever go beyond 2, then it is in the set, and just needs to be colored black. But some numbers may not repeat. In fact, what most programs (including this one) do in order to find if something is “in the set”, simply keep on running the iteration function for a fixed number of iterations. (The default here is 30,000. It can be changed using the input above.) If the number does not “escape”, that is, go over the limit, by the end, then it decides it is in the set, and colors that location black.</p>
-<p>Not having enough iterations can be a problem, though. For instance, try reducing the number of iterations to 10, or 100 using the box above. See how the look changes. In some places, 30,000, or ever 100,000 iterations isn't even enough to display the set perfectly! It can be a problem that there is no definite way to say if something is “in” the set (unless it repeates).</p>
-
-<p>To learn more about the Mandelbrot Set, take a look at the <a class="link" href=https://en.wikipedia.org/wiki/Mandelbrot_set>Wikipedia Article</a>!</p>
-</div>
-
-<div id=tab3 class="text_hide">
-<h3>About the Burning Ship Fractal</h3>
-<p>The burning ship fractal is closely related to the Mandelbrot set. The only difference is that the real and imaginary parts of the number are changed to thier absolute values (that is, if they are negative, they are changed to positive) before each iteration.</p>
-To learn more about the Burning Ship Fractal, take a look at the <a class="link" href=https://en.wikipedia.org/wiki/Burning_Ship_fractal>Wikipedia Article</a>!
-</div>
-
-<div id=tab4 class="text_hide">
-<h3>About the Mandelbar fractal</h3>
-<p>This fractal (also called the Tricorn) is made by iterating the function:
-<p>z<sub>n+1</sub> = z<sub>n</sub><sup>-2</sup> + c</p>
-<p>as opposed to:
-<p>z<sub>n+1</sub> = z<sub>n</sub><sup>2</sup> + c</p>
-<p> for the Mandelbrot Set.
-<p>One can find both copies of the large Mandelbar and "squashed" features that look like the regular Mandelbrot Set.</p>
-
-
-</div>
-
-<div id=tab5 class="text_hide">
-<h3>About Julia Sets</h3>
-<p>While "Julia" is listed as one choice in the menu, there are really an infinite number of Julia Sets! To look at different ones, check the "show advanced options" box, and enter two values, seperated by a semicolon, in the Julia Set Values box.
-<p>Julia sets are closely related to the Mandelbrot Set. Since the two Julia Set values represent a complex number, a position in the Mandelbrot Set can be matched to a particular Julia Set. Often, the Mandelbrot Set resembles the Julia Set for that location.
-<p>Fractal Renderer actually only displays a subset of Julia Sets. While Julia Sets can be computed for ANY complex function, this renderer only shows Julia Sets of the form: <i>f<sub>c</sub>(z) = z<sup>2</sup> + c</i>
-<p>To learn more about Julia Sets, check out the <a class="link" href=https://en.wikipedia.org/wiki/Julia_set>Wikipedia Article</a>!
-
-</div>
-
-<div id=tab6 class="text_hide">
-<h3>About Orbit Traps</h3>
-<p>Orbit Traps are a way of seeing more about a fractal. While they can be computed for all of the fractals here, there is currently only a renderer for the Mandelbrot Set.
-<p>There are actually several kinds of orbit traps, but they all rely on the same idea. In order to understand orbit traps, one first has to understand orbits.
-<p>An orbit is the chain of complex numbers generated by iterating on of the fractal functions. Since each number corresponds to a location, one can find the distance from on location to another. When using orbit trap coloring, pixels are colored based on their orbit's closest approach to a shape.
-<p>Different shapes show different qualities of a fractal. Some commonly used shapes are crosses, points, or lines.
-<p>To learn more about orbit traps check out the <a class="link" href=https://en.wikipedia.org/wiki/Orbit_trap>Wikipedia Article</a>!
-
-</div>
-
-<div id=tab7 class="text_hide">
-<h3>About Fractals with Different Exponents</h3>
-<p>As noted before, the Mandelbrot Set is calculated by iterating the function:
-<p>z<sub>n+1</sub> = z<sub>n</sub><sup>2</sup> + c</p>
-<p>This can be generalized to:
-<p>z<sub>n+1</sub> = z<sub>n</sub><sup>x</sup> + c</p>
-<p>changing x generates different fractals, often called "multibrot sets". The "variable exponent" allows users to explore the results of changing the exponent. To change the exponent, go the the "advanced options" section by checking the box.
-<p>The Multibrot Set fractal has an exponent of 3. It uses a different algorithm than the variable picker, and thus is a little faster. (The algorithm used is not variable, so it couldn't be used for displaying variable exponents.)
-<p>To learn more about Multibrot Sets, check out the <a class="link" href=https://en.wikipedia.org/wiki/Mandelbrot_set#Generalizations>Wikipedia Article</a>!
-
-</div>
-
-<div id=tab8 class="text_hide">
-<h3>About Fractal Renderer</h3>
-<p>Fractal Renderer was written by Kerwizzy (Age 13), with help from his father.</p>
-<p>He made it because he wanted to be able to explore other fractals that he had heard about, such as the Burning Ship fractal, and try seeing if he could find other fractals. </p>
-<p>He wrote the program and designed the page himself (with some techical help from his father). He made all the color palettes himself, too, using tools in <a class="link" href=https://www.blender.org/>Blender 3D</a>. (With some ideas for names from other renderers.)</p>
-<p>Check out the <a class="link" href=https://github.com/kerwizzy/HTML5-Fractal-Renderer>source</a> on Github!</p>
-</div>
-
-
-
-</div>
-
-
-<button onclick="closeOptions()">Close Options</button>
-
-<br>
-</div>
-
-
-
-<DIV style="width:100%;height:100%;left:0;z-index:10" id=canvasDiv>
-<canvas id="myCanvas" style="border:0px">
-Your browser does not support the HTML5 canvas tag.</canvas>
-</DIV>
-<DIV id=advancedOptions style="display:none">
-
-<h2>UI Options</h2>
-
-Do view changes: <input type="checkbox" id=clickToggle onchange="doClicks = document.getElementById('clickToggle').checked"></input>
-<BR>
-Clicking zooms: <input type="checkbox" id=zoomToggle onchange="doZoom = document.getElementById('zoomToggle').checked"></input>
-
-<h2>Size</h2>
-
-Width: <input type=number id=customWidth onchange="updateSize()"></input>
-Height: <input type=number id=customHeight onchange="updateSize()"></input>
-
-<h2>Rendering</h2>
-
-Do final pass first: <input type="checkbox" id=intervalToggle onchange="updateInterval();"></input>
-<BR>
-Alert when done: <input type="checkbox" id=doneAlertToggle onchange="updateAlertToggle();"></input>
-
-<h2>Fractal Details</h2>
-Fractional Exponent: <input type="range" id=powerRange oninput="updateExponent(0);" value="2"  min="-5" max="10" step="0.0001"></input>
-<input type="number" id=powDisplay oninput="updateExponent(1);" value="2" min="-5" max="10" step="0.1"></input>
-<BR>
-<BR>
-Julia Set Values
-<input id=juliaC size=50 value="0;1" onchange="getJuliaC()">
-
-
-
-</DIV>
-
-
-
+   <DIV style="position:fixed;top:0;width:100%;z-index:100;background-color:#ffffff" class="optionsshadow">
+      <strong style="font-size:30px;font-family:arial;text-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);">Fractal Renderer</strong>
+      <span style="margin-left:10px;margin-right:10px">
+      By Kerwizzy
+      </span>
+      Location:
+      <input id=locationDisplay size=100>
+      <button onclick="getLocation()">Update</button>
+      <button onclick="reset()">Reset</button>
+      Show advanced options: <input type="checkbox" id=advancedOptionsToggle onchange="changeAdvancedOptions()"></input>
+      <button style="margin-left:20px" onclick="openOptions()">More Information</button>
+      <select id=fractalPicker style="float:right;margin-right:10px" onchange="changeFractal()">
+         <option value="0">Mandelbrot Set</option>
+         <option value="1">Burning Ship</option>
+         <option value="2">Mandelbar</option>
+         <option value="3">Julia</option>
+         <option value="4">Mandelbrot Orbit Trap</option>
+         <option value="5">Multibrot (3)</option>
+         <option value="6">Variable Exponent</option>
+      </select>
+   </DIV>
+   <div id="Options" class="hide optionsshadow" style="min-width:30%;">
+	  <div style="position:fixed;top:0;">
+         <button onclick="closeOptions()">Close Options</button>
+      </div>
+      <div style="overflow:scroll;height:100%;">
+         <h2> How to Use </h2>
+         <p>Click anywhere to zoom in, click near the edges to zoom out.</p>
+         <p>Try changing the fractal using the picker in the top-right corner!</p>
+         <p>Put real and imaginary coordinates and the interval between pixels in the location box to go to an exact location.</p>
+         <p>Have fun!</p>
+         <h2> Colors </h2>
+         <select id=colPicker style="margin-right:10px" onchange="changeColors()">
+            <!-- There isn't anything here on startup, because it gets initialized automatically by generateColPicker() in colors.js !-->
+         </select>
+         <BR>
+         <BR>
+         Enable Less Noisy Colors: <input type="checkbox" id=logToggle onchange="changeColorScales()"></input> <i>(Looks nicer in highly detailed areas.)</i>
+         <!-- <input type="checkbox" name="logToggle" onchange="changeLogColor()" checked> !-->
+         <BR>
+         <BR>
+         Enable Smooth Colors:<input type="checkbox" id=smoothColorToggle onchange="changeColorScales()"></input>
+         <br>
+         <br>
+         <h2>Iterations</h2>
+         <input id=iterationsInput type=number value=30000 onchange="gIterations = parseInt(document.getElementById('iterationsInput').value)">   
+         <br>
+         <br>
+         <h2>About</h2>
+         <div>
+            <div id=pickTab1 class="tab_active" onclick="changeText(1)">Fractals</div>
+            <div id=pickTab2 class="tab" onclick="changeText(2)">The Mandelbrot Set</div>
+            <div id=pickTab3 class="tab" onclick="changeText(3)">Burning Ship</div>
+            <div id=pickTab4 class="tab" onclick="changeText(4)">Mandelbar</div>
+            <div id=pickTab5 class="tab" onclick="changeText(5)">Julia Sets</div>
+            <div id=pickTab6 class="tab" onclick="changeText(6)">Orbit Traps</div>
+            <div id=pickTab7 class="tab" onclick="changeText(7)">Variable Exponents</div>
+            <div id=pickTab8 class="tab" onclick="changeText(8)">Fractal Renderer</div>
+         </div>
+         <div class="">
+            <div id=tab1 class="text_show ">
+               <h3>Fractals</h3>
+               <p>Fractals are shapes that include smaller features which resemble the fractal as a whole. These smaller shapes, in turn, include yet smaller "copies" of the larger figure.</p>
+               <p> The Mandelbrot set is a fractal because it includes smaller shapes that look like the larger shape. Interestingly, though, the smaller features in the Mandelbrot set are always slightly different than the larger fractal.</p>
+            </div>
+            <div id=tab2 class="text_hide">
+               <h3>About the Mandelbrot Set</h3>
+               <p>The Mandelbrot set (and the other fractals displayed here) are made by repeating a function over and over again.</p>
+               <p>For example, in order to find the color for a location in the Mandelbrot Set, first we take the location and make it a number in the <a class="link" href=https://en.wikipedia.org/wiki/Complex_plane>complex plane</a>. We call this number “c”.</p>
+               <p>Then, we use the equation for the Mandelbrot Set that tells us, given a number in an interation sequence, and c, we can calculate the next value in the sequence.</p>
+               <p>So, basically, we calculate “sequences” of numbers for each location, using this equation:</p>
+               <p>z<sub>n+1</sub> = z<sub>n</sub><sup>2</sup> + c</p>
+               <p>Where</p>
+               <ul>
+                  <li><b>c</b> is the complex number</li>
+                  <li><b>n</b> is what location in the sequence we are at.</li>
+                  <li><b>z<sub>n</sub></b> is the n<sup>th</sup> number in the sequence. (That is, the current number)</li>
+                  <li><b>z</b><sub>n+1</sub>is the n+1<sup>th</sup> number in the sequence. (That is, the next number.) </li>
+               </ul>
+               <p>So simply written, the equation is:</p>
+               <p><i>Next number = previous number squared + location</i></p>
+               <p>We set the starting number to 0, and then we can calculate sequences. These sequences allow us to figure out how to color things.</p>
+               <p>Here's how that works. Suppose we wanted to find the color at 1,0 (x =1, y=0). We would turn that into a complex number. (1+0i, or just 1.) and make that c.</p>
+               <p>Then we would place that into the equation, setting z0 = 0 and get:</p>
+               <p>z<sub>1</sub> = 0<sup>2</sup> + 1 = 1.</p>
+               <p>So z<sub>1</sub> = 1</p>
+               <p>Then we would place that in the equation again and get:</p>
+               <p>z<sub>2</sub> = 1<sup>2</sup> + 1 = 2</p>
+               <p>And find that for c = 1, z<sub>2</sub> = 2.</p>
+               <p>Continuing this process would produce the sequence:</p>
+               <p><i>0, 1, 2, 5, 26…</i></p>
+               <p>Which would get larger and larger indefinitely. </p>
+               <p>Now here's how we find the colors. The Mandelbrot “set” is defined to be all the locations (values of c) that produce a sequence that does <b>not</b> get larger and larger. Usally, all number in the set are colored black. But how do we find the color of something that is not in the set?</p>
+               <p>Let's go back to our example of c = 1. We set that if the number gets larger than a limit value (usually 2) then we will stop “iterating”, (that is, calculating more values in the sequence) the number. Then, we find the count how many iterations it took for the number to “escape”, or get larger than the limit.</p>
+               <p>So since setting c = 1 took 2 iterations to go beyond the limit, we would color that location what ever color corresponds to “2” in the color palette we're using.</p>
+               Now what about numbers that <b>don't</b> go beyond the limit, and are in the set? How do we even know they won't go beyond the limit, if we only keep iterating them? This is actually a hard problem. Some numbers would be very easy to tell. For example, setting c = -1 gives the sequence:</p>
+               <p><i>0, -1, 0, -1, 0...</i></p>
+               </p>
+               <p>Since this obviously repeats, and does not ever go beyond 2, then it is in the set, and just needs to be colored black. But some numbers may not repeat. In fact, what most programs (including this one) do in order to find if something is “in the set”, simply keep on running the iteration function for a fixed number of iterations. (The default here is 30,000. It can be changed using the input above.) If the number does not “escape”, that is, go over the limit, by the end, then it decides it is in the set, and colors that location black.</p>
+               <p>Not having enough iterations can be a problem, though. For instance, try reducing the number of iterations to 10, or 100 using the box above. See how the look changes. In some places, 30,000, or ever 100,000 iterations isn't even enough to display the set perfectly! It can be a problem that there is no definite way to say if something is “in” the set (unless it repeates).</p>
+               <p>To learn more about the Mandelbrot Set, take a look at the <a class="link" href=https://en.wikipedia.org/wiki/Mandelbrot_set>Wikipedia Article</a>!</p>
+            </div>
+            <div id=tab3 class="text_hide">
+               <h3>About the Burning Ship Fractal</h3>
+               <p>The burning ship fractal is closely related to the Mandelbrot set. The only difference is that the real and imaginary parts of the number are changed to thier absolute values (that is, if they are negative, they are changed to positive) before each iteration.</p>
+               To learn more about the Burning Ship Fractal, take a look at the <a class="link" href=https://en.wikipedia.org/wiki/Burning_Ship_fractal>Wikipedia Article</a>!
+            </div>
+            <div id=tab4 class="text_hide">
+               <h3>About the Mandelbar fractal</h3>
+               <p>This fractal (also called the Tricorn) is made by iterating the function:
+               <p>z<sub>n+1</sub> = z<sub>n</sub><sup>-2</sup> + c</p>
+               <p>as opposed to:
+               <p>z<sub>n+1</sub> = z<sub>n</sub><sup>2</sup> + c</p>
+               <p> for the Mandelbrot Set.
+               <p>One can find both copies of the large Mandelbar and "squashed" features that look like the regular Mandelbrot Set.</p>
+            </div>
+            <div id=tab5 class="text_hide">
+               <h3>About Julia Sets</h3>
+               <p>While "Julia" is listed as one choice in the menu, there are really an infinite number of Julia Sets! To look at different ones, check the "show advanced options" box, and enter two values, seperated by a semicolon, in the Julia Set Values box.
+               <p>Julia sets are closely related to the Mandelbrot Set. Since the two Julia Set values represent a complex number, a position in the Mandelbrot Set can be matched to a particular Julia Set. Often, the Mandelbrot Set resembles the Julia Set for that location.
+               <p>Fractal Renderer actually only displays a subset of Julia Sets. While Julia Sets can be computed for ANY complex function, this renderer only shows Julia Sets of the form: <i>f<sub>c</sub>(z) = z<sup>2</sup> + c</i>
+               <p>To learn more about Julia Sets, check out the <a class="link" href=https://en.wikipedia.org/wiki/Julia_set>Wikipedia Article</a>!
+            </div>
+            <div id=tab6 class="text_hide">
+               <h3>About Orbit Traps</h3>
+               <p>Orbit Traps are a way of seeing more about a fractal. While they can be computed for all of the fractals here, there is currently only a renderer for the Mandelbrot Set.
+               <p>There are actually several kinds of orbit traps, but they all rely on the same idea. In order to understand orbit traps, one first has to understand orbits.
+               <p>An orbit is the chain of complex numbers generated by iterating on of the fractal functions. Since each number corresponds to a location, one can find the distance from on location to another. When using orbit trap coloring, pixels are colored based on their orbit's closest approach to a shape.
+               <p>Different shapes show different qualities of a fractal. Some commonly used shapes are crosses, points, or lines.
+               <p>To learn more about orbit traps check out the <a class="link" href=https://en.wikipedia.org/wiki/Orbit_trap>Wikipedia Article</a>!
+            </div>
+            <div id=tab7 class="text_hide">
+               <h3>About Fractals with Different Exponents</h3>
+               <p>As noted before, the Mandelbrot Set is calculated by iterating the function:
+               <p>z<sub>n+1</sub> = z<sub>n</sub><sup>2</sup> + c</p>
+               <p>This can be generalized to:
+               <p>z<sub>n+1</sub> = z<sub>n</sub><sup>x</sup> + c</p>
+               <p>changing x generates different fractals, often called "multibrot sets". The "variable exponent" allows users to explore the results of changing the exponent. To change the exponent, go the the "advanced options" section by checking the box.
+               <p>The Multibrot Set fractal has an exponent of 3. It uses a different algorithm than the variable picker, and thus is a little faster. (The algorithm used is not variable, so it couldn't be used for displaying variable exponents.)
+               <p>To learn more about Multibrot Sets, check out the <a class="link" href=https://en.wikipedia.org/wiki/Mandelbrot_set#Generalizations>Wikipedia Article</a>!
+            </div>
+            <div id=tab8 class="text_hide">
+               <h3>About Fractal Renderer</h3>
+               <p>Fractal Renderer was written by Kerwizzy (Age 13), with help from his father.</p>
+               <p>He made it because he wanted to be able to explore other fractals that he had heard about, such as the Burning Ship fractal, and try seeing if he could find other fractals. </p>
+               <p>He wrote the program and designed the page himself (with some techical help from his father). He made all the color palettes himself, too, using tools in <a class="link" href=https://www.blender.org/>Blender 3D</a>. (With some ideas for names from other renderers.)</p>
+               <p>Check out the <a class="link" href=https://github.com/kerwizzy/HTML5-Fractal-Renderer>source</a> on Github!</p>
+            </div>
+         </div>
+      </div>
+      
+      <br>
+   </div>
+   <DIV style="width:100%;height:100%;left:0;z-index:10" id=canvasDiv>
+      <canvas id="myCanvas" style="border:0px">
+         Your browser does not support the HTML5 canvas tag.
+      </canvas>
+   </DIV>
+   <DIV id=advancedOptions style="display:none">
+      <h2>UI Options</h2>
+      Do view changes: <input type="checkbox" id=clickToggle onchange="doClicks = document.getElementById('clickToggle').checked"></input>
+      <BR>
+      Clicking zooms: <input type="checkbox" id=zoomToggle onchange="doZoom = document.getElementById('zoomToggle').checked"></input>
+      <h2>Size</h2>
+      Width: <input type=number id=customWidth onchange="updateSize()"></input>
+      Height: <input type=number id=customHeight onchange="updateSize()"></input>
+      <h2>Rendering</h2>
+      Do final pass first: <input type="checkbox" id=intervalToggle onchange="updateInterval();"></input>
+      <BR>
+      Alert when done: <input type="checkbox" id=doneAlertToggle onchange="updateAlertToggle();"></input>
+      <h2>Fractal Details</h2>
+      Fractional Exponent: <input type="range" id=powerRange oninput="updateExponent(0);" value="2"  min="-5" max="10" step="0.0001"></input>
+      <input type="number" id=powDisplay oninput="updateExponent(1);" value="2" min="-5" max="10" step="0.1"></input>
+      <BR>
+      <BR>
+      Julia Set Values
+      <input id=juliaC size=50 value="0;1" onchange="getJuliaC()">
+   </DIV>
 </BODY>
