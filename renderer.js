@@ -894,6 +894,7 @@ function getCursorPosition(canvas, event) {
 				size = size/2;
 			}
 		}
+		document.getElementById("startupHelp").style.display = "none"; //Hide the little help bar on the first click.
 		draw();
 	}
 }
