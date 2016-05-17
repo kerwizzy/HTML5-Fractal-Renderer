@@ -78,7 +78,7 @@ function changeFractal() {
 		inSet=inSet_julia;
 		
 		getJuliaC();
-		alert("In order to display Julia Sets, enter two values (seperated by ';') in the lower box in the other options.");
+		alert("In order to display Julia Sets, enter two values (seperated by ';') in the box in the advanced options section.");
 		break;
 	case 4:
 		inSet=inSet_mandelbrot_orbitTrap;
@@ -296,7 +296,7 @@ function doWork_default () {
 	var cWidth = myCanvas.width;
 	var cHeight = myCanvas.height;
 	var viewWidth = work.cWidth*size; //The numerical width of the view.
-	var viewHeight = work.cHeight*size;
+	var viewHeight = work.cHeight*size; //BUG: These variables don't actually do anything!!!!! Should be deleted.
 	var locationX = work.location[0];
 	var locationY = work.location[1];
 	var ctx = work.ctx;
@@ -476,6 +476,7 @@ function renderPixel_log_smooth(real,imaginary) {
 	
 	
 	var ratio = (1-(Math.log(Math.log(dist))) / Math.log(2));
+	//Will changing the 2 to 3 (or whatever) make multibrot and variable work right?
 	
 		if (Math.sqrt(real*real + imaginary*imaginary) > 8) { //Make the colors after 8 be flat.
 	
@@ -489,7 +490,7 @@ function renderPixel_log_smooth(real,imaginary) {
 	if (outColor == -1) {
 		r = colors[999*3]
 		g = colors[999*3+1]
-		b = colors[999*3+2]
+		b = colors[999*3+2].
 		return;
 	}
 	
@@ -549,7 +550,7 @@ var zImsq = zIm*zIm;
 
 
 
-		if ((zRezq)+(zImsq) > escapeHorizon) { //If it is outside the 2 unit circle...
+		if ((zResq)+(zImsq) > escapeHorizon) { //If it is outside the 2 unit circle...
 			zRe_end = zRe;
 			zIm_end = zIm;
 
@@ -736,10 +737,17 @@ function inSet_mandelbrot_orbitTrap(real,imaginary) {
 		
 		
 		if (distance > escapeHorizon) {
+			/*
+			var wRatio = closest%1.0; //The ratio we want for smooth coloring.
+			wRatio = -wRatio; //Needs to be switched
+			var wDist = Math.pow(Math.E,(Math.pow(Math.E,((wRatio+1)*(Math.LOG2E))))); //The inversion of the ratio calculator.
+			var zEnd = wDist/(Math.SQRT2);			
 			
-			
-			zRe_end = Math.floor(4*Math.log(4/closest));
-			zIm_end = Math.floor(4*Math.log(4/closest));
+			alert(zEnd);
+			alert(wDist);
+			*/
+			zRe_end = zRe//zEnd;
+			zIm_end = zIm;
 			return Math.floor(4*Math.log(4/closest));
 		}
 		
@@ -897,8 +905,8 @@ function initialize() {
 	
 	myCanvas = document.getElementById("myCanvas");
 
-	myCanvas.width = window.innerWidth; //Make it a full screen
-	myCanvas.height = window.innerHeight;
+	myCanvas.width = window.innerWidth-(0.013*window.innerWidth); //Make it a full screen
+	myCanvas.height = window.innerHeight-(0.02*window.innerHeight);
 
 
 	myCanvas.addEventListener("mouseup",function(event) { if(event.button===0) getCursorPosition(myCanvas,event);});

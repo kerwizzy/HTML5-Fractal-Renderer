@@ -29,7 +29,7 @@
       </select>
    </DIV>
    <div id="Options" class="hide optionsshadow" style="min-width:30%;">
-	  <div style="position:fixed;top:0;">
+	  <div style="top:0;background-color:#ffffff;width:100%;box-shadow:0px 4px 4px rgba(0, 0, 0, 0.5);">
          <button onclick="closeOptions()">Close Options</button>
       </div>
       <div style="overflow:scroll;height:100%;">
@@ -66,7 +66,7 @@
             <div id=pickTab7 class="tab" onclick="changeText(7)">Variable Exponents</div>
             <div id=pickTab8 class="tab" onclick="changeText(8)">Fractal Renderer</div>
          </div>
-         <div class="">
+         <div>
             <div id=tab1 class="text_show ">
                <h3>Fractals</h3>
                <p>Fractals are shapes that include smaller features which resemble the fractal as a whole. These smaller shapes, in turn, include yet smaller "copies" of the larger figure.</p>
@@ -160,7 +160,7 @@
       
       <br>
    </div>
-   <DIV style="width:100%;height:100%;left:0;z-index:10" id=canvasDiv>
+   <DIV style="left:0;z-index:10" id=canvasDiv>
       <canvas id="myCanvas" style="border:0px">
          Your browser does not support the HTML5 canvas tag.
       </canvas>
