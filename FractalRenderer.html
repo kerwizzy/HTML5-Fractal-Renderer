@@ -16,6 +16,10 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 
+<!-- Fractal Renderer Code -->
+<SCRIPT type="text/javascript" src="renderer.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="uiCode.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="colors.js"></SCRIPT>
 </HEAD>
 <BODY>
 <div class="container-fluid">
@@ -23,17 +27,18 @@
 	<div class="col-md-3">
 		<h2 style="display:inline">Fractal Renderer <small>By Kerwizzy</small></h2>
 	</div>
-	<div class="col-md-2">
-		<input type=text value="0;0;0.005"></input>
+	<div class="col-md-3">
+		<input type=text value="0;0;0.005" id=locationDisplay size=50></input>
 	</div>
 	<div class="col-md-3">
 		
-		<button type="button" class="btn btn-default">Update</button>
-		<button type="button" class="btn btn-default">Reset</button>
+		<button type="button" class="btn btn-default" onclick="getLocation()">Update</button>
+		<button type="button" class="btn btn-default" onclick="reset()">Reset</button>
 	</div>
 	<div class="col-md-2">
 		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#options">Options</button>
 		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#about">About</button>
+		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#advancedOptions">Advanced</button>
 	</div>
 	<div class="col-md-1">
 		<select id=colPicker onchange="changeColors()" class="form-control">
@@ -42,9 +47,11 @@
 	</div>
 </div>
 <div class="row">
-	<canvas id="myCanvas" style="border:0px">
-         Your browser does not support the HTML5 canvas tag.
-    </canvas>
+	<div id="canvasDiv">
+		<canvas id="myCanvas" style="border:0px">
+			 Your browser does not support the HTML5 canvas tag.
+		</canvas>
+	</div>
 </div>
 </div>
 <!-- options pane -->
@@ -250,6 +257,43 @@
       
 	 </div>
     </div>
+	
+	
+	
+	
+	<div class="modal fade" id="advancedOptions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h1 class="modal-title">Advanced Options</h4>
+      </div>
+      <div class="modal-body">
+		<h2>UI Options</h2>
+		Do view changes: <input type="checkbox" id=clickToggle onchange="doClicks = document.getElementById('clickToggle').checked"></input>
+		<BR>
+		Clicking zooms: <input type="checkbox" id=zoomToggle onchange="doZoom = document.getElementById('zoomToggle').checked"></input>
+		<h2>Size</h2>
+		Width: <input type=number id=customWidth onchange="updateSize()"></input>
+		Height: <input type=number id=customHeight onchange="updateSize()"></input>
+		<h2>Rendering</h2>
+		Do final pass first: <input type="checkbox" id=intervalToggle onchange="updateInterval();"></input>
+		<BR>
+		Alert when done: <input type="checkbox" id=doneAlertToggle onchange="updateAlertToggle();"></input>
+		<h2>Fractal Details</h2>
+		Fractional Exponent: <input type="range" id=powerRange oninput="updateExponent(0);" value="2"  min="-5" max="10" step="0.0001"></input>
+		<input type="number" id=powDisplay oninput="updateExponent(1);" value="2" min="-5" max="10" step="0.1"></input>
+		<BR>
+		<BR>
+		Julia Set Values
+		<input id=juliaC size=50 value="0;1" onchange="getJuliaC()">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 </BODY>

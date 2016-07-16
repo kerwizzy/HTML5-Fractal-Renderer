@@ -896,7 +896,6 @@ function getCursorPosition(canvas, event) {
 				size = size/2;
 			}
 		}
-		document.getElementById("startupHelp").style.display = "none"; //Hide the little help bar on the first click.
 		draw();
 	}
 }
@@ -922,7 +921,6 @@ function wheelZoom(canvas,event) {
 				work.location[1] = ((y-myCanvas.height/2)*-size+work.location[1]);				
 				}
 		}
-		document.getElementById("startupHelp").style.display = "none"; //Hide the little help bar on the first click.
 		draw();
 	}	
 }
@@ -933,9 +931,10 @@ function initialize() {
 	generateColPicker(); //Add the interior data for the color selector box, based on current color palettes. The function is in colors.js
 	
 	myCanvas = document.getElementById("myCanvas");
-
-	myCanvas.width = window.innerWidth-(0.013*window.innerWidth); //Make it a full screen
-	myCanvas.height = window.innerHeight-(0.02*window.innerHeight);
+	
+	
+	myCanvas.width = window.innerWidth-(0.001*window.innerWidth); //Make it a full screen
+	myCanvas.height = window.innerHeight-(0.04*window.innerHeight);
 
 
 	myCanvas.addEventListener("mouseup",function(event) { if(event.button===0) getCursorPosition(myCanvas,event);});
@@ -950,7 +949,6 @@ function initialize() {
 	
 	document.getElementById('clickToggle').checked = true;
 	document.getElementById('zoomToggle').checked = true;
-	document.getElementById('advancedOptionsToggle').checked = false;
 	
 	document.getElementById('doneAlertToggle').checked = false;
 	document.getElementById('intervalToggle').checked = false;
