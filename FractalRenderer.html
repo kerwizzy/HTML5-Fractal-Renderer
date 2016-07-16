@@ -1,51 +1,75 @@
 <!DOCTYPE html>
-<meta charset="UTF-8">
-<title>HTML5 Fractal Renderer</title>
+<html>
 <HEAD>
-   <link rel="stylesheet" type="text/css" href="styles.css" media="screen">
-   <SCRIPT type="text/javascript" src="renderer.js"></SCRIPT>
-   <SCRIPT type="text/javascript" src="uiCode.js"></SCRIPT>
-   <SCRIPT type="text/javascript" src="colors.js"></SCRIPT>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
 </HEAD>
-<BODY style="font-family:arial;text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);">
-   <DIV style="position:fixed;top:0;width:100%;z-index:100;background-color:#ffffff" class="optionsshadow">
-      <strong style="font-size:30px;font-family:arial;text-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);">Fractal Renderer</strong>
-      <span style="margin-left:10px;margin-right:10px">
-      By Kerwizzy
-      </span>
-      Location:
-      <input id=locationDisplay size=100>
-      <button onclick="getLocation()">Update</button>
-      <button onclick="reset()">Reset</button>
-      Show advanced options: <input type="checkbox" id=advancedOptionsToggle onchange="changeAdvancedOptions()"></input>
-      <button style="margin-left:20px" onclick="openOptions()">More Information</button>
-      <select id=fractalPicker style="float:right;margin-right:10px" onchange="changeFractal()">
-         <option value="0">Mandelbrot Set</option>
-         <option value="1">Burning Ship</option>
-         <option value="2">Mandelbar</option>
-         <option value="3">Julia</option>
-         <option value="4">Mandelbrot Orbit Trap</option>
-         <option value="5">Multibrot (3)</option>
-         <option value="6">Variable Exponent</option>
-      </select>
-	<div id="startupHelp" style="">
-		Click anywhere to zoom in, click near the edges to zoom out.
+<BODY>
+<div class="container-fluid">
+<div class="row">
+	<div class="col-md-3">
+		<h2 style="display:inline">Fractal Renderer <small>By Kerwizzy</small></h2>
 	</div>
-   </DIV>
-   <div id="Options" class="hide optionsshadow" style="min-width:30%;">
-	  <div style="top:0;background-color:#ffffff;width:100%;box-shadow:0px 4px 4px rgba(0, 0, 0, 0.5);">
-         <button onclick="closeOptions()">Close Options</button>
+	<div class="col-md-2">
+		<input type=text value="0;0;0.005"></input>
+	</div>
+	<div class="col-md-3">
+		
+		<button type="button" class="btn btn-default">Update</button>
+		<button type="button" class="btn btn-default">Reset</button>
+	</div>
+	<div class="col-md-2">
+		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#options">Options</button>
+		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#about">About</button>
+	</div>
+	<div class="col-md-1">
+		<select id=colPicker onchange="changeColors()" class="form-control">
+				<!-- There isn't anything here on startup, because it gets initialized automatically by generateColPicker() in colors.js !-->
+		</select>
+	</div>
+</div>
+<div class="row">
+	<canvas id="myCanvas" style="border:0px">
+         Your browser does not support the HTML5 canvas tag.
+    </canvas>
+</div>
+</div>
+<!-- options pane -->
+<div class="modal fade" id="options" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h1 class="modal-title" id="myModalLabel">Options</h4>
       </div>
-      <div style="overflow:scroll;height:100%;">
-         <h2> How to Use </h2>
+      <div class="modal-body">
          <p>Click anywhere to zoom in, click near the edges to zoom out.</p>
          <p>Try changing the fractal using the picker in the top-right corner!</p>
          <p>Put real and imaginary coordinates and the interval between pixels in the location box to go to an exact location.</p>
          <p>Have fun!</p>
-         <h2> Colors </h2>
-         <select id=colPicker style="margin-right:10px" onchange="changeColors()">
-            <!-- There isn't anything here on startup, because it gets initialized automatically by generateColPicker() in colors.js !-->
-         </select>
+         <h2> Fractal </h2>
+			<select id=fractalPicker class="form-control" onchange="changeFractal()">
+				<option value="0">Mandelbrot Set</option>
+				<option value="1">Burning Ship</option>
+				<option value="2">Mandelbar</option>
+				<option value="3">Julia</option>
+				<option value="4">Mandelbrot Orbit Trap</option>
+				<option value="5">Multibrot (3)</option>
+				<option value="6">Variable Exponent</option>
+			</select>
          <BR>
          <BR>
          <!-- Enable Less Noisy Colors: <input type="checkbox" id=logToggle onchange="changeColorScales()"></input> <i>(Looks nicer in highly detailed areas.)</i> !-->
@@ -60,24 +84,78 @@
          <input id=iterationsInput type=number value=30000 onchange="gIterations = parseInt(document.getElementById('iterationsInput').value)">   
          <br>
          <br>
-         <h2>About</h2>
-         <div>
-            <div id=pickTab1 class="tab_active" onclick="changeText(1)">Fractals</div>
-            <div id=pickTab2 class="tab" onclick="changeText(2)">The Mandelbrot Set</div>
-            <div id=pickTab3 class="tab" onclick="changeText(3)">Burning Ship</div>
-            <div id=pickTab4 class="tab" onclick="changeText(4)">Mandelbar</div>
-            <div id=pickTab5 class="tab" onclick="changeText(5)">Julia Sets</div>
-            <div id=pickTab6 class="tab" onclick="changeText(6)">Orbit Traps</div>
-            <div id=pickTab7 class="tab" onclick="changeText(7)">Variable Exponents</div>
-            <div id=pickTab8 class="tab" onclick="changeText(8)">Fractal Renderer</div>
-         </div>
-         <div>
-            <div id=tab1 class="text_show ">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- About pane -->
+<div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h1 class="modal-title" id="myModalLabel">About</h4>
+      </div>
+      <div class="modal-body">
+		
+	  
+	 <div>
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#tab8" role="tab" data-toggle="tab">Fractal Renderer</a></li>
+			<li role="presentation" class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fractals <span class="caret"></span></a> 
+				 <ul class="dropdown-menu"> 
+					 <li class="">
+						<a href="#tab2" role="tab" data-toggle="tab" >Mandelbrot Set</a>
+					 </li> 
+					 <li class="">
+						<a href="#tab3" role="tab" data-toggle="tab">Burning Ship</a>
+					 </li>
+					 <li class="">
+						<a href="#tab4" role="tab" data-toggle="tab" >Mandelbar</a>
+					 </li> 
+					 <li class="">
+						<a href="#tab5" role="tab" data-toggle="tab">Julia Sets</a>
+					 </li>
+					 <li class="">
+						<a href="#tab6" role="tab" data-toggle="tab" >Orbit Traps</a>
+					 </li> 
+					 <li class="">
+						<a href="#tab7" role="tab" data-toggle="tab">Variable Exponent</a>
+					 </li>
+					 
+				 </ul> 
+			 </li> 
+		</ul>
+		
+		
+		 <!-- <ul id="myTabs" class="nav nav-tabs" role="tablist"> 
+			 <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Home</a></li> 
+			 <li class="" role="presentation"><a aria-expanded="false" href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile">Profile</a></li> 
+			 <li role="presentation" class="dropdown open"> <a aria-expanded="true" href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents">Dropdown <span class="caret"></span></a> 
+				 <ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents"> 
+				 <li class=""><a aria-expanded="false" href="#dropdown1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1">@fat</a></li> <li class="">
+				 <a aria-expanded="false" href="#dropdown2" role="tab" id="dropdown2-tab" data-toggle="tab" aria-controls="dropdown2">@mdo</a>
+				 </li> 
+				 </ul> 
+			 </li> 
+		 </ul> -->
+		 
+		 
+		
+
+
+
+		
+		<div class="tab-content">
+		    <div id=tab1 class="tab-pane active " role="tabpanel">
                <h3>Fractals</h3>
                <p>Fractals are shapes that include smaller features which resemble the fractal as a whole. These smaller shapes, in turn, include yet smaller "copies" of the larger figure.</p>
                <p> The Mandelbrot set is a fractal because it includes smaller shapes that look like the larger shape. Interestingly, though, the smaller features in the Mandelbrot set are always slightly different than the larger fractal.</p>
             </div>
-            <div id=tab2 class="text_hide">
+            <div id=tab2 class="tab-pane" role="tabpanel">
                <h3>About the Mandelbrot Set</h3>
                <p>The Mandelbrot set (and the other fractals displayed here) are made by repeating a function over and over again.</p>
                <p>For example, in order to find the color for a location in the Mandelbrot Set, first we take the location and make it a number in the <a class="link" href=https://en.wikipedia.org/wiki/Complex_plane>complex plane</a>. We call this number “c”.</p>
@@ -114,12 +192,12 @@
                <p>Not having enough iterations can be a problem, though. For instance, try reducing the number of iterations to 10, or 100 using the box above. See how the look changes. In some places, 30,000, or ever 100,000 iterations isn't even enough to display the set perfectly! It can be a problem that there is no definite way to say if something is “in” the set (unless it repeates).</p>
                <p>To learn more about the Mandelbrot Set, take a look at the <a class="link" href=https://en.wikipedia.org/wiki/Mandelbrot_set>Wikipedia Article</a>!</p>
             </div>
-            <div id=tab3 class="text_hide">
+            <div id=tab3 class="tab-pane" role="tabpanel">
                <h3>About the Burning Ship Fractal</h3>
                <p>The burning ship fractal is closely related to the Mandelbrot set. The only difference is that the real and imaginary parts of the number are changed to thier absolute values (that is, if they are negative, they are changed to positive) before each iteration.</p>
                To learn more about the Burning Ship Fractal, take a look at the <a class="link" href=https://en.wikipedia.org/wiki/Burning_Ship_fractal>Wikipedia Article</a>!
             </div>
-            <div id=tab4 class="text_hide">
+            <div id=tab4 class="tab-pane" role="tabpanel">
                <h3>About the Mandelbar fractal</h3>
                <p>This fractal (also called the Tricorn) is made by iterating the function:
                <p>z<sub>n+1</sub> = z<sub>n</sub><sup>-2</sup> + c</p>
@@ -128,14 +206,14 @@
                <p> for the Mandelbrot Set.
                <p>One can find both copies of the large Mandelbar and "squashed" features that look like the regular Mandelbrot Set.</p>
             </div>
-            <div id=tab5 class="text_hide">
+            <div id=tab5 class="tab-pane" role="tabpanel">
                <h3>About Julia Sets</h3>
                <p>While "Julia" is listed as one choice in the menu, there are really an infinite number of Julia Sets! To look at different ones, check the "show advanced options" box, and enter two values, seperated by a semicolon, in the Julia Set Values box.
                <p>Julia sets are closely related to the Mandelbrot Set. Since the two Julia Set values represent a complex number, a position in the Mandelbrot Set can be matched to a particular Julia Set. Often, the Mandelbrot Set resembles the Julia Set for that location.
                <p>Fractal Renderer actually only displays a subset of Julia Sets. While Julia Sets can be computed for ANY complex function, this renderer only shows Julia Sets of the form: <i>f<sub>c</sub>(z) = z<sup>2</sup> + c</i>
                <p>To learn more about Julia Sets, check out the <a class="link" href=https://en.wikipedia.org/wiki/Julia_set>Wikipedia Article</a>!
             </div>
-            <div id=tab6 class="text_hide">
+            <div id=tab6 class="tab-pane" role="tabpanel">
                <h3>About Orbit Traps</h3>
                <p>Orbit Traps are a way of seeing more about a fractal. While they can be computed for all of the fractals here, there is currently only a renderer for the Mandelbrot Set.
                <p>There are actually several kinds of orbit traps, but they all rely on the same idea. In order to understand orbit traps, one first has to understand orbits.
@@ -143,7 +221,7 @@
                <p>Different shapes show different qualities of a fractal. Some commonly used shapes are crosses, points, or lines.
                <p>To learn more about orbit traps check out the <a class="link" href=https://en.wikipedia.org/wiki/Orbit_trap>Wikipedia Article</a>!
             </div>
-            <div id=tab7 class="text_hide">
+            <div id=tab7 class="tab-pane" role="tabpanel">
                <h3>About Fractals with Different Exponents</h3>
                <p>As noted before, the Mandelbrot Set is calculated by iterating the function:
                <p>z<sub>n+1</sub> = z<sub>n</sub><sup>2</sup> + c</p>
@@ -153,42 +231,26 @@
                <p>The Multibrot Set fractal has an exponent of 3. It uses a different algorithm than the variable picker, and thus is a little faster. (The algorithm used is not variable, so it couldn't be used for displaying variable exponents.)
                <p>To learn more about Multibrot Sets, check out the <a class="link" href=https://en.wikipedia.org/wiki/Mandelbrot_set#Generalizations>Wikipedia Article</a>!
             </div>
-            <div id=tab8 class="text_hide">
+            <div id=tab8 class="tab-pane" role="tabpanel">
                <h3>About Fractal Renderer</h3>
                <p>Fractal Renderer was written by Kerwizzy (Age 13), with help from his father.</p>
                <p>He made it because he wanted to be able to explore other fractals that he had heard about, such as the Burning Ship fractal, and try seeing if he could find other fractals. </p>
                <p>He wrote the program and designed the page himself (with some techical help from his father). He made all the color palettes himself, too, using tools in <a class="link" href=https://www.blender.org/>Blender 3D</a>. (With some ideas for names from other renderers.)</p>
                <p>Check out the <a class="link" href=https://github.com/kerwizzy/HTML5-Fractal-Renderer>source</a> on Github!</p>
             </div>
-         </div>
-      </div>
-      
-      <br>
-   </div>
-   <DIV style="left:0;z-index:10" id=canvasDiv>
+		</div>
+		</div> 
 		
-      <canvas id="myCanvas" style="border:0px">
-         Your browser does not support the HTML5 canvas tag.
-      </canvas>
-   </DIV>
-   <DIV id=advancedOptions style="display:none">
-      <h2>UI Options</h2>
-      Do view changes: <input type="checkbox" id=clickToggle onchange="doClicks = document.getElementById('clickToggle').checked"></input>
-      <BR>
-      Clicking zooms: <input type="checkbox" id=zoomToggle onchange="doZoom = document.getElementById('zoomToggle').checked"></input>
-      <h2>Size</h2>
-      Width: <input type=number id=customWidth onchange="updateSize()"></input>
-      Height: <input type=number id=customHeight onchange="updateSize()"></input>
-      <h2>Rendering</h2>
-      Do final pass first: <input type="checkbox" id=intervalToggle onchange="updateInterval();"></input>
-      <BR>
-      Alert when done: <input type="checkbox" id=doneAlertToggle onchange="updateAlertToggle();"></input>
-      <h2>Fractal Details</h2>
-      Fractional Exponent: <input type="range" id=powerRange oninput="updateExponent(0);" value="2"  min="-5" max="10" step="0.0001"></input>
-      <input type="number" id=powDisplay oninput="updateExponent(1);" value="2" min="-5" max="10" step="0.1"></input>
-      <BR>
-      <BR>
-      Julia Set Values
-      <input id=juliaC size=50 value="0;1" onchange="getJuliaC()">
-   </DIV>
+      </div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+    </div>
+      
+      
+	 </div>
+    </div>
+
+
 </BODY>
+</html>
