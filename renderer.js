@@ -899,6 +899,32 @@ function getCursorPosition(canvas, event) {
 	}
 }
 
+function wheelZoom(canvas,event) {
+	if (doClicks === true) {
+		var rect = canvas.getBoundingClientRect();
+		var x = event.clientX - rect.left;
+		var y = event.clientY - rect.top;
+	
+		
+		
+	
+		
+		console.log(event.deltaY);
+		if (doZoom === true) {
+			if (event.deltaY > 0) {
+				size = size*2				
+			}
+			if (event.deltaY < 0) {
+				size = size/2
+				work.location[0] = ((x-myCanvas.width/2)*size+work.location[0]); 
+				work.location[1] = ((y-myCanvas.height/2)*-size+work.location[1]);				
+				}
+		}
+		document.getElementById("startupHelp").style.display = "none"; //Hide the little help bar on the first click.
+		draw();
+	}	
+}
+
 
 
 function initialize() {
@@ -911,6 +937,7 @@ function initialize() {
 
 
 	myCanvas.addEventListener("mouseup",function(event) { if(event.button===0) getCursorPosition(myCanvas,event);});
+	myCanvas.addEventListener("wheel",function(event) { wheelZoom(myCanvas,event);});
 	work.ctx = myCanvas.getContext("2d");
 	work.imageData = work.ctx.createImageData(myCanvas.width,1); //Create an image for the row.
 
