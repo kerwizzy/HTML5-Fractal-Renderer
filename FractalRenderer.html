@@ -13,7 +13,11 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 <!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+<!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"> -->
+
+<!-- I'm not sure if I should do this... -->
+<link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css">
+
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
@@ -26,12 +30,12 @@
 </HEAD>
 <BODY>
 <div class="container-fluid">
-<div class="row">
+<div class="row" id="topRow">
 	<div class="col-md-3">
 		<h2 style="display:inline">Fractal Renderer <small>By Kerwizzy</small></h2>
 	</div>
 	<div class="col-md-3">
-		<input type=text value="0;0;0.005" id=locationDisplay size=50></input>
+		<input type=text value="0;0;0.005" id=locationDisplay size=50 class="form-control"></input>
 	</div>
 	<div class="col-md-3">
 		
@@ -49,14 +53,12 @@
 		</select>
 	</div>
 </div>
-<div class="row" id=canvasRow>
 	
-		<canvas id="myCanvas" style="border:0px">
-			 Your browser does not support the HTML5 canvas tag.
-		</canvas>
-	
+
 </div>
-</div>
+<canvas id="myCanvas" style="border:0px;padding:0">
+	Your browser does not support the HTML5 canvas tag.
+</canvas>
 <!-- options pane -->
 <div class="modal fade" id="options" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -92,7 +94,7 @@
          <BR>
          <BR>
          <!-- Enable Less Noisy Colors: <input type="checkbox" id=logToggle onchange="changeColorScales()"></input> <i>(Looks nicer in highly detailed areas.)</i> !-->
-		 Contrast: <input type=number step=0.01 min=0 value=1 onchange="changeContrast()" id=contrastPicker></input>
+		 Contrast: <input type=number step=0.01 min=0 value=1 onchange="changeContrast()" id=contrastPicker class="form-control"></input>
          <!-- <input type="checkbox" name="logToggle" onchange="changeLogColor()" checked> !-->
          <BR>
          <BR>
@@ -254,7 +256,7 @@
                <h3>About Fractal Renderer</h3>
 			   <p>Fractal Renderer was written by <a class="link" href=https://github.com/kerwizzy/>Kerwizzy</a>.
                <p>The color pallets were made using tools in <a class="link" href=https://www.blender.org/>Blender 3D</a>. (With some ideas for names from other renderers.)</p>
-			   <p>The page was created using Bootstrap.</p>
+			   <p>The page was created using Bootstrap, and uses the Slate theme from Bootswatch. (Created by Thomas Park)</p>
                <p>Check out the <a class="link" href=https://github.com/kerwizzy/HTML5-Fractal-Renderer>Fractal Renderer source code</a> on Github!</p>
             </div>
 		</div>

@@ -942,9 +942,15 @@ function initialize() {
 	
 	myCanvas = document.getElementById("myCanvas");
 	
+	var canvHeight = window.innerHeight;
 	
-	myCanvas.width = window.innerWidth-(0.001*window.innerWidth); //Make it a full screen
-	myCanvas.height = window.innerHeight-(0.04*window.innerHeight);
+	var topHeight = $("#topRow").outerHeight(true) //true is for include margin
+	//console.log($("#topRow"))
+	
+	//alert(topHeight);
+	
+	myCanvas.width = $("#topRow").width(); 
+	myCanvas.height = canvHeight-(topHeight*1.5);
 
 
 	myCanvas.addEventListener("mouseup",function(event) { if(event.button===0) getCursorPosition(myCanvas,event);});
