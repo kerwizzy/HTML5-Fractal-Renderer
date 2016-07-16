@@ -46,12 +46,12 @@
 		</select>
 	</div>
 </div>
-<div class="row">
-	<div id="canvasDiv">
+<div class="row" id=canvasRow>
+	
 		<canvas id="myCanvas" style="border:0px">
 			 Your browser does not support the HTML5 canvas tag.
 		</canvas>
-	</div>
+	
 </div>
 </div>
 <!-- options pane -->
@@ -77,6 +77,15 @@
 				<option value="5">Multibrot (3)</option>
 				<option value="6">Variable Exponent</option>
 			</select>
+			<div id=alertPlaceholder>
+				<!-- 
+				THIS WILL GO HERE WHEN WE PICK JULIA SETS.
+				
+				<div class="alert alert-info fade in">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				In order to display Julia Sets, enter two values (seperated by ';') in the box in the advanced options section.
+				</div> -->
+			</div>
          <BR>
          <BR>
          <!-- Enable Less Noisy Colors: <input type="checkbox" id=logToggle onchange="changeColorScales()"></input> <i>(Looks nicer in highly detailed areas.)</i> !-->

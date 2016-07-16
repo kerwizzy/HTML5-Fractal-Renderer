@@ -80,7 +80,9 @@ function changeFractal() {
 		inSet=inSet_julia;
 		
 		getJuliaC();
-		alert("In order to display Julia Sets, enter two values (seperated by ';') in the box in the advanced options section.");
+		//alert("In order to display Julia Sets, enter two values (seperated by ';') in the box in the advanced options section.");
+		//$('fractalPicker').popover('[title="Information",data-content="In order to display Julia Sets, enter two values (seperated by \';\') in the box in the advanced options section."')
+		document.getElementById("alertPlaceholder").innerHTML = '<div class="alert alert-info fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>In order to display Julia Sets, enter two values (seperated by \';\') in the box in the advanced options section.</div>'
 		break;
 	case 4:
 		inSet=inSet_mandelbrot_orbitTrap;
