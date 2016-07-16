@@ -43,6 +43,8 @@ var alertWhenDone = false;
 var doZoom = true;
 var doClicks = true;
 
+var contrast = 1; //Contrast mulitplier for the image. Code in colors.js 
+
 renderPixel=renderPixel_default;
 
 
@@ -376,7 +378,7 @@ function doWork_default () {
 function renderPixel_default(real,imaginary) {
 
 
-	var outColor = inSet(real,imaginary);
+	var outColor = Math.floor(inSet(real,imaginary)*contrast);
 	if (outColor == -1) {
 		return 999;
 	}
@@ -389,7 +391,7 @@ function renderPixel_default(real,imaginary) {
 function renderPixel_log(real,imaginary) {
 
 
-	var outColor = inSet(real,imaginary);
+	var outColor = Math.floor(inSet(real,imaginary)*contrast);
 	if (outColor == -1) {
 		return 999;
 	}
@@ -408,7 +410,7 @@ function renderPixel_log(real,imaginary) {
 function renderPixel_smooth(real,imaginary) {
 
 
-	var outColor = inSet(real,imaginary);
+	var outColor = Math.floor(inSet(real,imaginary)*contrast);
 	var mapperDiff_r = 0;
 	var mapperDiff_g = 0;
 	var mapperDiff_b = 0;
@@ -422,7 +424,7 @@ function renderPixel_smooth(real,imaginary) {
 	
 
 	
-	var ratio = (1-(Math.log(Math.log(dist))) / Math.log(2));
+	var ratio = (1-(Math.log(Math.log(dist)))) / Math.log(2);
 
 	if (Math.sqrt(real*real + imaginary*imaginary) > 8) { //Make the colors after 8 be flat.
 	
@@ -443,9 +445,9 @@ function renderPixel_smooth(real,imaginary) {
 	
 	mapperLoc = outColor*3
 	
-	mapperDiff_r = colors[mapperLoc+0] - colors[mapperLoc+0+3]
-	mapperDiff_g = colors[mapperLoc+1] - colors[mapperLoc+1+3]
-	mapperDiff_b = colors[mapperLoc+2] - colors[mapperLoc+2+3]
+	mapperDiff_r = colors[mapperLoc+0] - colors[mapperLoc+0+3*contrast]
+	mapperDiff_g = colors[mapperLoc+1] - colors[mapperLoc+1+3*contrast]
+	mapperDiff_b = colors[mapperLoc+2] - colors[mapperLoc+2+3*contrast]
 	
 	r = mapperDiff_r * ratio + colors[mapperLoc+0]
 	g = mapperDiff_g * ratio + colors[mapperLoc+1]
@@ -460,7 +462,7 @@ function renderPixel_smooth(real,imaginary) {
 function renderPixel_log_smooth(real,imaginary) {
 
 
-	var outColor = inSet(real,imaginary);
+	var outColor = Math.floor(inSet(real,imaginary)*contrast);
 	var mapperDiff_r = 0;
 	var mapperDiff_g = 0;
 	var mapperDiff_b = 0;
@@ -957,8 +959,8 @@ function initialize() {
 	document.getElementById('customWidth').value = myCanvas.width;
 	document.getElementById('customHeight').value = myCanvas.height;
 	
-	 document.getElementById("logToggle").checked = false; //Make it actually LOOK unchecked when it starts up. (Might be different because someone had reloaded the page, and had checked on before they reloaded.)
-	 document.getElementById("smoothColorToggle").checked = false;
+	//document.getElementById("logToggle").checked = false; //Make it actually LOOK unchecked when it starts up. (Might be different because someone had reloaded the page, and had checked on before they reloaded.)
+	document.getElementById("smoothColorToggle").checked = false;
 
 	draw(); //Make it render when it starts.
 

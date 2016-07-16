@@ -68,12 +68,12 @@ initializeClassicColors();
 
 
 function changeColorScales() {
-	var logChecked = document.getElementById("logToggle").checked;
+	//var logChecked = document.getElementById("logToggle").checked;
 	var smoothChecked = document.getElementById("smoothColorToggle").checked;
 	var logChecked = Number(logChecked)
 	var smoothChecked = Number(smoothChecked)
 	
-	var switcher = logChecked*2 + smoothChecked
+	var switcher = smoothChecked
 	
 	switch(switcher) {
 	case 0: 	
@@ -177,6 +177,12 @@ function generateColPicker() {
 	}
 	document.getElementById("colPicker").innerHTML=out;
 
+	
+}
+
+function changeContrast() {
+	contrast = document.getElementById("contrastPicker").value;	
+	
 	
 }
 
