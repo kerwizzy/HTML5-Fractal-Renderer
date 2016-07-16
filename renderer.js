@@ -918,9 +918,17 @@ function wheelZoom(canvas,event) {
 				size = size*2				
 			}
 			if (event.deltaY < 0) {
-				size = size/2
-				work.location[0] = ((x-myCanvas.width/2)*size+work.location[0]); 
-				work.location[1] = ((y-myCanvas.height/2)*-size+work.location[1]);				
+				
+				//We want the place we scrolled at to be at the same place on the screen as before.
+							
+				
+				
+				//work.location[0] = ((x-myCanvas.width/2)*size+work.location[0]); //This puts it in the center
+				//work.location[1] = ((y-myCanvas.height/2)*-size+work.location[1]);		
+				
+				work.location[0] = ((x-myCanvas.width/2)*size+work.location[0])-(x-myCanvas.width/2)*size/1.5; 
+				work.location[1] = ((y-myCanvas.height/2)*-size+work.location[1])-(y-myCanvas.height/2)*-size/1.5;
+				size = size/1.5
 				}
 		}
 		draw();
