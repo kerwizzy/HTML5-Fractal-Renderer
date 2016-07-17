@@ -912,7 +912,7 @@ function wheelZoom(canvas,event) {
 		
 	
 		
-		console.log(event.deltaY);
+		//console.log(event.deltaY);
 		if (doZoom === true) {
 			if (event.deltaY > 0) {
 				size = size*2				
@@ -944,13 +944,13 @@ function initialize() {
 	
 	var canvHeight = window.innerHeight;
 	
-	var topHeight = $("#topRow").outerHeight(true) //true is for include margin
+	var topHeight = $("#topRow").outerHeight(false) //false is for include margin
 	//console.log($("#topRow"))
 	
 	//alert(topHeight);
 	
 	myCanvas.width = $("#topRow").width(); 
-	myCanvas.height = canvHeight-(topHeight*1.5);
+	myCanvas.height = canvHeight-(topHeight*0.1);
 
 
 	myCanvas.addEventListener("mouseup",function(event) { if(event.button===0) getCursorPosition(myCanvas,event);});
