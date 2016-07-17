@@ -27,32 +27,124 @@
 <SCRIPT type="text/javascript" src="renderer.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="uiCode.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="colors.js"></SCRIPT>
+
+
+<style>
+/* @media (max-width: 768px) {
+  .btn {
+    padding:2px 4px;
+    font-size:80%;
+    line-height: 1;
+    border-radius:3px;
+  }
+  .form-control {
+    padding:2px 4px;
+    font-size:80%;
+    line-height: 1;
+    border-radius:3px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+  .btn {
+    padding:4px 9px;
+    font-size:90%;
+    line-height: 1.2;
+  }
+  .form-control {
+    padding:4px 9px;
+    font-size:90%;
+    line-height: 1.2;
+  }
+}
+
+*/
+</style>
+
+
+
+
 </HEAD>
 <BODY>
+<nav class="navbar navbar-default navbar-fixed-top" id=topRow>
+
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <h2 style="display:inline">Fractal Renderer <small>By Kerwizzy</small></h2>
+        </div>
+        <div style="height: 1px;" aria-expanded="false" id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+			<li>
+				<input type=text value="0;0;0.005" id=locationDisplay size=50 class="form-control"></input>
+			</li>
+			<li>
+				<button type="button" class="btn btn-default" onclick="getLocation()">Update</button>
+				<button type="button" class="btn btn-default" onclick="reset()">Reset</button>
+			</li>
+			<li>
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#options">Options</button>
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#about">About</button>
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#advancedOptions">Advanced</button>
+			</li>
+			<li>
+				<select id=colPicker onchange="changeColors()" class="form-control">
+					<!-- There isn't anything here on startup, because it gets initialized automatically by generateColPicker() in colors.js !-->
+				</select>
+			</li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+</nav>
+    
+
+
+<!--
+<nav class="navbar navbar-default">
 <div class="container-fluid">
-<div class="row" id="topRow">
-	<div class="col-md-3">
-		<h2 style="display:inline">Fractal Renderer <small>By Kerwizzy</small></h2>
-	</div>
-	<div class="col-md-3">
-		<input type=text value="0;0;0.005" id=locationDisplay size=50 class="form-control"></input>
-	</div>
-	<div class="col-md-3">
+
+<div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <h2 style="display:inline">Fractal Renderer <small>By Kerwizzy</small></h2>
+    </div>
+
+
+<div class="collapse navbar-collapse" id="topRow">
+<ul class="nav navbar-nav">
+	
 		
+	
+	<li>
+		<input type=text value="0;0;0.005" id=locationDisplay size=50 class="form-control"></input>
+	</li>
+	<li>
 		<button type="button" class="btn btn-default" onclick="getLocation()">Update</button>
 		<button type="button" class="btn btn-default" onclick="reset()">Reset</button>
-	</div>
-	<div class="col-md-2">
+	</li>
+	<li>
 		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#options">Options</button>
 		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#about">About</button>
 		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#advancedOptions">Advanced</button>
-	</div>
-	<div class="col-md-1">
+	</li>
+	<li>
 		<select id=colPicker onchange="changeColors()" class="form-control">
-				<!-- There isn't anything here on startup, because it gets initialized automatically by generateColPicker() in colors.js !-->
+				<!-- There isn't anything here on startup, because it gets initialized automatically by generateColPicker() in colors.js 
 		</select>
-	</div>
+	</li>
+</ul>
 </div>
+</nav>
+-->
 	
 
 </div>
