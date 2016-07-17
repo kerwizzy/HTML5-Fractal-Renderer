@@ -15,8 +15,11 @@
 <!-- Optional theme -->
 <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"> -->
 
-<!-- I'm not sure if I should do this... -->
-<link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css">
+<!-- I'm not sure if I should do this... (No verification)-->
+<!-- <link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css"> -->
+
+<!-- I'm not sure if I should do this... (No verification)-->
+<link rel="stylesheet" href="https://bootswatch.com/cyborg/bootstrap.min.css">
 
 
 <!-- Latest compiled and minified JavaScript -->
@@ -84,16 +87,20 @@
 				<input type=text value="0;0;0.005" id=locationDisplay size=50 class="form-control"></input>
 			</li>
 			<li>
-				<button type="button" class="btn btn-default" onclick="getLocation()">Update</button>
+				<button type="button" class="btn btn-default" onclick="getLocation()" style="margin-left:20px">Update</button>
+				
 				<button type="button" class="btn btn-default" onclick="reset()">Reset</button>
+				
 			</li>
 			<li>
-				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#options">Options</button>
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#options" style="margin-left:20px">Options</button>
+				
 				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#about">About</button>
+				
 				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#advancedOptions">Advanced</button>
 			</li>
 			<li>
-				<select id=colPicker onchange="changeColors()" class="form-control">
+				<select id=colPicker onchange="changeColors()" class="form-control" style="margin-left:20px">
 					<!-- There isn't anything here on startup, because it gets initialized automatically by generateColPicker() in colors.js !-->
 				</select>
 			</li>
@@ -348,7 +355,7 @@
                <h3>About Fractal Renderer</h3>
 			   <p>Fractal Renderer was written by <a class="link" href=https://github.com/kerwizzy/>Kerwizzy</a>.
                <p>The color pallets were made using tools in <a class="link" href=https://www.blender.org/>Blender 3D</a>. (With some ideas for names from other renderers.)</p>
-			   <p>The page was created using Bootstrap, and uses the Slate theme from Bootswatch. (Created by Thomas Park)</p>
+			   <p>The page was created using Bootstrap, and uses the Cyborg theme from <a class="link" href=https://bootswatch.com/.>Bootswatch</a> (Created by Thomas Park)</p>
                <p>Check out the <a class="link" href=https://github.com/kerwizzy/HTML5-Fractal-Renderer>Fractal Renderer source code</a> on Github!</p>
             </div>
 		</div>
