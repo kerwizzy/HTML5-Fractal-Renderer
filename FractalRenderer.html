@@ -30,38 +30,25 @@
 <SCRIPT type="text/javascript" src="renderer.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="uiCode.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="colors.js"></SCRIPT>
-
+<SCRIPT type="text/javascript" src="complexFunctions.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="expressionParser.js"></SCRIPT>
 
 <style>
-/* @media (max-width: 768px) {
-  .btn {
-    padding:2px 4px;
-    font-size:80%;
-    line-height: 1;
-    border-radius:3px;
-  }
-  .form-control {
-    padding:2px 4px;
-    font-size:80%;
-    line-height: 1;
-    border-radius:3px;
+@media (max-width: 768px) {
+  h2 {
+	font-size:25px
+  
   }
 }
 
 @media (min-width: 769px) and (max-width: 992px) {
-  .btn {
-    padding:4px 9px;
-    font-size:90%;
-    line-height: 1.2;
-  }
-  .form-control {
-    padding:4px 9px;
-    font-size:90%;
-    line-height: 1.2;
+  h2 {
+	font-size:30px
+  
   }
 }
 
-*/
+
 </style>
 
 
@@ -90,7 +77,7 @@
 				<button type="button" class="btn btn-default" onclick="getLocation()" style="margin-left:20px">Update</button>
 				
 				<button type="button" class="btn btn-default" onclick="reset()">Reset</button>
-				
+											
 			</li>
 			<li>
 				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#options" style="margin-left:20px">Options</button>
@@ -180,6 +167,7 @@
 				<option value="4">Mandelbrot Orbit Trap</option>
 				<option value="5">Multibrot (3)</option>
 				<option value="6">Variable Exponent</option>
+				<option value="7">Custom</option>
 			</select>
 			<div id=alertPlaceholder>
 				<!-- 
@@ -204,6 +192,8 @@
          <input id=iterationsInput type=number value=30000 onchange="gIterations = parseInt(document.getElementById('iterationsInput').value); draw();">   
          <br>
          <br>
+		  
+		 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -382,6 +372,13 @@
         <h1 class="modal-title">Advanced Options</h4>
       </div>
       <div class="modal-body">
+	   <div>
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#renderFractalOptions" role="tab" data-toggle="tab">Fractal and Render Options</a></li>
+			<li role="presentation" class=""><a href="#customFunctionOptions" role="tab" data-toggle="tab">Custom Function</a></li>
+		</ul>
+	  <div class="tab-content">
+		<div id=renderFractalOptions class="tab-pane active" role="tabpanel">
 		<h2>UI Options</h2>
 		Do view changes: <input type="checkbox" id=clickToggle onchange="doClicks = document.getElementById('clickToggle').checked"></input>
 		<BR>
@@ -400,11 +397,22 @@
 		<BR>
 		Julia Set Values
 		<input id=juliaC size=50 value="0;1" onchange="getJuliaC()">
+		</div>
+		<div id=customFunctionOptions class="tab-pane" role="tabpanel">
+		<h2>Custom Function</h2>
+		<p>Not enough fractals? Make your own!</p>
+		<p>Enter any equation into the box below and see what fractal it makes.</p>
+		Z<sub>n+1</sub>=<input id=customFunctionInput onchange="changeFractal()"></input>
+		
+		
+		</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
+	</div>
+	</div>
   </div>
 </div>
 
