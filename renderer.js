@@ -95,7 +95,26 @@ function changeFractal() {
 	case 6:
 		inSet=inSet_fractional;
 		
-		break;			
+		break;	
+	case 7:
+		var inFunction = document.getElementById("customFunctionInput").value;
+		inFunction = processExpression(inFunction)
+		alert(inFunction)
+		var inEscapeHorizon = 10000
+		
+		
+		
+		
+		var newInSetCustom = "function{var zRe = 0;var zIm = 0;var C = [];C[0] = real;C[1] = imaginary;"+
+		"var Z = [];Z[0] = C[0];Z[1] = C[1];zRe = Z[0];zIm = Z[1];var escapeHorizon = "+inEscapeHorizon+
+		";var out = 0;var iterations=gIterations;var i = 0;for (i=0; i < iterations; i++) {Z[0] = zRe;Z[1] = zIm;+Z = "+inFunction+
+		"; zRe = Z[0];zIm = Z[1];var zResq = zRe*zRe;var zImsq = zIm*zIm;if ((zResq)+(zImsq) > escapeHorizon) {zRe_end = zRe;zIm_end = zIm;return (i);}}return -1;}"
+		
+		eval("inSet_custom = "+newInSetCustom)
+		
+		inSet=inSet_custom;
+		
+	break;	
 	default:
 		inSet=inSet_mandelbrot;
 	
@@ -239,10 +258,10 @@ function doWork_smooth () {
 		for (i =0;i < interval;i++) {
 			
 			
-			d[p++] = r;
-			d[p++] = g;
-			d[p++] = b;
-			d[p++] = 0xFF; //Set the alpha
+			rowD[p++] = r;
+			rowD[p++] = g;
+			rowD[p++] = b;
+			rowD[p++] = 0xFF; //Set the alpha
 		}
 	}
 	for (i =0;i < interval;i++) {
@@ -259,10 +278,10 @@ function doWork_smooth () {
 
 		p = xI*4;
 		for (i =0;i < interval;i++) {
-			d[p++] = r;
-			d[p++] = g;
-			d[p++] = b;
-			d[p++] = 0xFF; //Set the alpha
+			rowD[p++] = r;
+			rowD[p++] = g;
+			rowD[p++] = b;
+			rowD[p++] = 0xFF; //Set the alpha
 		}
 
 	}		
@@ -321,10 +340,10 @@ function doWork_default () {
 		for (var i =0;i < interval;i++) {
 			
 			
-			d[p++] = colors[ci+0];
-			d[p++] = colors[ci+1];
-			d[p++] = colors[ci+2];
-			d[p++] = 0xFF; //Set the alpha
+			rowD[p++] = colors[ci+0];
+			rowD[p++] = colors[ci+1];
+			rowD[p++] = colors[ci+2];
+			rowD[p++] = 0xFF; //Set the alpha
 		}
 	}
 	for (var i =0;i < interval;i++) {
@@ -341,10 +360,10 @@ function doWork_default () {
 
 		var p = xI*4;
 		for (var i =0;i < interval;i++) {
-			d[p++] = colors[ci+0];
-			d[p++] = colors[ci+1];
-			d[p++] = colors[ci+2];
-			d[p++] = 0xFF; //Set the alpha
+			rowD[p++] = colors[ci+0];
+			rowD[p++] = colors[ci+1];
+			rowD[p++] = colors[ci+2];
+			rowD[p++] = 0xFF; //Set the alpha
 		}
 
 	}		
@@ -811,6 +830,121 @@ var zImsq = zIm*zIm;
 	return -1;
 }
 
+var inSet_custom
+/*
+function inSet_custom(real,imaginary) {
+	var zRe = 0;
+	var zIm = 0;
+	
+	var C = [];
+	C[0] = real
+	C[1] = imaginary
+	
+	var Z = [];
+	Z[0] = C[0]
+	Z[1] = C[1]
+	
+	
+	zRe = real//Z[0]
+	zIm = imaginary//Z[1]
+	
+	
+
+	var escapeHorizon = 10000//gEscapeHorizon;
+	
+
+	var out = 0;
+
+	var iterations=gIterations;
+
+	var i = 0;
+	for (i=0; i < iterations; i++) {
+		Z[0] = zRe
+		Z[1] = zIm
+		
+		Z = add(exp(Z),[-0.65,0])
+		//exp(z) - 0.65
+		
+		
+		//Z = add(pow(sinh(multiply(Z,Z)),0.5),[0.065,0.122])
+		//Z = subtract(exp(pow(Z,3)),[0.621,0])
+		//Z = add(pow(Z,3),[0.400,0])
+		//Z = add(multiply(Z,exp(Z)),0.04)
+		//Z = add(multiply(Z,Z),[0.285,0.01])
+		//Z = add(divide(add(multiply(Z,Z),Z),ln(Z)),[0.268,0.060])
+		//z = ((z^2+z)/Ln(z)) + (0.268+0.060i)
+		
+		/*
+		Testing of above function
+		
+		Wolfram alpha seqence
+		
+		INITIAL INPUT: ((z^2+z)/Ln(z)) + (0.268+0.060i) where z = 0.1 + 0.04i
+		0.224307+0.0309988 i
+		0.0880856+0.0131317 i
+		0.228978+0.0512258 i
+		0.0876737-0.0188937 i
+		0.22971+0.0725792 i
+		0.0971422-0.0511538 i
+		0.228891+0.0962338 i
+		0.114072-0.0846754 i
+		
+		
+		My sequence
+		
+		
+		0.22430679052183067,0.030998803064910856
+		0.08808588816024945,0.013131704012789139
+		0.2289774888459618,0.05122578440088869
+		0.0876744810869032,-0.01889351222907122
+		0.22970965613874045,0.07257910528843652
+		0.09714263472371659,-0.05115348365502005
+		0.22889059821410063,0.09623366942346531
+		0.11407261531089044,-0.08467490847419396
+		
+		
+		
+		
+		
+		
+		
+		
+		/
+		
+		
+		
+		
+		
+		
+		//Z = sin(divide(Z,C))
+		
+		//Z = add(multiply(exp(Z),Z),[0.04,0])
+		//z * exp(z) + 0.04
+		
+		
+		//Z = divide(subtract(1,add(pow(Z,2),pow(Z,5))),add(add(2,multiply(4,Z)),[20,0.2]))
+		//1-z^2+z^5/(2 + 4z)+c
+		
+		zRe = Z[0]
+		zIm = Z[1]
+		
+		var zResq = zRe*zRe;
+		var zImsq = zIm*zIm;
+
+		if ((zResq)+(zImsq) > escapeHorizon) { //If it is outside the 2 unit circle...
+			zRe_end = zRe;
+			zIm_end = zIm;
+
+			return (i); //stop it from running longer
+		}
+
+
+
+	}
+	return -1;
+}
+*/
+
 
 function inSet_fractional(real,imaginary) {
 	var zRe = real;
@@ -864,6 +998,9 @@ function inSet_fractional(real,imaginary) {
 	}
 	return -1;
 }
+
+
+
 
 
 function updateSize() {
@@ -958,7 +1095,7 @@ function initialize() {
 	work.ctx = myCanvas.getContext("2d");
 	work.imageData = work.ctx.createImageData(myCanvas.width,1); //Create an image for the row.
 
-	d = work.imageData.data;
+	rowD = work.imageData.data;
 
 	document.getElementById("fractalPicker").value=0; //Make it actually SAY it's the mandelbrot set when it starts up. 
 	document.getElementById("colPicker").value=0; //Make it actually SAY it's the default color when it starts up.
