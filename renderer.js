@@ -82,7 +82,7 @@ function changeFractal() {
 		getJuliaC();
 		//alert("In order to display Julia Sets, enter two values (seperated by ';') in the box in the advanced options section.");
 		//$('fractalPicker').popover('[title="Information",data-content="In order to display Julia Sets, enter two values (seperated by \';\') in the box in the advanced options section."')
-		document.getElementById("alertPlaceholder").innerHTML = '<div class="alert alert-info fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>In order to display Julia Sets, enter two values (seperated by \';\') in the box in the advanced options section.</div>'
+		document.getElementById("alertPlaceholder").innerHTML = '<div class="alert alert-warning fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>In order to display Julia Sets, enter two values (seperated by \';\') in the box in the advanced options section.</div>'
 		break;
 	case 4:
 		inSet=inSet_mandelbrot_orbitTrap;
@@ -98,21 +98,56 @@ function changeFractal() {
 		break;	
 	case 7:
 		var inFunction = document.getElementById("customFunctionInput").value;
+		var zStartCode = document.getElementById("customFunctionStartZInput").value;
+		
 		inFunction = processExpression(inFunction)
-		alert(inFunction)
-		var inEscapeHorizon = 10000
+		zStartCode = processExpression(zStartCode)
+		if (inFunction == "ERROR") {	
+			printFunctionAlert("Error parsing function.")
+		} else if (zStartCode=="ERROR") {
+			printFunctionAlert("Error parsing initial Z value equation.")
+			
+
+		}
+		else {
+			var inEscapeHorizon = 10000
+					
+
+			var newInSetCustom = "function(real,imaginary){var zRe = 0;var zIm = 0;var C = [];C[0] = real;C[1] = imaginary;"+
+			"var Z ="+zStartCode+";Z=Z.slice(0);zRe = Z[0];zIm = Z[1];var escapeHorizon = "+inEscapeHorizon+
+			";var out = 0;var iterations=gIterations;var i = 0;for (i=0; i < iterations; i++) {Z[0] = zRe;Z[1] = zIm;Z = "+inFunction+
+		"; zRe = Z[0];zIm = Z[1];var zResq = zRe*zRe;var zImsq = zIm*zIm;if ((zResq)+(zImsq) > escapeHorizon) {zRe_end = zRe;zIm_end = zIm;return (i);}}return -1;}" //we leave out the return block in this step to stop it from giving a "return not in function error" in part of the code below.
+
+		newInSetCustom = newInSetCustom.replace(/;/g, ";\n") //Insert some linebreaks for easier debugging.
 		
+			//function(real,imaginary){var zRe = 0;var zIm = 0;var C = [];C[0] = real;C[1] = imaginary;var Z = [];Z[0] = C[0];Z[1] = C[1];zRe = Z[0];zIm = Z[1];var escapeHorizon = 10000;var out = 0;var iterations=gIterations;var i = 0;for (i=0; i < iterations; i++) {Z[0] = zRe;Z[1] = zIm;Z = add(complexPower(z,[5, 0]),[0.544, 0]); zRe = Z[0];zIm = Z[1];var zResq = zRe*zRe;var zImsq = zIm*zIm;if ((zResq)+(zImsq) > escapeHorizon) {zRe_end = zRe;zIm_end = zIm;return (i);}}return -1;}
 		
-		
-		
-		var newInSetCustom = "function{var zRe = 0;var zIm = 0;var C = [];C[0] = real;C[1] = imaginary;"+
-		"var Z = [];Z[0] = C[0];Z[1] = C[1];zRe = Z[0];zIm = Z[1];var escapeHorizon = "+inEscapeHorizon+
-		";var out = 0;var iterations=gIterations;var i = 0;for (i=0; i < iterations; i++) {Z[0] = zRe;Z[1] = zIm;+Z = "+inFunction+
-		"; zRe = Z[0];zIm = Z[1];var zResq = zRe*zRe;var zImsq = zIm*zIm;if ((zResq)+(zImsq) > escapeHorizon) {zRe_end = zRe;zIm_end = zIm;return (i);}}return -1;}"
-		
-		eval("inSet_custom = "+newInSetCustom)
-		
-		inSet=inSet_custom;
+		var theCodeIsBuggy = false;
+		try {
+			eval("var testNewInSetCustomFunction ="+newInSetCustom+";testNewInSetCustomFunction(1,1);") //See if we could run the function
+				
+		} catch (err) {
+			var errorText = err.message;
+			
+			if (errorText == "z is not defined") {
+				printFunctionAlert("Z needs to be capitalized.")				
+			}
+			if (errorText == "c is not defined") {
+				printFunctionAlert("C needs to be capitalized.")
+			}
+			else {
+				printFunctionAlert("Error executing function. (" + errorText  + ")")
+			}
+			
+			theCodeIsBuggy = true;
+	
+		}
+		if (!theCodeIsBuggy) {
+			eval("inSet_custom ="+newInSetCustom)
+			inSet=inSet_custom;
+		}
+			
+		}
 		
 	break;	
 	default:
@@ -121,6 +156,13 @@ function changeFractal() {
 		break;
 	}
 	draw();
+}
+
+function printFunctionAlert(alertText) {
+	var newHTMLtag = '<div class="alert alert-danger fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+ alertText +'</div>'
+	document.getElementById("functionAlertBox").innerHTML+= newHTMLtag
+	document.getElementById("alertPlaceholder").innerHTML = '<div class="alert alert-danger fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Error in custom function. Go to the Custom Function tab in Advanced Options for more information.</div>'
+	
 }
 
 
@@ -840,13 +882,15 @@ function inSet_custom(real,imaginary) {
 	C[0] = real
 	C[1] = imaginary
 	
-	var Z = [];
-	Z[0] = C[0]
-	Z[1] = C[1]
+		
+	var Z = C;
+	
+	Z = Z.slice(0) //Make it not a pointer to C
 	
 	
-	zRe = real//Z[0]
-	zIm = imaginary//Z[1]
+	
+	zRe = Z[0]
+	zIm = Z[1]
 	
 	
 

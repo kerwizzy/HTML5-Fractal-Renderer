@@ -402,8 +402,11 @@
 		<h2>Custom Function</h2>
 		<p>Not enough fractals? Make your own!</p>
 		<p>Enter any equation into the box below and see what fractal it makes.</p>
+		Z<sub>0</sub>=<input id=customFunctionStartZInput onchange="changeFractal()"></input>
+		<BR>
 		Z<sub>n+1</sub>=<input id=customFunctionInput onchange="changeFractal()"></input>
-		
+		<div id=functionAlertBox>
+		</div>
 		
 		</div>
       </div>
