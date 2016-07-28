@@ -75,7 +75,7 @@ return result;
 
 function ln(num) {
 	var result = []
-	result[0] = Math.log(complexMod(num)[0])
+	result[0] = Math.log(abs(num)[0])
 	result[1] = Math.atan2(num[1],num[0])
 	
 	return result
@@ -84,12 +84,25 @@ function ln(num) {
 	
 }
 
-function complexMod(num) { //complex modulus
+function abs(num) { //complex modulus/abs
 	var result = [0,0];
 	
 	
 	result[0] = Math.sqrt(num[0]*num[0] + num[1]*num[1])
 	return result
+}
+
+function floor(num) {
+	var result = [0,0];
+	result[0] = Math.floor(num[0])
+	result[1] = Math.floor(num[1])
+	return result	
+}
+function ceil(num) {
+	var result = [0,0];
+	result[0] = Math.ceil(num[0])
+	result[1] = Math.ceil(num[1])
+	return result	
 }
 
 function complexConj(num) { //Complex conjugate
@@ -143,6 +156,19 @@ function sinh(num) {
 	
 }
 
+function cosh(num) {
+	//function = 0.5*(e^z+e^(-z))
+	
+	var inner1 = exp(num)
+	var inner2 = exp(multiply(num,[-1,0]))
+	return multiply([0.5,0],add(inner1,inner2))
+	
+	
+	
+}
+
+
+
 
 function pow(num,power) {
 	var result = []
@@ -188,6 +214,10 @@ function complexPower(numB,numE) {
 	return result
 	
 }
+
+
+
+
 
 
 

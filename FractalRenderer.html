@@ -402,11 +402,31 @@
 		<h2>Custom Function</h2>
 		<p>Not enough fractals? Make your own!</p>
 		<p>Enter any equation into the box below and see what fractal it makes.</p>
-		Z<sub>0</sub>=<input id=customFunctionStartZInput onchange="changeFractal()"></input>
+		Z<sub>0</sub>=<input id=customFunctionStartZInput onchange="changeFractal()" size=50></input>
 		<BR>
-		Z<sub>n+1</sub>=<input id=customFunctionInput onchange="changeFractal()"></input>
+		Z<sub>n+1</sub>=<input id=customFunctionInput onchange="changeFractal()" size=50></input>
 		<div id=functionAlertBox>
 		</div>
+		<h4>Supported Functions and Variables</h4>
+		Along with standard arithmetic functions of addition, subtraction, multiplication, division, and exponentiation, signified by +, -, *, /, and ^, several other mathematical functions are supported:
+		<ul>
+			<li><b style="color:#FFF">Z</b> same as Z<sub>n</sub>, the previous location in the iteration sequence.</li>
+			<li><b style="color:#FFF">C</b> the location of the pixel we are calculating.</li>
+			<li><b style="color:#FFF">sin()</b> sine. </li>
+			<li><b style="color:#FFF">cos()</b> cosine.</li>
+			<li><b style="color:#FFF">sinh()</b> hyberbolic sine.</li>
+			<li><b style="color:#FFF">cosh()</b> hyberbolic cosine.</li>
+			<li><b style="color:#FFF">exp()</b> returns e raised to the power of a number.</li>
+			<li><b style="color:#FFF">ln()</b> natural log of a number.</li>			
+			<li><b style="color:#FFF">realPart()</b> the real part of a number.</li>
+			<li><b style="color:#FFF">imagPart()</b> the imaginary part of a number.</li>
+			<li><b style="color:#FFF">complexArg()</b> the complex argument of a number.</li>
+			<li><b style="color:#FFF">complexConj()</b> the complex conjugate of a number.</li>
+			<li><b style="color:#FFF">abs()</b> the absolute value (also known as complex modulus) of a number.</li>
+			<li><b style="color:#FFF">floor()</b> floor function.</li>
+			<li><b style="color:#FFF">ceil()</b> ceiling function.</li>
+		</ul>
+		All of these can be used both in the Z<sub>0</sub> and Z<sub>n+1</sub> functions.
 		
 		</div>
       </div>

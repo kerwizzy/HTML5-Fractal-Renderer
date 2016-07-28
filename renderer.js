@@ -97,6 +97,9 @@ function changeFractal() {
 		
 		break;	
 	case 7:
+		document.getElementById("functionAlertBox").innerHTML = "" //Clear the old errors.
+		document.getElementById("alertPlaceholder").innerHTML = ""
+	
 		var inFunction = document.getElementById("customFunctionInput").value;
 		var zStartCode = document.getElementById("customFunctionStartZInput").value;
 		
