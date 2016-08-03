@@ -26,6 +26,35 @@ function changeAdvancedOptions() {
 	}
 }
 
+var smoothColorsToggleValue = false;
+function changeSmoothColorsCheckbox() {
+	if (smoothColorsToggleValue == false) {
+		smoothColorsToggleValue = true;
+		document.getElementById("smoothColorsCheckboxCheck").style.visibility = "initial"
+		
+		
+	} else {
+		smoothColorsToggleValue = false;
+		document.getElementById("smoothColorsCheckboxCheck").style.visibility="hidden" 
+	}
+	
+	
+}
+
+function toggleCheckbox(checkID) {
+	var checkElement = document.getElementById(checkID)
+	
+	if (checkElement.style.visibility == "hidden") {
+		checkElement.style.visibility = "initial"
+		
+	} else {
+		checkElement.style.visibility = "hidden"
+		
+	}
+	
+	
+}
+
 /*
 function hideAdvancedOptions() {
 	document.getElementById('advancedOptions').style.display = "none";

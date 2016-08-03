@@ -67,9 +67,10 @@ initializeSetOnlyColors();
 initializeClassicColors();
 
 
+
 function changeColorScales() {
 	//var logChecked = document.getElementById("logToggle").checked;
-	var smoothChecked = document.getElementById("smoothColorToggle").checked;
+	var smoothChecked = smoothColorsToggleValue//document.getElementById("smoothColorToggle").checked;
 	var logChecked = Number(logChecked)
 	var smoothChecked = Number(smoothChecked)
 	

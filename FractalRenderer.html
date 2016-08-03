@@ -25,6 +25,11 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
+<!-- Forms stuff 
+<link rel="stylesheet" type="text/css" href="https://raw.githubusercontent.com/mdo/wtf-forms/master/wtf-forms.css">
+<link rel="stylesheet" type="text/css" href="https://raw.githubusercontent.com/mdo/wtf-forms/master/docs.css">
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic|PT+Mono&amp;subset=latin,cyrillic">
+-->
 
 <!-- Fractal Renderer Code -->
 <SCRIPT type="text/javascript" src="renderer.js"></SCRIPT>
@@ -32,6 +37,16 @@
 <SCRIPT type="text/javascript" src="colors.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="complexFunctions.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="expressionParser.js"></SCRIPT>
+
+<SCRIPT>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+
+
+
+</SCRIPT>
 
 <style>
 @media (max-width: 768px) {
@@ -48,6 +63,43 @@
   }
 }
 
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkboxBox {
+
+	
+	background: #CCCCCC; /* For browsers that do not support gradients */
+	/*background: -webkit-radial-gradient(#AAAAAA,#CCCCCC); / Safari 5.1 to 6.0 */
+	/*background: -o-radial-gradient(#AAAAAA,#CCCCCC); / For Opera 11.6 to 12.0 */
+	/*background: -moz-radial-gradient(#AAAAAA,#CCCCCC); / For Firefox 3.6 to 15 */
+	/*background: radial-gradient(#AAAAAA,#CCCCCC); / Standard syntax */
+	
+	
+	width:30px;
+	height:30px;
+	/*border:3px solid gray;*/
+	text-align:center;
+	color:green;
+	font-size:20px;
+	display:inline-block;
+	border-radius:3px;
+
+
+}
+
+.checkboxWrapper {
+display:inline-block
+
+
+
+}
 
 </style>
 
@@ -58,7 +110,7 @@
 <BODY>
 <nav class="navbar navbar-default navbar-fixed-top" id=topRow>
 
-      <div class="container">
+      <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -66,17 +118,17 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <h2 style="display:inline">Fractal Renderer <small>By Kerwizzy</small></h2>
+          <h2 style="display:inline;margin-right:40px">Fractal Renderer <small>By Kerwizzy</small></h2>
         </div>
         <div style="height: 1px;" aria-expanded="false" id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 			<li>
-				<input type=text value="0;0;0.005" id=locationDisplay size=50 class="form-control"></input>
+				<input type=text value="0;0;0.005" id=locationDisplay size=50 class="form-control" data-toggle="tooltip" data-placement="bottom" title="These three values represent the x location, y location, and size of the view."></input>
 			</li>
 			<li>
-				<button type="button" class="btn btn-default" onclick="getLocation()" style="margin-left:20px">Update</button>
+				<button type="button" class="btn btn-default" onclick="getLocation()" style="margin-left:20px" data-toggle="tooltip" data-placement="bottom" title="Move the view to the location in the box to the left.">Update</button>
 				
-				<button type="button" class="btn btn-default" onclick="reset()">Reset</button>
+				<button type="button" class="btn btn-default" onclick="reset()" data-toggle="tooltip" data-placement="bottom" title="Reset the view to the default location.">Reset</button>
 											
 			</li>
 			<li>
@@ -87,7 +139,7 @@
 				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#advancedOptions">Advanced</button>
 			</li>
 			<li>
-				<select id=colPicker onchange="changeColors()" class="form-control" style="margin-left:20px">
+				<select id=colPicker onchange="changeColors()" class="form-control" style="margin-left:20px" data-toggle="tooltip" data-placement="bottom" title="Use this to change the color palette.">
 					<!-- There isn't anything here on startup, because it gets initialized automatically by generateColPicker() in colors.js !-->
 				</select>
 			</li>
@@ -159,7 +211,7 @@
          <p>Put real and imaginary coordinates and the interval between pixels in the location box to go to an exact location.</p>
          <p>Have fun!</p>
          <h2> Fractal </h2>
-			<select id=fractalPicker class="form-control" onchange="changeFractal()">
+			<select id=fractalPicker class="form-control" onchange="changeFractal()" data-toggle="tooltip" data-placement="bottom" title="This changes the fractal. Try it out!">
 				<option value="0">Mandelbrot Set</option>
 				<option value="1">Burning Ship</option>
 				<option value="2">Mandelbar</option>
@@ -181,15 +233,36 @@
          <BR>
          <BR>
          <!-- Enable Less Noisy Colors: <input type="checkbox" id=logToggle onchange="changeColorScales()"></input> <i>(Looks nicer in highly detailed areas.)</i> !-->
-		 Contrast: <input type=number step=0.01 min=0 value=1 onchange="changeContrast()" id=contrastPicker class="form-control"></input>
+		 Contrast: <input type=number step=0.01 min=0 value=1 onchange="changeContrast()" id=contrastPicker class="form-control" data-toggle="tooltip" data-placement="bottom" title="This changes the distance between the 'bands' of color. Try it and see how it works!"></input>
          <!-- <input type="checkbox" name="logToggle" onchange="changeLogColor()" checked> !-->
          <BR>
          <BR>
-         Enable Smooth Colors:<input type="checkbox" id=smoothColorToggle onchange="changeColorScales()"></input>
+		 
+		 
+		
+		 
+		 <!--
+		<form class="controls-stacked">
+			<label class="control checkbox">
+				<input type="checkbox">
+				<span class="control-indicator"></span>
+				Check this custom checkbox
+			</label>
+		</form>
+		-->
+		<div class="checkboxWrapper" onclick="changeSmoothColorsCheckbox();changeColorScales()" data-toggle="tooltip" data-placement="bottom" title="Checking this makes the 'bands' of color blend together, producing a smooth image. NOTE: this does not work correctly on some fractals and contrast levels.">
+         Enable Smooth Colors:
+		<div id=smoothColorsCheckbox class="checkboxBox">
+		<span style="visibility:hidden" id=smoothColorsCheckboxCheck class="unselectable">&#10003;</span>
+		<!-- <input type="checkbox" style="display:none" id=smoothColorToggle onchange="changeColorScales()" data-toggle="tooltip" data-placement="bottom" title="Checking this makes the 'bands' of color blend together, producing a smooth image. NOTE: this does not work correctly on some fractals and contrast levels."></input> -->
+		</div>
+		</div>
+		 
+		 <!-- <input type="checkbox" id=smoothColorToggle onchange="changeColorScales()" data-toggle="tooltip" data-placement="bottom" title="Checking this makes the 'bands' of color blend together, producing a smooth image. NOTE: this does not work correctly on some fractals and contrast levels."></input> -->
          <br>
          <br>
          <h2>Iterations</h2>
-         <input id=iterationsInput type=number value=30000 onchange="gIterations = parseInt(document.getElementById('iterationsInput').value); draw();">   
+         <input id=iterationsInput type=number value=30000 onchange="gIterations = parseInt(document.getElementById('iterationsInput').value); draw();" data-toggle="tooltip" data-placement="bottom" title="This changes the number of times the program runs the fractal function before it 'gives up' and colors the pixel black. Try changing it and seeing what it does!">   
          <br>
          <br>
 		  
@@ -380,23 +453,53 @@
 	  <div class="tab-content">
 		<div id=renderFractalOptions class="tab-pane active" role="tabpanel">
 		<h2>UI Options</h2>
-		Do view changes: <input type="checkbox" id=clickToggle onchange="doClicks = document.getElementById('clickToggle').checked"></input>
+		
+		<div class="checkboxWrapper" onclick="doClicks = !doClicks;toggleCheckbox('doViewChangesCheckboxCheck')" data-toggle="tooltip" data-placement="bottom" title="Checking this disables the view from redrawing.">
+        Lock view:
+		<div class="checkboxBox">
+		<span style="visibility:hidden" id=doViewChangesCheckboxCheck class="unselectable">&#10003;</span>
+		</div>
+		</div>
 		<BR>
-		Clicking zooms: <input type="checkbox" id=zoomToggle onchange="doZoom = document.getElementById('zoomToggle').checked"></input>
+		<BR>
+		<div class="checkboxWrapper" onclick="doZoom = !doZoom;toggleCheckbox('doZoomChangesCheckboxCheck')" data-toggle="tooltip" data-placement="bottom" title="Un-checking this stops the zoom amount from changing.">
+        Clicking zooms:
+		<div class="checkboxBox">
+		<span style="visibility:initial" id=doZoomChangesCheckboxCheck class="unselectable">&#10003;</span>
+		</div>
+		</div>
+		
+		
+		
+		
 		<h2>Size</h2>
 		Width: <input type=number id=customWidth onchange="updateSize()"></input>
 		Height: <input type=number id=customHeight onchange="updateSize()"></input>
 		<h2>Rendering</h2>
-		Do final pass first: <input type="checkbox" id=intervalToggle onchange="updateInterval();"></input>
+		<div class="checkboxWrapper" onclick="doFinalPassFirst=!doFinalPassFirst;updateInterval();toggleCheckbox('doFinalPassFirstCheckboxCheck')" data-toggle="tooltip" data-placement="bottom" title="Checking this makes the image be rendered at the highest resolution first.">
+        Do final pass first: 
+		<div class="checkboxBox">
+		<span style="visibility:hidden" id=doFinalPassFirstCheckboxCheck class="unselectable">&#10003;</span>
+		</div>
+		</div>
+		
+		
 		<BR>
-		Alert when done: <input type="checkbox" id=doneAlertToggle onchange="updateAlertToggle();"></input>
+		<BR>
+		<div class="checkboxWrapper" onclick="alertWhenDone=!alertWhenDone;toggleCheckbox('doAlertWhenDoneCheckboxCheck')" data-toggle="tooltip" data-placement="bottom" title="Checking this makes an alert be created when the image is finished rendering.">
+        Alert when done:
+		<div class="checkboxBox">
+		<span style="visibility:hidden" id=doAlertWhenDoneCheckboxCheck class="unselectable">&#10003;</span>
+		</div>
+		</div>
+		
 		<h2>Fractal Details</h2>
 		Fractional Exponent: <input type="range" id=powerRange oninput="updateExponent(0);" value="2"  min="-5" max="10" step="0.0001"></input>
-		<input type="number" id=powDisplay oninput="updateExponent(1);" value="2" min="-5" max="10" step="0.1"></input>
+		<input type="number" id=powDisplay oninput="updateExponent(1);" value="2" min="-5" max="10" step="0.1" data-toggle="tooltip" data-placement="bottom" title="This defines the exponent for the 'Variable Exponent' fractal."></input>
 		<BR>
 		<BR>
 		Julia Set Values
-		<input id=juliaC size=50 value="0;1" onchange="getJuliaC()">
+		<input id=juliaC size=50 value="0;1" onchange="getJuliaC()" data-toggle="tooltip" data-placement="bottom" title="These two values define the complex constant in the Julia Set fractal.">
 		</div>
 		<div id=customFunctionOptions class="tab-pane" role="tabpanel">
 		<h2>Custom Function</h2>

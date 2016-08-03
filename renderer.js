@@ -168,11 +168,11 @@ function printFunctionAlert(alertText) {
 	
 }
 
-
+var doFinalPassFirst = false;
 function updateInterval() {
-	checked = document.getElementById("intervalToggle").checked;
 	
-	if (checked === true) {
+	
+	if (doFinalPassFirst === true) {
 		startInterval = 1;
 	}
 	else {
@@ -184,7 +184,8 @@ function updateInterval() {
 		
 	
 }
-
+var alertWhenDone = false;
+/*
 function updateAlertToggle() {
 	checked = document.getElementById("doneAlertToggle").checked;
 	
@@ -196,6 +197,7 @@ function updateAlertToggle() {
 		
 	
 }
+*/
 
 function updateExponent(inputNum) {
 	
@@ -1058,7 +1060,7 @@ function updateSize() {
 
 	work.ctx = myCanvas.getContext("2d");
 	work.imageData = work.ctx.createImageData(myCanvas.width,1); //Create an image for the row.
-	d = work.imageData.data;
+	rowD = work.imageData.data;
 	
 	draw();
 	
@@ -1147,18 +1149,18 @@ function initialize() {
 	document.getElementById("fractalPicker").value=0; //Make it actually SAY it's the mandelbrot set when it starts up. 
 	document.getElementById("colPicker").value=0; //Make it actually SAY it's the default color when it starts up.
 	
-	document.getElementById('clickToggle').checked = true;
-	document.getElementById('zoomToggle').checked = true;
+	//document.getElementById('clickToggle').checked = true;
+	//document.getElementById('zoomToggle').checked = true;
 	
-	document.getElementById('doneAlertToggle').checked = false;
-	document.getElementById('intervalToggle').checked = false;
+	//document.getElementById('doneAlertToggle').checked = false;
+	//document.getElementById('intervalToggle').checked = false;
 	
 	
 	document.getElementById('customWidth').value = myCanvas.width;
 	document.getElementById('customHeight').value = myCanvas.height;
 	
 	//document.getElementById("logToggle").checked = false; //Make it actually LOOK unchecked when it starts up. (Might be different because someone had reloaded the page, and had checked on before they reloaded.)
-	document.getElementById("smoothColorToggle").checked = false;
+	//document.getElementById("smoothColorToggle").checked = false;
 
 	draw(); //Make it render when it starts.
 
