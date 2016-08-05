@@ -262,7 +262,7 @@ display:inline-block
          <br>
          <br>
          <h2>Iterations</h2>
-         <input id=iterationsInput type=number value=30000 onchange="gIterations = parseInt(document.getElementById('iterationsInput').value); draw();" data-toggle="tooltip" data-placement="bottom" title="This changes the number of times the program runs the fractal function before it 'gives up' and colors the pixel black. Try changing it and seeing what it does!">   
+         <input id=iterationsInput type=number value=30000 onchange="if (doClicks == true) { gIterations = parseInt(document.getElementById('iterationsInput').value); draw();}" data-toggle="tooltip" data-placement="bottom" title="This changes the number of times the program runs the fractal function before it 'gives up' and colors the pixel black. Try changing it and seeing what it does!">   
          <br>
          <br>
 		  

@@ -49,10 +49,11 @@ renderPixel=renderPixel_default;
 
 
 function reset() {
+	if (doClicks == true) {
 	size = 1*0.005; //How much is the numerical interval between pixels. I. E., size = 1 would mean that each pixel would roughly correspond to an integer. (Invervals of 1)
 	work.location = [0,0]; //Location of the CENTER of the view
 	draw();
-
+	}
 
 }
 
@@ -60,6 +61,7 @@ function reset() {
 
 
 function changeFractal() {
+	if (doClicks == true) {
 	fractal=document.getElementById("fractalPicker").value;
 
 	switch(parseInt(fractal)) {
@@ -159,6 +161,7 @@ function changeFractal() {
 		break;
 	}
 	draw();
+	}
 }
 
 function printFunctionAlert(alertText) {
@@ -200,7 +203,7 @@ function updateAlertToggle() {
 */
 
 function updateExponent(inputNum) {
-	
+	if (doClicks == true) {
 	switch (inputNum) {
 	case 0:
 		gPower = document.getElementById('powerRange').value; 
@@ -215,7 +218,7 @@ function updateExponent(inputNum) {
 	
 	
 	draw(); 
-	
+	}
 	
 }
 
@@ -223,6 +226,7 @@ function updateExponent(inputNum) {
 
 
 function getLocation() {
+	if (doClicks == true) {
 	locData = [];
 	locData = document.getElementById('locationDisplay').value.split(";");
 
@@ -232,10 +236,11 @@ function getLocation() {
 	work.location[1] = parseFloat(locData[1]);
 	size = parseFloat(locData[2]);
 	draw();
-
+	}
 }
 
 function getJuliaC() {
+	if (doClicks == true) {
 	juliaData = [];
 	juliaData = document.getElementById('juliaC').value.split(";");
 
@@ -244,25 +249,27 @@ function getJuliaC() {
 	juliaC_a = parseFloat(juliaData[0]);
 	juliaC_b = parseFloat(juliaData[1]);
 	draw();
-
+	}
 }
 
 
 
-
+var renderStartTime;
 function draw() {
 
+	if (doClicks == true) {
 
+		
+		work.yI = 0;
+		work.interval = startInterval;
+		document.getElementById('locationDisplay').value = (work.location[0].toString()) + ";" + (work.location[1].toString()) + ";" + (size.toString());
+		renderStartTime = Date.now();
+			
+		if (work.running === false) { //Stop it from having two timers.
+			work.running = true;
 
-	
-	work.yI = 0;
-	work.interval = startInterval;
-	document.getElementById('locationDisplay').value = (work.location[0].toString()) + ";" + (work.location[1].toString()) + ";" + (size.toString());
-
-	if (work.running === false) { //Stop it from having two timers.
-		work.running = true;
-
-		setTimeout(doWork,0);
+			setTimeout(doWork,0);
+		}
 	}
 }
 
@@ -350,9 +357,11 @@ function doWork_smooth () {
 	else {
 		work.running = false;
 		if (alertWhenDone === true) {
-			alert("Done Rendering");
-			
-			
+			var millisRenderTime = Date.now() - renderStartTime;
+			var secondsRenderTime = Math.round(millisRenderTime/1000)
+			var minutesValue = Math.floor(secondsRenderTime/60)
+			var secondsValue = secondsRenderTime%60	
+			alert("Done Rendering. Took " + minutesValue + ((minutesValue == 1) ? " minute ":" minutes ") + (secondsRenderTime%60) +  ((secondsValue == 1) ? " second.":" seconds."));
 		}
 	}
 
@@ -432,7 +441,11 @@ function doWork_default () {
 	else {
 		work.running = false;
 		if (alertWhenDone === true) {
-			alert("Done Rendering");
+			var millisRenderTime = Date.now() - renderStartTime;
+			var secondsRenderTime = Math.round(millisRenderTime/1000)
+			var minutesValue = Math.floor(secondsRenderTime/60)
+			var secondsValue = secondsRenderTime%60	
+			alert("Done Rendering. Took " + minutesValue + ((minutesValue == 1) ? " minute ":" minutes ") + (secondsRenderTime%60) +  ((secondsValue == 1) ? " second.":" seconds."));
 			
 			
 		}

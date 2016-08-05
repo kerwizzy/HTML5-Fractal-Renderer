@@ -69,42 +69,43 @@ initializeClassicColors();
 
 
 function changeColorScales() {
-	//var logChecked = document.getElementById("logToggle").checked;
-	var smoothChecked = smoothColorsToggleValue//document.getElementById("smoothColorToggle").checked;
-	var logChecked = Number(logChecked)
-	var smoothChecked = Number(smoothChecked)
+	if (doClicks == true) {
+		//var logChecked = document.getElementById("logToggle").checked;
+		var smoothChecked = smoothColorsToggleValue//document.getElementById("smoothColorToggle").checked;
+		var logChecked = Number(logChecked)
+		var smoothChecked = Number(smoothChecked)
+		
+		var switcher = smoothChecked
+		
+		switch(switcher) {
+		case 0: 	
+			renderPixel=renderPixel_default;
+			doWork = doWork_default;
+			gEscapeHorizon = 4;
+			break;
+		case 1:
+			renderPixel=renderPixel_smooth;
+			doWork = doWork_smooth;
+			gEscapeHorizon = 64;
+			break;
+		case 2:
+			renderPixel=renderPixel_log;
+			doWork = doWork_default; //If Smooth Colors was checked, it won't work right unless we fix this.
+			gEscapeHorizon = 4;
+			break;
+		case 3:
+			renderPixel=renderPixel_log_smooth;
+			doWork = doWork_smooth;
+			gEscapeHorizon = 64;
+			break;
+			
+			
+			
+		}
+		
+		draw();
 	
-	var switcher = smoothChecked
-	
-	switch(switcher) {
-	case 0: 	
-		renderPixel=renderPixel_default;
-		doWork = doWork_default;
-		gEscapeHorizon = 4;
-		break;
-	case 1:
-		renderPixel=renderPixel_smooth;
-		doWork = doWork_smooth;
-		gEscapeHorizon = 64;
-		break;
-	case 2:
-		renderPixel=renderPixel_log;
-		doWork = doWork_default; //If Smooth Colors was checked, it won't work right unless we fix this.
-		gEscapeHorizon = 4;
-		break;
-	case 3:
-		renderPixel=renderPixel_log_smooth;
-		doWork = doWork_smooth;
-		gEscapeHorizon = 64;
-		break;
-		
-		
-		
 	}
-	
-	draw();
-	
-	
 	
 }
 
@@ -147,11 +148,13 @@ function initializeSetOnlyColors() {
 }
 
 function changeColors() {
-	col=document.getElementById("colPicker").value;
+	if (doClicks == true) {
+		col=document.getElementById("colPicker").value;
 
-	colors = colorPalettes[col*2+1];
+		colors = colorPalettes[col*2+1];
 
-	draw();
+		draw();
+	}
 }
 
 
@@ -182,8 +185,9 @@ function generateColPicker() {
 }
 
 function changeContrast() {
+	if (doClicks == true) {
 	contrast = document.getElementById("contrastPicker").value;	
-	
+	}
 	
 }
 
