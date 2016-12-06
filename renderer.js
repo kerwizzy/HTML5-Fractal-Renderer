@@ -115,7 +115,24 @@ function changeFractal() {
 
 		}
 		else {
-			var inEscapeHorizon = 10000
+			var inEscapeHorizon = document.getElementById("customFunctionEscapeHorizon").value;
+			
+			if (gIterations > 10000) {
+				document.getElementById("alertPlaceholder").innerHTML = '<div class="alert alert-warning fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Custom fractals render slower than the ones that are built in. Reducing the maximum number of iterations can help with this. Do you want to lower the max iterations? <button type="button" class="btn btn-warning active" onclick="gIterations = 1000;document.getElementById(\'iterationsInput\').value = 1000">Lower Iterations</button></div>'
+				
+				
+				
+			}
+			
+			inEscapeHorizon = inEscapeHorizon*inEscapeHorizon; //Because of how we check stuff, it has to be squared. 
+			
+			
+			
+			
+			if (inEscapeHorizon == "") {
+				printFunctionAlert("Escape Horizon is undefined.")
+				
+			} else {
 					
 
 			var newInSetCustom = "function(real,imaginary){var zRe = 0;var zIm = 0;var C = [];C[0] = real;C[1] = imaginary;"+
@@ -151,7 +168,8 @@ function changeFractal() {
 			eval("inSet_custom ="+newInSetCustom)
 			inSet=inSet_custom;
 		}
-			
+		
+			}		
 		}
 		
 	break;	
