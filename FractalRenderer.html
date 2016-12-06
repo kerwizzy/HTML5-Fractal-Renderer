@@ -505,9 +505,12 @@ display:inline-block
 		<h2>Custom Function</h2>
 		<p>Not enough fractals? Make your own!</p>
 		<p>Enter any equation into the box below and see what fractal it makes.</p>
-		Z<sub>0</sub>=<input id=customFunctionStartZInput onchange="changeFractal()" size=50></input>
+		Z<sub>0</sub>=<input id=customFunctionStartZInput onchange="changeFractal()" size=50 value="0"></input>
 		<BR>
-		Z<sub>n+1</sub>=<input id=customFunctionInput onchange="changeFractal()" size=50></input>
+		Z<sub>n+1</sub>=<input id=customFunctionInput onchange="changeFractal()" size=50 value="Z^2+C"></input>
+		<BR>
+		Escape Horizon = <input id=customFunctionEscapeHorizon onchange="changeFractal()" min=0 type=number value=2></input>
+		
 		<div id=functionAlertBox>
 		</div>
 		<h4>Supported Functions and Variables</h4>
