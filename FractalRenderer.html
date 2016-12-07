@@ -101,6 +101,14 @@ display:inline-block
 
 }
 
+.centered {/* Make the canvas centered. */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
 </style>
 
 
@@ -142,6 +150,9 @@ display:inline-block
 				<select id=colPicker onchange="changeColors()" class="form-control" style="margin-left:20px" data-toggle="tooltip" data-placement="bottom" title="Use this to change the color palette.">
 					<!-- There isn't anything here on startup, because it gets initialized automatically by generateColPicker() in colors.js !-->
 				</select>
+			</li>
+			<li>
+				<button type="button" class="btn btn-default" onclick="requestFullscreen()" style="margin-left:40px">Fullscreen</button>
 			</li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -194,7 +205,7 @@ display:inline-block
 	
 
 </div>
-<canvas id="myCanvas" style="border:0px;padding:0">
+<canvas id="myCanvas" style="border:0px;padding:0" class="centered">
 	Your browser does not support the HTML5 canvas tag.
 </canvas>
 <!-- options pane -->

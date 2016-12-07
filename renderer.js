@@ -1153,6 +1153,102 @@ function wheelZoom(canvas,event) {
 }
 
 
+// Opera 8.0+
+var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+// Firefox 1.0+
+var isFirefox = typeof InstallTrigger !== 'undefined';
+
+// Safari 3.0+ "[object HTMLElementConstructor]" 
+var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0 || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || safari.pushNotification);
+
+// Internet Explorer 6-11
+var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+// Edge 20+
+var isEdge = !isIE && !!window.StyleMedia;
+
+// Chrome 1+
+var isChrome = !!window.chrome && !!window.chrome.webstore;
+
+// Blink engine detection
+var isBlink = (isChrome || isOpera) && !!window.CSS;
+
+function requestFullscreen() {
+	
+	
+	
+	if (isFirefox) {
+		//myCanvas.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+		myCanvas.mozRequestFullScreen();
+		//myCanvas.msRequestFullscreen();
+		//myCanvas.requestFullscreen(); // standard
+
+		myCanvas.addEventListener("mozfullscreenchange",exitFullscreenHandler)
+
+		
+	} else if (isChrome||isBlink) {
+		myCanvas.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+	} else if (isIE) {
+		myCanvas.msRequestFullscreen();
+		myCanvas.addEventListener("msfullscreenchange",exitFullscreenHandler)
+	} else if (isEdge) {
+		webkitRequestFullscreen()
+		myCanvas.addEventListener("webkitfullscreenchange",exitFullscreenHandler)
+	} else {
+		myCanvas.requestFullscreen(); // standard
+		myCanvas.addEventListener("fullscreenchange",exitFullscreenHandler)
+	}
+	
+	
+	
+	myCanvas.width = screen.width;
+	myCanvas.height = screen.height;
+	draw();
+}
+
+function exitFullscreenHandler(event) {
+	if (isFirefox) {
+		if (document.mozFullscreenElement) { //If not null
+			updateCanvasSize();
+		}		
+	} else if (isChrome||isBlink) {
+		if (document.webkitFullscreenElement) { //If not null
+			updateCanvasSize();
+		}
+	} else if (isIE) {
+		if (document.msFullscreenElement) { //If not null
+			updateCanvasSize();
+		}
+	} else if (isEdge) {
+		if (document.webkitFullscreenElement) { //If not null
+			updateCanvasSize();
+		}
+	} else {
+		if (document.fullscreenElement) { //If not null
+			updateCanvasSize();
+		}
+	}
+}
+
+
+
+
+function updateCanvasSize() {
+	
+	var canvHeight = window.innerHeight;
+	
+	var topHeight = $("#topRow").outerHeight(false) //false is for include margin
+	//console.log($("#topRow"))
+	
+	//alert(topHeight);
+	
+	myCanvas.width = $("#topRow").width(); 
+	myCanvas.height = canvHeight-(topHeight*0.1);
+	draw();
+}
+
+
 
 function initialize() {
 	generateColPicker(); //Add the interior data for the color selector box, based on current color palettes. The function is in colors.js
@@ -1172,6 +1268,17 @@ function initialize() {
 
 	myCanvas.addEventListener("mouseup",function(event) { if(event.button===0) getCursorPosition(myCanvas,event);});
 	myCanvas.addEventListener("wheel",function(event) { wheelZoom(myCanvas,event);});
+	
+	/*
+	window.addEventListener("keydown", function(event) {//For fullscreening exiting.
+		if (event.key == "Escape") {
+			alert("We got here!")
+			setTimeout(updateCanvasSize,100) //Wait for it to actually go out of fullscreen.
+		}
+	});  
+	*/
+	
+	
 	work.ctx = myCanvas.getContext("2d");
 	work.imageData = work.ctx.createImageData(myCanvas.width,1); //Create an image for the row.
 
