@@ -504,6 +504,11 @@ display:inline-block
 		</div>
 		</div>
 		
+		<BR><BR>
+		
+		Subsampling amount (1 disables): <input id=subsamplingInput type=number min=0 onchange="subsamplingSize = parseInt(document.getElementById('subsamplingInput').value)" data-toggle="tooltip" data-placement="bottom" title="This changes how 'noisy' the rendered image is. It only effects the last render pass."> 
+		
+		
 		<h2>Fractal Details</h2>
 		Fractional Exponent: <input type="range" id=powerRange oninput="updateExponent(0);" value="2"  min="-5" max="10" step="0.0001"></input>
 		<input type="number" id=powDisplay oninput="updateExponent(1);" value="2" min="-5" max="10" step="0.1" data-toggle="tooltip" data-placement="bottom" title="This defines the exponent for the 'Variable Exponent' fractal."></input>

@@ -38,6 +38,8 @@ work.running = false;
 
 startInterval = 16;
 
+var subsamplingSize = 2; //It will average in this number squared, so 4 locations.
+
 var alertWhenDone = false;
 
 var doZoom = true;
@@ -298,6 +300,7 @@ function doWork() {
 doWork = doWork_default;
 
 function doWork_smooth () {
+	var subsamplingDist = size*(1/subsamplingSize)
 	var interval = work.interval;
 
 	var cWidth = myCanvas.width;
@@ -317,23 +320,47 @@ function doWork_smooth () {
 	
 
 	for (var xI = 0; xI < cWidth; xI+=interval) {
-		
-		
+		if (subsamplingSize == 1 || interval != 1) {
+			renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)); //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
 
-		renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)); //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
 
-		
-		
+			p = xI*4;
+			for (i =0;i < interval;i++) {
+				rowD[p++] = r;
+				rowD[p++] = g;
+				rowD[p++] = b;
+				rowD[p++] = 0xFF; //Set the alpha
+			}
+		} else {
+			var pxR = 0;
+			var pxG = 0;
+			var pxB = 0;
+			for (var subXI = 0; subXI < subsamplingSize; subXI++) {				
+				for (var subYI = 0; subYI < subsamplingSize; subYI++) {
+					renderPixel((((xI-halfcWidth)*size)+locationX)+subXI*subsamplingDist,(((yI-halfcHeight)*-size)+locationY)+subYI*subsamplingDist) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+					
 
-		p = xI*4;
-		
-		for (i =0;i < interval;i++) {
+					pxR += r
+					pxG += g
+					pxB += b
+					
+				}				
+			}
 			
+			pxR = pxR/(subsamplingSize*subsamplingSize)
+			pxG = pxG/(subsamplingSize*subsamplingSize)
+			pxB = pxB/(subsamplingSize*subsamplingSize)
 			
-			rowD[p++] = r;
-			rowD[p++] = g;
-			rowD[p++] = b;
-			rowD[p++] = 0xFF; //Set the alpha
+			var p = xI*4;
+
+			for (var i =0;i < interval;i++) {
+
+
+				rowD[p++] = pxR;
+				rowD[p++] = pxG;
+				rowD[p++] = pxB;
+				rowD[p++] = 0xFF; //Set the alpha
+			}
 		}
 	}
 	for (i =0;i < interval;i++) {
@@ -342,18 +369,47 @@ function doWork_smooth () {
 	yI = halfcHeight+work.yI;
 	
 	for (xI = 0; xI < cWidth; xI+=interval) {
-		
-		
-
-		renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)); //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+		if (subsamplingSize == 1 || interval != 1) {
+			renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)); //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
 
 
-		p = xI*4;
-		for (i =0;i < interval;i++) {
-			rowD[p++] = r;
-			rowD[p++] = g;
-			rowD[p++] = b;
-			rowD[p++] = 0xFF; //Set the alpha
+			p = xI*4;
+			for (i =0;i < interval;i++) {
+				rowD[p++] = r;
+				rowD[p++] = g;
+				rowD[p++] = b;
+				rowD[p++] = 0xFF; //Set the alpha
+			}
+		} else {
+			var pxR = 0;
+			var pxG = 0;
+			var pxB = 0;
+			for (var subXI = 0; subXI < subsamplingSize; subXI++) {				
+				for (var subYI = 0; subYI < subsamplingSize; subYI++) {
+					renderPixel((((xI-halfcWidth)*size)+locationX)+subXI*subsamplingDist,(((yI-halfcHeight)*-size)+locationY)+subYI*subsamplingDist) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+					
+
+					pxR += r
+					pxG += g
+					pxB += b
+					
+				}				
+			}
+			
+			pxR = pxR/(subsamplingSize*subsamplingSize)
+			pxG = pxG/(subsamplingSize*subsamplingSize)
+			pxB = pxB/(subsamplingSize*subsamplingSize)
+			
+			var p = xI*4;
+
+			for (var i =0;i < interval;i++) {
+
+
+				rowD[p++] = pxR;
+				rowD[p++] = pxG;
+				rowD[p++] = pxB;
+				rowD[p++] = 0xFF; //Set the alpha
+			}
 		}
 
 	}		
@@ -388,6 +444,8 @@ function doWork_smooth () {
 
 
 function doWork_default () {
+	var subsamplingDist = size*(1/subsamplingSize)
+	
 	var interval = work.interval;
 
 	var cWidth = myCanvas.width;
@@ -404,20 +462,51 @@ function doWork_default () {
 	for (var xI = 0; xI < cWidth; xI+=interval) {
 		
 		
-
-		var currentPixelColor = renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
-		var ci = currentPixelColor*3;
-		
-
-		var p = xI*4;
-		
-		for (var i =0;i < interval;i++) {
+		if (subsamplingSize == 1 || interval != 1) {
+			var currentPixelColor = renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+			var ci = currentPixelColor*3;
 			
+
+			var p = xI*4;
 			
-			rowD[p++] = colors[ci+0];
-			rowD[p++] = colors[ci+1];
-			rowD[p++] = colors[ci+2];
-			rowD[p++] = 0xFF; //Set the alpha
+			for (var i =0;i < interval;i++) {
+				
+				
+				rowD[p++] = colors[ci+0];
+				rowD[p++] = colors[ci+1];
+				rowD[p++] = colors[ci+2];
+				rowD[p++] = 0xFF; //Set the alpha
+			}
+		} else {
+			var pxR = 0;
+			var pxG = 0;
+			var pxB = 0;
+			for (var subXI = 0; subXI < subsamplingSize; subXI++) {				
+				for (var subYI = 0; subYI < subsamplingSize; subYI++) {
+					var currentPixelColor = renderPixel((((xI-halfcWidth)*size)+locationX)+subXI*subsamplingDist,(((yI-halfcHeight)*-size)+locationY)+subYI*subsamplingDist) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+					var ci = currentPixelColor*3;
+
+					pxR += colors[ci+0]
+					pxG += colors[ci+1]
+					pxB += colors[ci+2]
+					
+				}				
+			}
+			
+			pxR = pxR/(subsamplingSize*subsamplingSize)
+			pxG = pxG/(subsamplingSize*subsamplingSize)
+			pxB = pxB/(subsamplingSize*subsamplingSize)
+			
+			var p = xI*4;
+
+			for (var i =0;i < interval;i++) {
+
+
+				rowD[p++] = pxR;
+				rowD[p++] = pxG;
+				rowD[p++] = pxB;
+				rowD[p++] = 0xFF; //Set the alpha
+			}
 		}
 	}
 	for (var i =0;i < interval;i++) {
@@ -426,18 +515,51 @@ function doWork_default () {
 	yI = halfcHeight+work.yI;
 	
 	for (var xI = 0; xI < cWidth; xI+=interval) {
-		
-		
+		if (subsamplingSize == 1 || interval != 1) {
+			var currentPixelColor = renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+			var ci = currentPixelColor*3;
+			
 
-		var currentPixelColor = renderPixel((((xI-halfcWidth)*size)+locationX),(((yI-halfcHeight)*-size)+locationY)) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
-		var ci = currentPixelColor*3;
+			var p = xI*4;
+			
+			for (var i =0;i < interval;i++) {
+				
+				
+				rowD[p++] = colors[ci+0];
+				rowD[p++] = colors[ci+1];
+				rowD[p++] = colors[ci+2];
+				rowD[p++] = 0xFF; //Set the alpha
+			}
+		} else {
+			var pxR = 0;
+			var pxG = 0;
+			var pxB = 0;
+			for (var subXI = 0; subXI < subsamplingSize; subXI++) {				
+				for (var subYI = 0; subYI < subsamplingSize; subYI++) {
+					var currentPixelColor = renderPixel((((xI-halfcWidth)*size)+locationX)+subXI*subsamplingDist,(((yI-halfcHeight)*-size)+locationY)+subYI*subsamplingDist) //the percentage accross the view we are, times the actual size of the view, offset by the location from the orgin.
+					var ci = currentPixelColor*3;
 
-		var p = xI*4;
-		for (var i =0;i < interval;i++) {
-			rowD[p++] = colors[ci+0];
-			rowD[p++] = colors[ci+1];
-			rowD[p++] = colors[ci+2];
-			rowD[p++] = 0xFF; //Set the alpha
+					pxR += colors[ci+0]
+					pxG += colors[ci+1]
+					pxB += colors[ci+2]
+					
+				}				
+			}
+			
+			pxR = pxR/(subsamplingSize*subsamplingSize)
+			pxG = pxG/(subsamplingSize*subsamplingSize)
+			pxB = pxB/(subsamplingSize*subsamplingSize)
+			
+			var p = xI*4;
+
+			for (var i =0;i < interval;i++) {
+
+
+				rowD[p++] = pxR;
+				rowD[p++] = pxG;
+				rowD[p++] = pxB;
+				rowD[p++] = 0xFF; //Set the alpha
+			}
 		}
 
 	}		
@@ -1296,6 +1418,8 @@ function initialize() {
 	
 	document.getElementById('customWidth').value = myCanvas.width;
 	document.getElementById('customHeight').value = myCanvas.height;
+	
+	document.getElementById('subsamplingInput').value = subsamplingSize;
 	
 	//document.getElementById("logToggle").checked = false; //Make it actually LOOK unchecked when it starts up. (Might be different because someone had reloaded the page, and had checked on before they reloaded.)
 	//document.getElementById("smoothColorToggle").checked = false;
