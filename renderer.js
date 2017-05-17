@@ -45,7 +45,8 @@ var alertWhenDone = false;
 var doZoom = true;
 var doClicks = true;
 
-var contrast = 1; //Contrast mulitplier for the image. Code in colors.js 
+var contrast = 1; //Contrast mulitplier for the image. Code in colors.js
+var colorOffset = 0; //Offset for the colors. Code in colors.js
 
 renderPixel=renderPixel_default;
 
@@ -599,10 +600,12 @@ function doWork_default () {
 function renderPixel_default(real,imaginary) {
 
 
-	var outColor = Math.floor(inSet(real,imaginary)*contrast);
+	var outColor = inSet(real,imaginary)
 	if (outColor == -1) {
 		return 999;
 	}
+	
+	outColor = Math.floor(outColor*contrast+colorOffset)
 	
 	return 998 - (outColor%999);
 	
@@ -612,11 +615,11 @@ function renderPixel_default(real,imaginary) {
 function renderPixel_log(real,imaginary) {
 
 
-	var outColor = Math.floor(inSet(real,imaginary)*contrast);
+	var outColor = inSet(real,imaginary)
 	if (outColor == -1) {
 		return 999;
 	}
-
+	outColor = Math.floor(outColor*contrast+colorOffset)
 	
 
 	outColor = 35.1*(Math.pow(outColor,0.7));
@@ -631,7 +634,7 @@ function renderPixel_log(real,imaginary) {
 function renderPixel_smooth(real,imaginary) {
 
 
-	var outColor = Math.floor(inSet(real,imaginary)*contrast);
+	var outColor = inSet(real,imaginary)
 	var mapperDiff_r = 0;
 	var mapperDiff_g = 0;
 	var mapperDiff_b = 0;
@@ -662,6 +665,8 @@ function renderPixel_smooth(real,imaginary) {
 		b = colors[999*3+2]
 		return;
 	}
+	outColor = Math.floor(outColor*contrast+colorOffset)
+	
 	outColor = 998 - (outColor%999);
 	
 	mapperLoc = outColor*3
@@ -683,7 +688,7 @@ function renderPixel_smooth(real,imaginary) {
 function renderPixel_log_smooth(real,imaginary) {
 
 
-	var outColor = Math.floor(inSet(real,imaginary)*contrast);
+	var outColor = inSet(real,imaginary);
 	var mapperDiff_r = 0;
 	var mapperDiff_g = 0;
 	var mapperDiff_b = 0;
@@ -716,6 +721,7 @@ function renderPixel_log_smooth(real,imaginary) {
 		b = colors[999*3+2].
 		return;
 	}
+	outColor = Math.floor(outColor*contrast+colorOffset)
 	
 	var outColor2 = (Math.pow(((outColor+1)*12),0.7))
 	outColor = (Math.pow((outColor*12),0.7)); 

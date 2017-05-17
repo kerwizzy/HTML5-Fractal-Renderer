@@ -190,9 +190,16 @@ function generateColPicker() {
 
 function changeContrast() {
 	if (doClicks == true) {
-	contrast = document.getElementById("contrastPicker").value;	
+		contrast = parseFloat(document.getElementById("contrastPicker").value);	
 	}
-	
+	draw();
+}
+
+function changeColorOffset() {
+	if (doClicks == true) {
+		colorOffset = parseFloat(document.getElementById("colorOffsetPicker").value);	
+	}
+	draw();
 }
 
 
